@@ -14,7 +14,7 @@ export function useAuthMiddleware() {
   //! TODO: Redirect to login page if user is not logged in
   useEffect(() => {
     if (user == null) {
-      router.push("/");
+      router.push("/login");
     }
   }, [user, router]); // Include 'router' in the dependency array to resolve eslint warning
 }

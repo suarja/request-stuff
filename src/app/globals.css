@@ -65,6 +65,11 @@
       --ring: 24 5.7% 82.9%;
     }
   }
+  body{
+    height: 100vh;
+    width: 100vw;
+
+  }
 
   @layer base {
     * {

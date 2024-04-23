@@ -1,8 +1,6 @@
 "use client";
-import { ModeToggle } from "@/common/components/ModeToggle";
 import { Nav } from "@/common/components/Nav";
 import { useAuthMiddleware } from "@/context/useAuthMiddleware";
-import Link from "next/link";
 
 function Page(): JSX.Element {
   useAuthMiddleware();
