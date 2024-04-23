@@ -2,6 +2,7 @@ import { AuthContextProvider } from "@/context/AuthContext";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/common/style/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 // Load the Inter font with 'latin' subset
 const inter = Inter({ subsets: ["latin"] });
@@ -37,6 +38,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Toaster />
           </ThemeProvider>
         </AuthContextProvider>
       </body>
