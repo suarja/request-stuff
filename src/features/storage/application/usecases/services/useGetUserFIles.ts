@@ -3,7 +3,7 @@ import { storageRepository } from "../../../infra/firebase-impl";
 import { useEffect, useState } from "react";
 import { FileFromStorage } from "../../repositories/storage-repository";
 import { toast } from "sonner";
-import { filesStore } from "@/context/FilesContext";
+import { filesStore } from "@/context/files-context";
 
 export default function useGetUserFiles() {
   const [loading, setLoading] = useState(true);

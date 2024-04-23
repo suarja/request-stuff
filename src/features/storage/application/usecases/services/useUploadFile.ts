@@ -3,7 +3,7 @@ import { storageUsecases } from "../storage-usecases";
 import { getAuth } from "firebase/auth";
 import { UploadResult } from "firebase/storage";
 import { toast } from "sonner";
-import { filesStore } from "@/context/FilesContext";
+import { filesStore } from "@/context/files-context";
 
 export default function useUploadFile() {
   const [file, setFile] = useState<File | null>(null);
