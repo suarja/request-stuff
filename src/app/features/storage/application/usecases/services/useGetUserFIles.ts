@@ -9,9 +9,10 @@ export default function useGetUserFiles() {
   const [loading, setLoading] = useState(true);
   const [files, setFiles] = useState<FileFromStorage[]>([]);
   const user = useAuthContext();
-  const { setFilesLocal, filesLocal } = filesStore((state) => ({
+  const { setFilesLocal, filesLocal, revalidate } = filesStore((state) => ({
     setFilesLocal: state.setFiles,
     filesLocal: state.files,
+    revalidate: state.revalidate,
   }));
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function useGetUserFiles() {
     }
 
     setLoading(false);
-  }, [user]);
+  }, [user, revalidate]);
 
   return {
     files,

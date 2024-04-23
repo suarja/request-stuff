@@ -3,13 +3,16 @@ import { storageUsecases } from "../storage-usecases";
 import { getAuth } from "firebase/auth";
 import { UploadResult } from "firebase/storage";
 import { toast } from "sonner";
+import { filesStore } from "@/context/FilesContext";
 
 export default function useUploadFile() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean | null>(null);
-
+  const { setRevalidate } = filesStore((state) => ({
+    setRevalidate: state.setRevalidate,
+  }));
   useEffect(() => {
     if (file) {
       setLoading(true);
@@ -28,6 +31,7 @@ export default function useUploadFile() {
           setLoading(false);
           setSuccess(true);
           toast.success("File uploaded successfully");
+          setRevalidate();
         })
         .catch((error) => {
           console.error("Error uploading file", error);
