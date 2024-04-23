@@ -1,5 +1,9 @@
 export default abstract class RequestRepository {
-  abstract createRequest({ props }: { props: CreateRequest }): Promise<void>;
+  abstract createRequest({
+    props,
+  }: {
+    props: CreateRequest;
+  }): Promise<string | undefined>;
   abstract getRequest(): Promise<void>;
   abstract updateRequest(): Promise<void>;
   abstract deleteRequest(): Promise<void>;

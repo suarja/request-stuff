@@ -14,10 +14,14 @@ export default class RequestRepositoryImpl extends RequestRepository {
     this.firestoreRepository = firestoreFactory;
   }
 
-  async createRequest({ props }: { props: CreateRequest }): Promise<void> {
+  async createRequest({
+    props,
+  }: {
+    props: CreateRequest;
+  }): Promise<string | undefined> {
     // const path = `users/${props.userId}/requests`;
     const id = await this.firestoreRepository.addDocument(props.path, props);
-    return;
+    return id;
   }
   getRequest(): Promise<void> {
     throw new Error("Method not implemented.");
