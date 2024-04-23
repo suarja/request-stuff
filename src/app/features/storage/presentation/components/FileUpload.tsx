@@ -37,12 +37,9 @@ function FileUpload() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-white shadow-md rounded-lg">
+    <form onSubmit={handleSubmit} className="p-4  shadow-md rounded-lg">
       <div className="flex flex-col space-y-4">
-        <label
-          htmlFor="file-upload"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="file-upload" className="block text-sm font-medium ">
           Upload file
         </label>
         <input
@@ -50,7 +47,7 @@ function FileUpload() {
           name="file-upload"
           type="file"
           onChange={handleFileChange}
-          className="block w-full text-sm text-gray-500
+          className="block w-full text-sm text-gray-300
             file:mr-4 file:py-2 file:px-4
             file:rounded-full file:border-0
             file:text-sm file:font-semibold

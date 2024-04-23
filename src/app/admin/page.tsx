@@ -14,7 +14,7 @@ function Page(): JSX.Element {
       <section className="flex flex-col justify-center gap-4">
         <FilesTable />
         <div>
-          <CustomDialog icon={<AddIcon />} title="Add File">
+          <CustomDialog buttonText="Add File" title="Add File">
             <FileUpload />
           </CustomDialog>
         </div>

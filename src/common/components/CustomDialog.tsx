@@ -8,23 +8,34 @@ import {
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
+import AddIcon from "../icons/AddIcon";
 
 export default function CustomDialog({
-  icon,
+  icon = <AddIcon />,
   title,
   description = "",
   children,
   testId,
   open,
   displayButton = true,
+  buttonText,
+  buttonVariant,
 }: {
   displayButton?: boolean;
   open?: boolean;
   title: string;
   description?: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   children?: React.ReactNode;
   testId?: string;
+  buttonText?: string;
+  buttonVariant?:
+    | "link"
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost";
 }) {
   return (
     <>
@@ -32,12 +43,12 @@ export default function CustomDialog({
         <DialogTrigger asChild>
           {displayButton && (
             <Button
-              variant={"outline"}
-              size={"icon"}
+              variant={buttonVariant ?? "default"}
+              size={buttonText ? "sm" : "icon"}
               data-testid={testId}
-              className="p-0 "
+              className="p-2 "
             >
-              {icon}
+              {buttonText ?? icon}
             </Button>
           )}
         </DialogTrigger>
