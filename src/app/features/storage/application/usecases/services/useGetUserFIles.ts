@@ -3,12 +3,20 @@ import { storageRepository } from "../../../infra/firebase-impl";
 import { useEffect, useState } from "react";
 import { FileFromStorage } from "../../repositories/storage-repository";
 import { toast } from "sonner";
+import { filesStore } from "@/context/FilesContext";
 
 export default function useGetUserFiles() {
   const [loading, setLoading] = useState(true);
   const [files, setFiles] = useState<FileFromStorage[]>([]);
   const user = useAuthContext();
+  const { setFilesLocal, filesLocal } = filesStore((state) => ({
+    setFilesLocal: state.setFiles,
+    filesLocal: state.files,
+  }));
 
+  useEffect(() => {
+    setFiles(filesLocal);
+  }, [filesLocal]);
   useEffect(() => {
     if (user) {
       setLoading(true);
@@ -17,7 +25,7 @@ export default function useGetUserFiles() {
           userId: user.uid,
         })
         .then((files) => {
-          setFiles(files);
+          setFilesLocal({ files });
           setLoading(false);
           toast.success("Files loaded successfully");
         })
