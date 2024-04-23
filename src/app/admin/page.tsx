@@ -5,6 +5,7 @@ import FileUpload from "../../features/storage/presentation/components/FileUploa
 import FilesTable from "../../features/storage/presentation/components/FilesTable";
 import CustomDialog from "@/common/components/CustomDialog";
 import AddIcon from "@/common/icons/AddIcon";
+import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
 
 function Page(): JSX.Element {
   useAuthMiddleware();
@@ -16,6 +17,11 @@ function Page(): JSX.Element {
         <div>
           <CustomDialog buttonText="Add File" title="Add File">
             <FileUpload />
+          </CustomDialog>
+        </div>
+        <div>
+          <CustomDialog buttonText="Create Request" title="Create Request">
+            <CreateRequestForm />
           </CustomDialog>
         </div>
       </section>
