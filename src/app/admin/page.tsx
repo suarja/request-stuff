@@ -3,6 +3,8 @@ import { Nav } from "@/common/components/Nav";
 import { useAuthMiddleware } from "@/context/useAuthMiddleware";
 import FileUpload from "../features/storage/presentation/components/FileUpload";
 import FilesTable from "../features/storage/presentation/components/FilesTable";
+import CustomDialog from "@/common/components/CustomDialog";
+import AddIcon from "@/common/icons/AddIcon";
 
 function Page(): JSX.Element {
   useAuthMiddleware();
@@ -12,7 +14,9 @@ function Page(): JSX.Element {
       <section className="flex flex-col justify-center gap-4">
         <FilesTable />
         <div>
-          <FileUpload />
+          <CustomDialog icon={<AddIcon />} title="Add File">
+            <FileUpload />
+          </CustomDialog>
         </div>
       </section>
     </main>

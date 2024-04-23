@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useUploadFile from "../../application/usecases/services/useUploadFile";
 import { toast } from "sonner";
 
-const FileUpload: React.FC = () => {
+function FileUpload() {
   const { setFile, loading, error, success } = useUploadFile();
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
@@ -67,6 +67,6 @@ const FileUpload: React.FC = () => {
       </div>
     </form>
   );
-};
+}
 
 export default FileUpload;
