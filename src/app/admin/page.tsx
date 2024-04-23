@@ -1,24 +1,10 @@
 "use client";
 import { ModeToggle } from "@/common/components/ModeToggle";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuthMiddleware } from "@/context/useAuthMiddleware";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 function Page(): JSX.Element {
-  // Access the user object from the authentication context
-  // const { user } = useAuthContext();
-  const { user } = useAuthContext() as { user: any }; // Use 'as' to assert the type as { user: any }
-  const router = useRouter();
-
-  useEffect(() => {
-    // Redirect to the home page if the user is not logged in
-    if (user == null) {
-      router.push("/");
-    }
-    // }, [ user ] );
-  }, [user, router]); // Include 'router' in the dependency array to resolve eslint warning
-
+  useAuthMiddleware();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <nav className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
