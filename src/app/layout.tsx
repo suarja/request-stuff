@@ -1,6 +1,7 @@
 import { AuthContextProvider } from "@/context/AuthContext";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/common/style/ThemeProvider";
 
 // Load the Inter font with 'latin' subset
 const inter = Inter({ subsets: ["latin"] });
@@ -28,7 +29,16 @@ export default function RootLayout({
       <head />
       <body>
         {/* Wrap the children with the AuthContextProvider to provide authentication context */}
-        <AuthContextProvider>{children}</AuthContextProvider>
+        <AuthContextProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </AuthContextProvider>
       </body>
     </html>
   );
