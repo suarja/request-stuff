@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import useUploadFile from "../../application/usecases/services/useUploadFile";
+import { toast } from "sonner";
 
 const FileUpload: React.FC = () => {
   const { setFile, loading, error, success } = useUploadFile();
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
   useEffect(() => {
-    if (success) {
+    if (success || error) {
       setFileSelected(null);
       setFile(null);
+      setTimeout(() => {
+        toast.dismiss();
+      }, 3000);
+    } else if (loading) {
+      toast.loading("Uploading...");
     }
-  }, [success]);
+  }, [success, error, loading]);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files[0]) {

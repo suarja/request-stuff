@@ -4,7 +4,6 @@ import StorageRepository from "../application/repositories/storage-repository";
 import {
   FirebaseStorage,
   UploadResult,
-  getStorage,
   ref,
   uploadBytes,
 } from "firebase/storage";
