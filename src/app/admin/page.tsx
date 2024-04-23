@@ -10,9 +10,9 @@ import CreateRequestForm from "@/features/request/presentation/components/Reques
 function Page(): JSX.Element {
   useAuthMiddleware();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start p-12">
       <Nav />
-      <section className="flex flex-col justify-center gap-4">
+      <section className="flex flex-col h-full w-full justify-center gap-4 p-1">
         <FilesTable />
         <div>
           <CustomDialog buttonText="Add File" title="Add File">
