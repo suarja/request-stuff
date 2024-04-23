@@ -11,6 +11,10 @@ export default class StorageUsecases {
   async uploadFile(path: string, value: any): Promise<UploadResult> {
     return await this.storageRepository.uploadFile(path, value);
   }
+
+  async getUserFiles({ userId }: { userId: string }) {
+    return await this.storageRepository.getUserFiles({ userId });
+  }
 }
 
 export const storageUsecases = new StorageUsecases({

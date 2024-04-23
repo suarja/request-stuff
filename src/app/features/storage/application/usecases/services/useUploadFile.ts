@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { storageUsecases } from "../storage-usecases";
 import { getAuth } from "firebase/auth";
 import { UploadResult } from "firebase/storage";
@@ -19,7 +19,7 @@ export default function useUploadFile() {
       if (!userId) {
         throw new Error("No user id");
       }
-      
+
       const path = `users/${userId}/files/${file.name}`;
       storageUsecases
         .uploadFile(path, file)

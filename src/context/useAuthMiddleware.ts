@@ -8,7 +8,7 @@ export function useAuthMiddleware() {
   // const { user } = useAuthContext();
 
   //! Find a way to avoid the any type and add a type to the user object
-  const { user } = useAuthContext() as { user: any }; // Use 'as' to assert the type as { user: any }
+  const user = useAuthContext(); // Use 'as' to assert the type as { user: any }
   const router = useRouter();
 
   useEffect(() => {

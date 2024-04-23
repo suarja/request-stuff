@@ -14,7 +14,7 @@ import LoadingPage from "@/common/components/LoadingPage";
 const auth = getAuth(firebase_app);
 
 // Create the authentication context
-export const AuthContext = createContext({});
+export const AuthContext = createContext<User | null>(null);
 
 // Custom hook to access the authentication context
 export const useAuthContext = () => useContext(AuthContext);
@@ -50,7 +50,7 @@ export function AuthContextProvider({
 
   // Provide the authentication context to child components
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={user}>
       {loading ? <LoadingPage /> : children}
     </AuthContext.Provider>
   );

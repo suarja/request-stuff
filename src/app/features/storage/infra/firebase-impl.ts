@@ -1,12 +1,17 @@
 import { BucktStorage } from "@/firebase/bucket/bucket";
 
-import StorageRepository from "../application/repositories/storage-repository";
+import StorageRepository, {
+  FileFromStorage,
+} from "../application/repositories/storage-repository";
 import {
   FirebaseStorage,
   UploadResult,
+  getDownloadURL,
+  listAll,
   ref,
   uploadBytes,
 } from "firebase/storage";
+import { get } from "http";
 export default class StorageRepositoryImplementation extends StorageRepository {
   private bucket: FirebaseStorage;
 
@@ -21,8 +26,20 @@ export default class StorageRepositoryImplementation extends StorageRepository {
     return result;
   }
 
-  async get(key: string): Promise<any> {
-    throw new Error("Method not implemented.");
+  async getUserFiles({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<FileFromStorage[]> {
+    const path = `users/${userId}/files`;
+    const files = await listAll(ref(this.bucket, path));
+    const filesFromStorage: FileFromStorage[] = [];
+    for (const file of files.items) {
+      const url = await getDownloadURL(file);
+      filesFromStorage.push({ name: file.name, url, key: file.fullPath });
+    }
+    console.log({ filesFromStorage });
+    return filesFromStorage;
   }
 
   async remove(key: string): Promise<void> {
