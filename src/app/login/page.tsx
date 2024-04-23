@@ -56,7 +56,7 @@ export default function Component() {
             </span>
           </div>
         </div>
-        <form>
+        <form onSubmit={handleForm} className="flex flex-col gap-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
