@@ -11,7 +11,6 @@ export function useAuthMiddleware() {
   const { user } = useAuthContext() as { user: any }; // Use 'as' to assert the type as { user: any }
   const router = useRouter();
 
-  //! TODO: Redirect to login page if user is not logged in
   useEffect(() => {
     if (user == null) {
       router.push("/login");
