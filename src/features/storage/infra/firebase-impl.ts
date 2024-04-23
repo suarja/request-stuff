@@ -33,6 +33,7 @@ export default class StorageRepositoryImplementation extends StorageRepository {
   }): Promise<FileFromStorage[]> {
     const path = `users/${userId}/files`;
     const files = await listAll(ref(this.bucket, path));
+    console.log({ prefixes: files.prefixes, items: files.items });
     const filesFromStorage: FileFromStorage[] = [];
     for (const file of files.items) {
       const url = await getDownloadURL(file);
