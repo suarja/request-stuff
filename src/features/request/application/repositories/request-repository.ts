@@ -1,15 +1,22 @@
+import { DocumentData } from "firebase/firestore";
+
 export default abstract class RequestRepository {
   abstract createRequest({
     props,
   }: {
     props: CreateRequest;
   }): Promise<string | undefined>;
-  abstract getRequest(): Promise<void>;
+  //! Remove infra return type
+  abstract getRequest({
+    requestId,
+  }: {
+    requestId: string;
+  }): Promise<DocumentData | null>;
   abstract updateRequest(): Promise<void>;
   abstract deleteRequest(): Promise<void>;
 }
 
-export type CreateRequest = {
+export interface CreateRequest {
   userId: string;
   maxFileSize?: number;
   dateLimit?: number;
@@ -17,4 +24,8 @@ export type CreateRequest = {
   description?: string;
   maxFiles?: number;
   path: string;
-};
+}
+
+export interface RequestData extends CreateRequest {
+  id: string;
+}

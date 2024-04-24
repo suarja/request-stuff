@@ -16,7 +16,7 @@ export default function useCreateRequest() {
       const props = {
         ...requestCreationProps,
         userId: user.uid,
-        path: path.join("users", user.uid, "requests"),
+        path: path.join("requests"),
       };
       setLoading(true);
       toast.loading("Creating request...");

@@ -5,6 +5,7 @@ import {
 import RequestRepository, {
   CreateRequest,
 } from "../application/repositories/request-repository";
+import { DocumentData } from "firebase/firestore";
 
 export default class RequestRepositoryImpl extends RequestRepository {
   private firestoreRepository: FirestoreFactory;
@@ -23,8 +24,16 @@ export default class RequestRepositoryImpl extends RequestRepository {
     const id = await this.firestoreRepository.addDocument(props.path, props);
     return id;
   }
-  getRequest(): Promise<void> {
-    throw new Error("Method not implemented.");
+  async getRequest({
+    requestId,
+  }: {
+    requestId: string;
+  }): Promise<DocumentData | null> {
+    const request = await this.firestoreRepository.getDocument(
+      "requests",
+      requestId
+    );
+    return request;
   }
   updateRequest(): Promise<void> {
     throw new Error("Method not implemented.");

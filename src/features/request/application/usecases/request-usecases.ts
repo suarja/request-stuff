@@ -16,4 +16,8 @@ export default class RequestUsecases {
   }): Promise<string | undefined> {
     return await this.requestRepository.createRequest({ props });
   }
+
+  async getRequest({ requestId }: { requestId: string }) {
+    return this.requestRepository.getRequest({ requestId });
+  }
 }
