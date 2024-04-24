@@ -11,8 +11,8 @@ export default function Page({
     <div className="flex justify-center items-center min-h-screen ">
       {" "}
       {/* Centering the card on the page */}
-      <Card className="w-full max-w-3xl shadow-lg rounded-lg overflow-hidden bg-[#424769]">
-        <CardHeader className="bg-[#070F2B] p-4 text-white">
+      <Card className="w-full max-w-xl shadow-lg rounded-lg overflow-hidden bg-tertiaryalt">
+        <CardHeader className="bg-primary p-4 text-white">
           {" "}
           {/* Adding a header background color */}
           <div className="space-y-1.5">
@@ -63,10 +63,10 @@ export default function Page({
                 id="files"
                 name="files"
                 multiple
-                className="block w-full text-sm  file:border file:border-gray-300 file:px-4 file:py-2 file:rounded-lg file:text-sm file:font-semibold file:bg-[#7077A1] file: hover:file:bg-blue-600"
+                className="block w-full text-sm  file:border file:border-gray-400 file:px-4 file:py-2 file:rounded-lg file:text-sm file:font-semibold file:bg-tertiary file: hover:file:bg-blue-600"
               />
             </div>
-            <Button className="bg-[#070F2B] hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            <Button className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded">
               Upload files
             </Button>
           </form>

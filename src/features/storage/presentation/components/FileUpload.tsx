@@ -51,13 +51,13 @@ function FileUpload() {
             file:mr-4 file:py-2 file:px-4
             file:rounded-full file:border-0
             file:text-sm file:font-semibold
-            file:bg-[#9290C3] file:text-white
+            file:bg-tertiary file:text-white
             hover:file:bg-[#535C91]"
         />
         <button
           type="submit"
           disabled={loading}
-          className="mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#1B1A55] hover:bg-[#070F2B] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1B1A55]"
+          className="mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-[#070F2B] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
         >
           Upload
         </button>
