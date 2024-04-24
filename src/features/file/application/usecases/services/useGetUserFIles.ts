@@ -1,5 +1,5 @@
 import { useAuthContext } from "@/context/AuthContext";
-import { fileRepositoryImplementation } from "../../../infra/firebase-impl";
+import { fileRepositoryImplementation } from "../../../infra/file-repository-impl";
 import { useEffect, useState } from "react";
 import { FileFromStorage } from "../../repositories/file-repository";
 import { toast } from "sonner";

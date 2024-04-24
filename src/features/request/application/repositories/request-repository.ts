@@ -12,6 +12,14 @@ export default abstract class RequestRepository {
   }: {
     requestId: string;
   }): Promise<DocumentData | null>;
+
+  abstract uploadFileFromRequest({
+    requestData,
+    file,
+  }: {
+    requestData: RequestData;
+    file: File;
+  }): Promise<void>;
   abstract updateRequest(): Promise<void>;
   abstract deleteRequest(): Promise<void>;
 }

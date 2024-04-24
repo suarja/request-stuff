@@ -15,7 +15,22 @@ export default function useGetRequest() {
       requestRepository
         .getRequest({ requestId })
         .then((data) => {
-          setRequest(data as RequestData);
+          if (!data) {
+            setError("Request not found");
+            setLoading(false);
+            return;
+          }
+          const request = {
+            id: requestId,
+            userId: data.userId,
+            maxFileSize: data.maxFileSize,
+            dateLimit: data.dateLimit,
+            name: data.name,
+            description: data.description,
+            maxFiles: data.maxFiles,
+            path: data.path,
+          };
+          setRequest(request);
           setLoading(false);
         })
         .catch((error) => {

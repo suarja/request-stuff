@@ -4,15 +4,37 @@ import {
 } from "@/firebase/firestore/firestore";
 import RequestRepository, {
   CreateRequest,
+  RequestData,
 } from "../application/repositories/request-repository";
 import { DocumentData } from "firebase/firestore";
+import FileRepository from "@/features/file/application/repositories/file-repository";
+import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 
 export default class RequestRepositoryImpl extends RequestRepository {
+  async uploadFileFromRequest({
+    requestData,
+    file,
+  }: {
+    requestData: RequestData;
+    file: File;
+  }): Promise<void> {
+    const path = `users/${requestData.userId}/requests/${requestData.id}/files`;
+    await this.fileRepository.uploadFile(path, file);
+    return;
+  }
   private firestoreRepository: FirestoreFactory;
+  private fileRepository: FileRepository;
 
-  constructor({ firestoreFactory }: { firestoreFactory: FirestoreFactory }) {
+  constructor({
+    firestoreFactory,
+    fileRepository,
+  }: {
+    firestoreFactory: FirestoreFactory;
+    fileRepository: FileRepository;
+  }) {
     super();
     this.firestoreRepository = firestoreFactory;
+    this.fileRepository = fileRepository;
   }
 
   async createRequest({
@@ -45,4 +67,5 @@ export default class RequestRepositoryImpl extends RequestRepository {
 
 export const requestRepository = new RequestRepositoryImpl({
   firestoreFactory: firestoreFactory,
+  fileRepository: fileRepositoryImplementation,
 });

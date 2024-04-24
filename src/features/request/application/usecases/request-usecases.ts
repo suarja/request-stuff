@@ -1,5 +1,6 @@
 import RequestRepository, {
   CreateRequest,
+  RequestData,
 } from "../repositories/request-repository";
 
 export default class RequestUsecases {
@@ -19,5 +20,15 @@ export default class RequestUsecases {
 
   async getRequest({ requestId }: { requestId: string }) {
     return this.requestRepository.getRequest({ requestId });
+  }
+
+  async uploadFileFromRequest({
+    requestData,
+    file,
+  }: {
+    requestData: RequestData;
+    file: File;
+  }) {
+    await this.requestRepository.uploadFileFromRequest({ requestData, file });
   }
 }

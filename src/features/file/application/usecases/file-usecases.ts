@@ -1,5 +1,5 @@
 import { UploadResult } from "firebase/storage";
-import { fileRepositoryImplementation } from "../../infra/firebase-impl";
+import { fileRepositoryImplementation } from "../../infra/file-repository-impl";
 import FileRepository from "../repositories/file-repository";
 
 export default class FileUsecases {
