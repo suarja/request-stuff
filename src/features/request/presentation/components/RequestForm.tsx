@@ -37,9 +37,9 @@ export default function CreateRequestForm() {
   const searchParams = useSearchParams();
 
   async function onSubmit(values: CreateRequest) {
-    // Function to handle form submission
     setRequestCreationProps(values);
-    console.log("Submitted values:", values);
+
+    // Build the query string
     const params = new URLSearchParams();
     params.append("requestName", form.getValues("name"));
     params.append("requestDescription", form.getValues("description") || "");
@@ -51,13 +51,12 @@ export default function CreateRequestForm() {
     params.append("dateLimit", form.getValues("dateLimit")?.toString() || "");
 
     replace(`${pathName}?${params.toString()}`);
-    form.reset(); // Reset form after submission
+
+    form.reset();
   }
   useEffect(() => {
-    console.log({ searchParams });
     if (requestId) {
-      // Do something after request is created
-
+      // Getting search params from url and redirect to the upload page
       const url = `${
         window.location.origin
       }/upload/request?requestId=${requestId}&requestName=${searchParams.get(
