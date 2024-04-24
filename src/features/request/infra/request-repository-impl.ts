@@ -18,7 +18,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     requestData: RequestData;
     file: File;
   }): Promise<void> {
-    const path = `users/${requestData.userId}/requests/${requestData.id}/files`;
+    const path = `users/${requestData.userId}/requests/${requestData.id}/files/${file.name}`;
     await this.fileRepository.uploadFile(path, file);
     return;
   }

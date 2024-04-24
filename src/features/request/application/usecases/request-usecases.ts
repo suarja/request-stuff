@@ -1,3 +1,4 @@
+import { requestRepository } from "../../infra/request-repository-impl";
 import RequestRepository, {
   CreateRequest,
   RequestData,
@@ -23,12 +24,35 @@ export default class RequestUsecases {
   }
 
   async uploadFileFromRequest({
-    requestData,
+    requestId,
     file,
   }: {
-    requestData: RequestData;
+    requestId: string;
     file: File;
   }) {
-    await this.requestRepository.uploadFileFromRequest({ requestData, file });
+    const requestPayload = await this.requestRepository.getRequest({
+      requestId,
+    });
+    if (!requestPayload) {
+      throw new Error("Request not found");
+    }
+    const request = {
+      id: requestId,
+      userId: requestPayload.userId,
+      maxFileSize: requestPayload.maxFileSize,
+      dateLimit: requestPayload.dateLimit,
+      name: requestPayload.name,
+      description: requestPayload.description,
+      maxFiles: requestPayload.maxFiles,
+      path: requestPayload.path,
+    };
+    await this.requestRepository.uploadFileFromRequest({
+      requestData: request,
+      file,
+    });
   }
 }
+
+export const requestUsecases = new RequestUsecases({
+  requestRepository: requestRepository,
+});

@@ -4,6 +4,7 @@ import { requestRepository } from "@/features/request/infra/request-repository-i
 import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 import path from "path";
+import { requestUsecases } from "../request-usecases";
 
 export default function useCreateRequest() {
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ export default function useCreateRequest() {
       };
       setLoading(true);
       toast.loading("Creating request...");
-      requestRepository
+      requestUsecases
         .createRequest({
           props,
         })

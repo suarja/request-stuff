@@ -3,17 +3,52 @@
 import { Button } from "@/common/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/common/components/ui/card";
 import { Label } from "@radix-ui/react-label";
-import { PageProps } from "../../../../../.next/types/app/layout";
+
 import useGetRequest from "../../application/usecases/services/useGetRequest";
-import { use, useEffect } from "react";
+import { use, useEffect, useState } from "react";
+import useUploadFileFromRequest, {
+  UseUploadFileFromRequestProps,
+} from "../../application/usecases/services/useUploadFileFromRequest";
+import { PageProps } from "@/app/upload/[slug]/page";
 
 const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
-  const { loading, error, request, setRequestId } = useGetRequest();
+  const [fileSelected, setFileSelected] = useState<File | null>(null);
+  const { error, loading, succes, setUploadFileFromRequestProps } =
+    useUploadFileFromRequest();
+
   useEffect(() => {
-    if (request) {
-      console.log("Request", { request });
+    if (error) {
+      console.error(error);
+    } else if (succes) {
+      console.log("File uploaded successfully");
+    } else if (loading) {
+      console.log("Uploading file...");
     }
-  }, [request]);
+  }, [error, succes, loading]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    //! This is the part that needs to be fixed
+    const requestId = searchParams.requestId as string | null;
+    if (fileSelected && requestId) {
+      console.log("Uploading file:", fileSelected.name);
+      const data: UseUploadFileFromRequestProps = {
+        file: fileSelected,
+        requestId: requestId,
+      };
+
+      setUploadFileFromRequestProps(data);
+    }
+  };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files[0]) {
+      setFileSelected(files[0]);
+    } else {
+      setFileSelected(null);
+    }
+  };
   return (
     <Card className="w-full max-w-xl shadow-lg rounded-lg overflow-hidden bg-tertiaryalt">
       <CardHeader className="bg-primary p-4 text-white">
@@ -55,12 +90,13 @@ const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
             </dd>
           </dl>
         </div>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label className="text-sm" htmlFor="files">
               Select the files to upload
             </Label>
             <input
+              onChange={handleFileChange}
               type="file"
               id="files"
               name="files"
@@ -74,7 +110,7 @@ const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
         </form>
         <Button
           onClick={() => {
-            setRequestId(searchParams?.requestId);
+            // setRequestId(searchParams?.requestId);
           }}
           className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded"
         >
