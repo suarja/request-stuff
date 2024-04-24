@@ -1,3 +1,4 @@
+import { FileSenderData } from "@/features/file/application/repositories/file-repository";
 import { DocumentData } from "firebase/firestore";
 
 export default abstract class RequestRepository {
@@ -16,9 +17,11 @@ export default abstract class RequestRepository {
   abstract uploadFileFromRequest({
     requestData,
     file,
+    fileSenderData,
   }: {
     requestData: RequestData;
     file: File;
+    fileSenderData?: FileSenderData;
   }): Promise<void>;
   abstract updateRequest(): Promise<void>;
   abstract deleteRequest(): Promise<void>;

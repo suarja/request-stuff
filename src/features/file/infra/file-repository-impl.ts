@@ -2,9 +2,11 @@ import { BucktStorage } from "@/firebase/bucket/bucket";
 
 import FileRepository, {
   FileFromStorage,
+  FileSenderData,
 } from "../application/repositories/file-repository";
 import {
   FirebaseStorage,
+  UploadMetadata,
   UploadResult,
   getDownloadURL,
   listAll,
@@ -18,10 +20,20 @@ export default class FileRepositoryImplementation extends FileRepository {
     super();
     this.bucket = bucket;
   }
-  async uploadFile(path: string, value: any): Promise<UploadResult> {
+  async uploadFile({
+    path,
+    value,
+    customMetadata,
+  }: {
+    path: string;
+    value: File;
+    customMetadata?: FileSenderData;
+  }): Promise<UploadResult> {
     const storageRef = ref(this.bucket, path);
-    const result = await uploadBytes(storageRef, value);
-    console.log({ result });
+    const metadata: UploadMetadata = {
+      customMetadata,
+    };
+    const result = await uploadBytes(storageRef, value, metadata);
     return result;
   }
 

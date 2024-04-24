@@ -7,19 +7,27 @@ import RequestRepository, {
   RequestData,
 } from "../application/repositories/request-repository";
 import { DocumentData } from "firebase/firestore";
-import FileRepository from "@/features/file/application/repositories/file-repository";
+import FileRepository, {
+  FileSenderData,
+} from "@/features/file/application/repositories/file-repository";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 
 export default class RequestRepositoryImpl extends RequestRepository {
   async uploadFileFromRequest({
     requestData,
     file,
+    fileSenderData,
   }: {
     requestData: RequestData;
     file: File;
+    fileSenderData?: FileSenderData;
   }): Promise<void> {
     const path = `users/${requestData.userId}/requests/${requestData.id}/files/${file.name}`;
-    await this.fileRepository.uploadFile(path, file);
+    await this.fileRepository.uploadFile({
+      path,
+      value: file,
+      metadata: fileSenderData,
+    });
     return;
   }
   private firestoreRepository: FirestoreFactory;
