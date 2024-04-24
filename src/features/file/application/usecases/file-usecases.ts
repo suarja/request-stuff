@@ -8,6 +8,7 @@ export default class FileUsecases {
     this.fileRepository = fileRepository;
   }
 
+  //! TODO: Remove infra return type, update props and add business logic and validation
   async uploadFile(path: string, value: any): Promise<UploadResult> {
     return await this.fileRepository.uploadFile(path, value);
   }

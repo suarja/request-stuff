@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import useUploadFile from "../../application/usecases/services/useUploadFile";
 import { toast } from "sonner";
+import { useAuthContext } from "@/context/AuthContext";
 
 function FileUpload() {
-  const { setFile, loading, error, success } = useUploadFile();
+  const { setUploadFileProps, loading, error, success } = useUploadFile();
   const [fileSelected, setFileSelected] = useState<File | null>(null);
+  const user = useAuthContext();
 
   useEffect(() => {
     if (success || error) {
       setFileSelected(null);
-      setFile(null);
+      setUploadFileProps(null);
       setTimeout(() => {
         toast.dismiss();
       }, 3000);
@@ -31,8 +33,14 @@ function FileUpload() {
     if (fileSelected) {
       // Here you would handle the file upload process to your server or Firebase
       console.log("Uploading file:", fileSelected.name);
-      setFile(fileSelected);
-      // Add your upload logic here
+      if (!user) {
+        toast.error("User not found");
+        return;
+      }
+      setUploadFileProps({
+        file: fileSelected,
+        userId: user.uid,
+      });
     }
   };
 
