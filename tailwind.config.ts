@@ -34,7 +34,7 @@ const config = {
         },
         tertiary: {
           DEFAULT: "hsl(var(--tertiary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          foreground: "hsl(var(--secondary))",
         },
         tertiaryalt: {
           DEFAULT: "hsl(var(--tertiaryalt))",
