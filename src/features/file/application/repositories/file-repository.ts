@@ -1,6 +1,6 @@
-import {  UploadResult } from "firebase/storage";
+import { UploadResult } from "firebase/storage";
 
-export default abstract class StorageRepository {
+export default abstract class FileRepository {
   abstract uploadFile(path: string, value: any): Promise<UploadResult>;
   abstract getUserFiles({
     userId,

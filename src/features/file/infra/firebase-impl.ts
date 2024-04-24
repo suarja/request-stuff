@@ -1,8 +1,8 @@
 import { BucktStorage } from "@/firebase/bucket/bucket";
 
-import StorageRepository, {
+import FileRepository, {
   FileFromStorage,
-} from "../application/repositories/storage-repository";
+} from "../application/repositories/file-repository";
 import {
   FirebaseStorage,
   UploadResult,
@@ -11,8 +11,7 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
-import { get } from "http";
-export default class StorageRepositoryImplementation extends StorageRepository {
+export default class FileRepositoryImplementation extends FileRepository {
   private bucket: FirebaseStorage;
 
   constructor({ bucket }: { bucket: FirebaseStorage }) {
@@ -52,6 +51,6 @@ export default class StorageRepositoryImplementation extends StorageRepository {
   }
 }
 
-export const storageRepository = new StorageRepositoryImplementation({
+export const fileRepositoryImplementation = new FileRepositoryImplementation({
   bucket: BucktStorage,
 });

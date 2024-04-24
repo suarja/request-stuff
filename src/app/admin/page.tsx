@@ -1,8 +1,8 @@
 "use client";
 import { Nav } from "@/common/components/Nav";
 import { useAuthMiddleware } from "@/context/useAuthMiddleware";
-import FileUpload from "../../features/storage/presentation/components/FileUpload";
-import FilesTable from "../../features/storage/presentation/components/FilesTable";
+import FileUpload from "../../features/file/presentation/components/FileUpload";
+import FilesTable from "../../features/file/presentation/components/FilesTable";
 import CustomDialog from "@/common/components/CustomDialog";
 import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
 

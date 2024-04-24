@@ -1,7 +1,7 @@
 import { useAuthContext } from "@/context/AuthContext";
-import { storageRepository } from "../../../infra/firebase-impl";
+import { fileRepositoryImplementation } from "../../../infra/firebase-impl";
 import { useEffect, useState } from "react";
-import { FileFromStorage } from "../../repositories/storage-repository";
+import { FileFromStorage } from "../../repositories/file-repository";
 import { toast } from "sonner";
 import { filesStore } from "@/context/files-context";
 
@@ -21,7 +21,7 @@ export default function useGetUserFiles() {
   useEffect(() => {
     if (user) {
       setLoading(true);
-      storageRepository
+      fileRepositoryImplementation
         .getUserFiles({
           userId: user.uid,
         })

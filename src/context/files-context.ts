@@ -1,4 +1,4 @@
-import { FileFromStorage } from "@/features/storage/application/repositories/storage-repository";
+import { FileFromStorage } from "@/features/file/application/repositories/file-repository";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 interface FileStore {

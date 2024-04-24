@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { storageUsecases } from "../storage-usecases";
+import { fileUsecases } from "../file-usecases";
 import { getAuth } from "firebase/auth";
 import { UploadResult } from "firebase/storage";
 import { toast } from "sonner";
@@ -24,7 +24,7 @@ export default function useUploadFile() {
       }
 
       const path = `users/${userId}/files/${file.name}`;
-      storageUsecases
+      fileUsecases
         .uploadFile(path, file)
         .then((result: UploadResult) => {
           console.log({ result });
