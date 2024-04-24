@@ -5,9 +5,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/common/components/ui/dialog";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/common/components/ui/button";
 import AddIcon from "../icons/AddIcon";
 
 export default function CustomDialog({

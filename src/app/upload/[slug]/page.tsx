@@ -1,6 +1,6 @@
-import { CardHeader, CardContent, Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { CardHeader, CardContent, Card } from "@/common/components/ui/card";
+import { Label } from "@/common/components/ui/label";
+import { Button } from "@/common/components/ui/button";
 
 export default function Page({
   searchParams,

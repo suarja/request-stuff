@@ -1,12 +1,12 @@
 import LoadingPage from "@/common/components/LoadingPage";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/common/components/ui/button";
 import {
   Table,
   TableRow,
   TableCell,
   TableBody,
   TableHeader,
-} from "@/components/ui/table";
+} from "@/common/components/ui/table";
 import useGetUserFiles from "../../application/usecases/services/useGetUserFIles";
 import Link from "next/link";
 

@@ -1,7 +1,7 @@
 import { AuthContextProvider } from "@/context/AuthContext";
 import "./globals.css";
 import { ThemeProvider } from "@/common/style/ThemeProvider";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/common/components/ui/sonner";
 
 export const metadata = {
   title: "RequestStuff",

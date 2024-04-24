@@ -1,6 +1,6 @@
 import { ModeToggle } from "./ModeToggle";
 import NavbarLogo from "./NavBarLogo";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/common/components/ui/button";
 import signOutUser from "@/firebase/auth/sign-out";
 
 export function Nav() {
