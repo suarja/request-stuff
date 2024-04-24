@@ -1,11 +1,8 @@
 "use client";
-
 import { Button } from "@/common/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/common/components/ui/card";
 import { Label } from "@radix-ui/react-label";
-
-import useGetRequest from "../../application/usecases/services/useGetRequest";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useUploadFileFromRequest, {
   UseUploadFileFromRequestProps,
 } from "../../application/usecases/services/useUploadFileFromRequest";

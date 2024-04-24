@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { CreateRequest } from "../../repositories/request-repository";
-import { requestRepository } from "@/features/request/infra/request-repository-impl";
 import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 import path from "path";

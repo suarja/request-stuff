@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { RequestData } from "../../repositories/request-repository";
-import { requestRepository } from "@/features/request/infra/request-repository-impl";
 import { requestUsecases } from "../request-usecases";
 
 export default function useGetRequest() {
