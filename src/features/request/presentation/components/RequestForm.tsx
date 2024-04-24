@@ -17,11 +17,13 @@ import { RequestSchema } from "../../domain/entities/request-schema";
 import { CreateRequest } from "../../application/repositories/request-repository";
 import useCreateRequest from "../../application/usecases/services/useCreateRequest";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function CreateRequestForm() {
   const { loading, requestId, setRequestCreationProps } = useCreateRequest();
   const router = useRouter();
+  const replace = useRouter().replace;
+  const pathName = usePathname();
   const form = useForm<CreateRequest>({
     resolver: zodResolver(RequestSchema),
     defaultValues: {
@@ -32,33 +34,44 @@ export default function CreateRequestForm() {
       dateLimit: 0,
     },
   });
+  const searchParams = useSearchParams();
 
   async function onSubmit(values: CreateRequest) {
     // Function to handle form submission
-    // setRequestCreationProps(values);
+    setRequestCreationProps(values);
     console.log("Submitted values:", values);
+    const params = new URLSearchParams();
+    params.append("requestName", form.getValues("name"));
+    params.append("requestDescription", form.getValues("description") || "");
+    params.append(
+      "maxFileSize",
+      form.getValues("maxFileSize")?.toString() || "10"
+    );
+    params.append("maxFiles", form.getValues("maxFiles")?.toString() || "10");
+    params.append("dateLimit", form.getValues("dateLimit")?.toString() || "");
 
+    replace(`${pathName}?${params.toString()}`);
     form.reset(); // Reset form after submission
   }
-
   useEffect(() => {
+    console.log({ searchParams });
     if (requestId) {
       // Do something after request is created
-      const params = new URLSearchParams();
-      params.append("requestId", requestId);
-      params.append("requestName", form.getValues("name"));
-      params.append("requestDescription", form.getValues("description") || "");
-      params.append(
-        "maxFileSize",
-        form.getValues("maxFileSize")?.toString() || "10"
-      );
-      params.append("maxFiles", form.getValues("maxFiles")?.toString() || "10");
-      params.append("dateLimit", form.getValues("dateLimit")?.toString() || "");
 
-      const url = `${window.location.origin}/upload/${params.toString()}`;
+      const url = `${
+        window.location.origin
+      }/upload/request?requestId=${requestId}&requestName=${searchParams.get(
+        "requestName"
+      )}&requestDescription=${searchParams.get(
+        "requestDescription"
+      )}&maxFileSize=${searchParams.get(
+        "maxFileSize"
+      )}&maxFiles=${searchParams.get("maxFiles")}&dateLimit=${searchParams.get(
+        "dateLimit"
+      )}
+            `;
       console.log("Request URL:", url);
 
-      
       router.push(url);
     }
   }, [requestId]);

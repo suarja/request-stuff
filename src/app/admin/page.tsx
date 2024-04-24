@@ -4,7 +4,6 @@ import { useAuthMiddleware } from "@/context/useAuthMiddleware";
 import FileUpload from "../../features/storage/presentation/components/FileUpload";
 import FilesTable from "../../features/storage/presentation/components/FilesTable";
 import CustomDialog from "@/common/components/CustomDialog";
-import AddIcon from "@/common/icons/AddIcon";
 import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
 
 function Page(): JSX.Element {
