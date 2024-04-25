@@ -34,7 +34,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
   return NextResponse.json({}, { status: 200 });
 }
 
-
 export async function GET(request: NextRequest) {
   const session = cookies().get("session")?.value || "";
 
@@ -46,9 +45,12 @@ export async function GET(request: NextRequest) {
   //Use Firebase Admin to validate the session cookie
   const decodedClaims = await auth().verifySessionCookie(session, true);
 
+  // Get user id
+  const userId = decodedClaims?.uid;
+
   if (!decodedClaims) {
     return NextResponse.json({ isLogged: false }, { status: 401 });
   }
 
-  return NextResponse.json({ isLogged: true }, { status: 200 });
+  return NextResponse.json({ isLogged: true, userId }, { status: 200 });
 }

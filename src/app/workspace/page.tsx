@@ -1,9 +1,18 @@
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 import FolderTree from "@/features/file/presentation/components/Foldertree";
-
+import firebase_app from "@/lib/firebase/config";
+import { auth } from "firebase-admin";
 export default async function Page() {
+  const response = await fetch("http://localhost:3000/api/login", {
+    method: "GET",
+  });
+  if (!response.ok) {
+    return <div>Not logged in</div>;
+  }
+  const data = await response.json();
+  const userId = data.userId;
   const pathContent = await fileRepositoryImplementation.getPathContent({
-    path: "users/sU69jGBlKNU66jc9ZKPKmnnoJkh1/files",
+    path: `users/${userId}/files`,
   });
   console.log({ pathContent });
   console.log({ prefixes: pathContent.prefixes, items: pathContent.items });
