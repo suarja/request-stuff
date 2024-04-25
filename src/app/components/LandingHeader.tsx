@@ -1,4 +1,3 @@
-import { Button } from "@/common/components/ui/button";
 import PaperclipIcon from "@/common/icons/PaperClipIcon";
 import Link from "next/link";
 
@@ -20,7 +19,7 @@ export default function LandingHeader() {
           Contact
         </Link>
       </nav>
-      <Button variant="default">Get Started</Button>
+      <Link href={"/admin"}>Get Started</Link>
     </header>
   );
 }

@@ -6,7 +6,6 @@ import FileRepository, {
 } from "../application/repositories/file-repository";
 import {
   FirebaseStorage,
-  UploadMetadata,
   UploadResult,
   getDownloadURL,
   listAll,
@@ -42,13 +41,11 @@ export default class FileRepositoryImplementation extends FileRepository {
   }): Promise<FileFromStorage[]> {
     const path = `users/${userId}/files`;
     const files = await listAll(ref(this.bucket, path));
-    console.log({ prefixes: files.prefixes, items: files.items });
     const filesFromStorage: FileFromStorage[] = [];
     for (const file of files.items) {
       const url = await getDownloadURL(file);
       filesFromStorage.push({ name: file.name, url, key: file.fullPath });
     }
-    console.log({ filesFromStorage });
     return filesFromStorage;
   }
 
