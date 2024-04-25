@@ -7,7 +7,7 @@ import {
   ReactNode,
 } from "react";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-import firebase_app from "@/firebase/config";
+import firebase_app from "@/lib/firebase/config";
 import LoadingPage from "@/common/components/LoadingPage";
 
 // Initialize Firebase auth instance
