@@ -6,6 +6,7 @@ import FileRepository, {
 } from "../application/repositories/file-repository";
 import {
   FirebaseStorage,
+  ListResult,
   UploadResult,
   getDownloadURL,
   listAll,
@@ -47,6 +48,13 @@ export default class FileRepositoryImplementation extends FileRepository {
       filesFromStorage.push({ name: file.name, url, key: file.fullPath });
     }
     return filesFromStorage;
+  }
+
+  async getPathContent({ path }: { path: string }): Promise<ListResult> {
+    const storageRef = ref(this.bucket, path);
+    const pathContentInfra = await listAll(storageRef);
+
+    return pathContentInfra;
   }
 
   async remove(key: string): Promise<void> {

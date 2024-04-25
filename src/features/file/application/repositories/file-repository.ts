@@ -1,4 +1,4 @@
-import { UploadResult } from "firebase/storage";
+import { ListResult, UploadResult } from "firebase/storage";
 
 export default abstract class FileRepository {
   abstract uploadFile({
@@ -15,6 +15,9 @@ export default abstract class FileRepository {
   }: {
     userId: string;
   }): Promise<FileFromStorage[]>;
+
+  abstract getPathContent({ path }: { path: string }): Promise<ListResult>;
+
   abstract remove(key: string): Promise<void>;
   abstract clear(): Promise<void>;
 }
