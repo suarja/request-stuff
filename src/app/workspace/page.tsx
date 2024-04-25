@@ -1,6 +1,13 @@
-import FileTree from "@/features/file/presentation/views/WorkSpace";
-import WorkSpace2 from "@/features/file/presentation/views/WorkSpace2";
+"use client";
+import useGetUserFiles from "@/features/file/application/usecases/services/useGetUserFIles";
+import FolderTree from "@/features/file/presentation/components/Foldertree";
 
-export default async function Page() {
-  return <WorkSpace2 />;
+export default function Page() {
+  const { files, loading } = useGetUserFiles();
+  if (loading) return <div>Loading...</div>;
+  return (
+    <>
+      <FolderTree folders={[{ name: "Root", files }]} title="Files" />
+    </>
+  );
 }
