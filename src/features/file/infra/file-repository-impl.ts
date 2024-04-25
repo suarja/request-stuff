@@ -30,10 +30,8 @@ export default class FileRepositoryImplementation extends FileRepository {
     customMetadata?: FileSenderData;
   }): Promise<UploadResult> {
     const storageRef = ref(this.bucket, path);
-    const metadata: UploadMetadata = {
-      customMetadata,
-    };
-    const result = await uploadBytes(storageRef, value, metadata);
+
+    const result = await uploadBytes(storageRef, value, { customMetadata });
     return result;
   }
 

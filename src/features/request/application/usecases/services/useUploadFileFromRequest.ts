@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { requestUsecases } from "../request-usecases";
+import { FileSenderData } from "@/features/file/application/repositories/file-repository";
 
 export type UseUploadFileFromRequestProps = {
   file: File;
   requestId: string;
+  senderData: FileSenderData;
 };
 
 export default function useUploadFileFromRequest() {
@@ -20,6 +22,7 @@ export default function useUploadFileFromRequest() {
         .uploadFileFromRequest({
           requestId: uploadFileFromRequestProps.requestId,
           file: uploadFileFromRequestProps.file,
+          fileSenderData: uploadFileFromRequestProps.senderData,
         })
         .then(() => {
           setSuccess(true);

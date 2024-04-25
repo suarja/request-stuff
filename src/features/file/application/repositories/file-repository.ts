@@ -1,14 +1,14 @@
-import { RequestData } from "@/features/request/application/repositories/request-repository";
 import { UploadResult } from "firebase/storage";
 
 export default abstract class FileRepository {
   abstract uploadFile({
     path,
     value,
+    customMetadata,
   }: {
     path: string;
     value: File;
-    metadata?: FileSenderData;
+    customMetadata?: FileSenderData;
   }): Promise<UploadResult>;
   abstract getUserFiles({
     userId,
@@ -28,7 +28,7 @@ export type FileFromStorage = {
 export type FileSenderData = {
   senderName?: string;
   senderEmail?: string;
-  requestId?: string;
-  requestName?: string;
+  requestId: string;
+  requestName: string;
   requestDescription?: string;
 };

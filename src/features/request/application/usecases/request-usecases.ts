@@ -30,7 +30,7 @@ export default class RequestUsecases {
   }: {
     requestId: string;
     file: File;
-    fileSenderData?: FileSenderData;
+    fileSenderData: FileSenderData;
   }) {
     const requestPayload = await this.requestRepository.getRequest({
       requestId,

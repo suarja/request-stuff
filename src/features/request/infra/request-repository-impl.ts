@@ -13,23 +13,6 @@ import FileRepository, {
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 
 export default class RequestRepositoryImpl extends RequestRepository {
-  async uploadFileFromRequest({
-    requestData,
-    file,
-    fileSenderData,
-  }: {
-    requestData: RequestData;
-    file: File;
-    fileSenderData?: FileSenderData;
-  }): Promise<void> {
-    const path = `users/${requestData.userId}/requests/${requestData.id}/files/${file.name}`;
-    await this.fileRepository.uploadFile({
-      path,
-      value: file,
-      metadata: fileSenderData,
-    });
-    return;
-  }
   private firestoreRepository: FirestoreFactory;
   private fileRepository: FileRepository;
 
@@ -44,7 +27,22 @@ export default class RequestRepositoryImpl extends RequestRepository {
     this.firestoreRepository = firestoreFactory;
     this.fileRepository = fileRepository;
   }
-
+  async uploadFileFromRequest({
+    requestData,
+    file,
+    fileSenderData,
+  }: {
+    requestData: RequestData;
+    file: File;
+    fileSenderData: FileSenderData;
+  }): Promise<void> {
+    const path = `users/${requestData.userId}/requests/${requestData.id}/files/${file.name}`;
+    await this.fileRepository.uploadFile({
+      path,
+      value: file,
+      customMetadata: fileSenderData,
+    });
+  }
   async createRequest({
     props,
   }: {
