@@ -25,13 +25,31 @@ export default function Component() {
       return;
     }
 
+    if (!result) {
+      // Display and log any sign-in errors
+      console.log("No result returned from signIn");
+      return;
+    }
+
     // Sign in successful
     console.log(result);
 
-    // Redirect to the admin page
-    // Typically you would want to redirect them to a protected page an add a check to see if they are admin or
-    // create a new page for admin
-    router.push("/admin");
+    // Typically you would send the token_id to your backend and verify the token_id
+    // and then create a session for the user
+    const response = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${await result.user.getIdToken()}`,
+      },
+    });
+
+    if (response.ok) {
+      console.log("User is fully authenticated");
+      // Redirect to the admin page
+      // Typically you would want to redirect them to a protected page an add a check to see if they are admin or
+      // create a new page for admin
+      router.push("/admin");
+    }
   };
   return (
     <div className="mx-auto max-w-md space-y-6 flex flex-col justify-center h-full">
