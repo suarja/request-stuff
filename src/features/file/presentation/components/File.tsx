@@ -1,8 +1,8 @@
 import { FileIcon } from "@radix-ui/react-icons";
-import { Folder } from "./Folder";
+import { RootFolder } from "./Folder";
 
 export type FileProps = {
-  file: Folder["files"][number];
+  file: RootFolder["files"][number];
 };
 
 export function File({ file }: FileProps) {

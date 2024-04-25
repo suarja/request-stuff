@@ -13,6 +13,11 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
+import {
+  RootFolder,
+  SubFolder,
+  TreeFile,
+} from "../presentation/components/Folder";
 export default class FileRepositoryImplementation extends FileRepository {
   private bucket: FirebaseStorage;
 
@@ -50,11 +55,39 @@ export default class FileRepositoryImplementation extends FileRepository {
     return filesFromStorage;
   }
 
-  async getPathContent({ path }: { path: string }): Promise<ListResult> {
+  async getPathContent({
+    path,
+    root,
+  }: {
+    path: string;
+    root: string;
+  }): Promise<RootFolder> {
     const storageRef = ref(this.bucket, path);
     const pathContentInfra = await listAll(storageRef);
 
-    return pathContentInfra;
+    const folders: SubFolder[] = pathContentInfra.prefixes.map((folder) => {
+      return {
+        name: folder.name,
+        fullPath: folder.fullPath,
+      };
+    });
+    const files: TreeFile[] = pathContentInfra.items.map((file) => {
+      return {
+        name: file.name,
+        fullPath: file.fullPath,
+        parent: {
+          name: file.parent?.name || "",
+          fullPath: file.parent?.fullPath || "",
+        },
+      };
+    });
+
+    const rootFolder: RootFolder = {
+      name: root,
+      files,
+      folders,
+    };
+    return rootFolder;
   }
 
   async remove(key: string): Promise<void> {

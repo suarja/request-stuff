@@ -1,28 +1,46 @@
+"use client";
+
 import FolderIcon from "@/common/icons/FolderIcon";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { FileFromStorage } from "../../application/repositories/file-repository";
 import { File } from "./File";
 import { useFolderToggle } from "../folder-management";
-export interface Folder {
+import { useState } from "react";
+
+export type TreeFile = {
   name: string;
-  files: FileFromStorage[];
-}
+  fullPath: string;
+  url?: string;
+  size?: number;
+  parent: {
+    name: string;
+    fullPath: string;
+  };
+};
 
-type File = FileFromStorage;
+export type SubFolder = {
+  name: string;
+  fullPath: string;
+};
 
-type FolderProps = {
-  props: Folder;
+export type RootFolder = {
+  name: string;
+  files: TreeFile[];
+  folders: SubFolder[];
+};
+
+export type FolderProps = {
+  props: RootFolder;
 };
 
 export function Folder({ props }: FolderProps) {
-  const { files, name } = props;
-  const { openFolders, toggleFolder } = useFolderToggle();
+  const { files, name, folders } = props;
+  const [open, setOpen] = useState(false);
 
   return (
     <>
       <div
         className="group flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 cursor-pointer"
-        onClick={() => toggleFolder("Documents")}
+        onClick={() => setOpen((prev) => !prev)}
       >
         <div className="flex items-center space-x-2">
           <FolderIcon className="w-5 h-5 text-yellow-500 group-hover:text-yellow-600 dark:text-yellow-400 dark:group-hover:text-yellow-500" />
@@ -35,7 +53,7 @@ export function Folder({ props }: FolderProps) {
             {files.length} items
           </span>
           <button className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 focus:outline-none">
-            {openFolders[name] ? (
+            {open ? (
               <ChevronDownIcon className="w-5 h-5" />
             ) : (
               <ChevronDownIcon className="w-5 h-5" />
@@ -44,8 +62,16 @@ export function Folder({ props }: FolderProps) {
           </button>
         </div>
       </div>
-      {openFolders[name] && (
+      {open && (
         <>
+          {folders.map((folder, index) => {
+            return (
+              <Folder
+                key={index}
+                props={{ name: folder.name, files: [], folders: [] }}
+              />
+            );
+          })}
           {files.map((file, index) => {
             return <File key={index} file={file} />;
           })}

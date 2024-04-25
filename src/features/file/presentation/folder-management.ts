@@ -1,11 +1,11 @@
-import { Folder } from "@/features/file/presentation/components/Folder";
+import { RootFolder } from "@/features/file/presentation/components/Folder";
 import { useState } from "react";
 
 interface OpenFoldersState {
   [folderName: string]: boolean;
 }
 
-const foldersExample: Folder[] = [{ name: "Documents", files: [] }];
+const foldersExample: RootFolder[] = [{ name: "Documents", files: [] }];
 
 export function useFolderToggle() {
   // State to manage open folders

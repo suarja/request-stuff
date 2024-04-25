@@ -1,11 +1,11 @@
 import { PlusIcon } from "@radix-ui/react-icons";
-import { Folder } from "./Folder";
+import { Folder, RootFolder } from "./Folder";
 
-type TreeProps = {
+type FolderTreeProps = {
   title: string;
-  folders: Folder[];
+  root: RootFolder;
 };
-export default function FolderTree({ folders, title }: TreeProps) {
+export default function FolderTree({ root, title }: FolderTreeProps) {
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white rounded-lg shadow-md dark:bg-gray-950 overflow-hidden">
@@ -17,10 +17,13 @@ export default function FolderTree({ folders, title }: TreeProps) {
           </button>
         </div>
         <div className="p-4 space-y-2">
-          {folders.map((folder, index) => {
-            return <Folder key={index} props={folder} />;
-          })}
-          <Folder props={{ name: "Documents", files: [] }} />
+          <Folder
+            props={{
+              name: root.name,
+              files: root.files,
+              folders: root.folders,
+            }}
+          />
         </div>
       </div>
     </div>
