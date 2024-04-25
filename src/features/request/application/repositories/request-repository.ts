@@ -30,6 +30,7 @@ export default abstract class RequestRepository {
 }
 
 export interface Request {
+  id: string;
   userId: string;
   maxFileSize?: number;
   dateLimit?: number;
@@ -37,6 +38,7 @@ export interface Request {
   description?: string;
   maxFiles?: number;
   path: string;
+  url: string;
 }
 
 export interface RequestWithId extends Request {

@@ -80,7 +80,7 @@ export class FirestoreFactory {
     if (id) {
       const docRef = doc(this.db, collection, id);
       await setDoc(docRef, data);
-      return;
+      return id;
     }
     const docRef = await addDoc(Collection(this.db, collection), data);
     return docRef.id;

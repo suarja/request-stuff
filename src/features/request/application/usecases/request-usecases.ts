@@ -40,18 +40,9 @@ export default class RequestUsecases {
     if (!requestPayload) {
       throw new Error("Request not found");
     }
-    const request = {
-      id: requestId,
-      userId: requestPayload.userId,
-      maxFileSize: requestPayload.maxFileSize,
-      dateLimit: requestPayload.dateLimit,
-      name: requestPayload.name,
-      description: requestPayload.description,
-      maxFiles: requestPayload.maxFiles,
-      path: requestPayload.path,
-    };
+    
     await this.requestRepository.uploadFileFromRequest({
-      requestData: request,
+      requestData: requestPayload,
       file,
       fileSenderData,
     });

@@ -49,7 +49,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     props: Request;
   }): Promise<string | undefined> {
     // const path = `users/${props.userId}/requests`;
-    const id = await this.firestoreRepository.addDocument(props.path, props);
+    const id = await this.firestoreRepository.addDocument(props.path, props, props.id);
     return id;
   }
   async getRequest({

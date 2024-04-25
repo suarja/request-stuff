@@ -17,6 +17,8 @@ export default class RequestDto implements DTO<Request, DocumentData> {
       description: data.description,
       maxFiles: data.maxFiles,
       path: data.path,
+      url: data.url,
+      id: data.id,
     };
   }
 }

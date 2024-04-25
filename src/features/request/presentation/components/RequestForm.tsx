@@ -12,18 +12,25 @@ import {
 import { Input } from "@/common/components/ui/input";
 import { Textarea } from "@/common/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { RequestSchema } from "../../domain/entities/request-schema";
 import { Request } from "../../application/repositories/request-repository";
 import useCreateRequest from "../../application/usecases/services/useCreateRequest";
 import { useEffect } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  ReadonlyURLSearchParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 export default function CreateRequestForm() {
   const { loading, requestId, setRequestCreationProps } = useCreateRequest();
   const router = useRouter();
   const replace = useRouter().replace;
   const pathName = usePathname();
+  const urlParams = useSearchParams();
+
   const form = useForm<Request>({
     resolver: zodResolver(RequestSchema),
     defaultValues: {
@@ -34,13 +41,20 @@ export default function CreateRequestForm() {
       dateLimit: 0,
     },
   });
-  const searchParams = useSearchParams();
 
-  async function onSubmit(values: Request) {
-    setRequestCreationProps(values);
-
+  function urlCreator({ params }: { params: ReadonlyURLSearchParams }) {
+    return `${window.location.origin}/upload/request?${params.toString()}`;
+  }
+  function updateStateUrl({
+    form,
+    id,
+  }: {
+    id: string;
+    form: UseFormReturn<Request, any, undefined>;
+  }) {
     // Build the query string
     const params = new URLSearchParams();
+    params.append("requestId", id);
     params.append("requestName", form.getValues("name"));
     params.append("requestDescription", form.getValues("description") || "");
     params.append(
@@ -51,26 +65,29 @@ export default function CreateRequestForm() {
     params.append("dateLimit", form.getValues("dateLimit")?.toString() || "");
 
     replace(`${pathName}?${params.toString()}`);
+  }
 
+  async function onSubmit(values: Request) {
+    const id = crypto.randomUUID();
+
+    updateStateUrl({ form, id });
+
+    const url = urlCreator({ params: urlParams });
+
+    const request = {
+      ...values,
+      id,
+      url,
+    };
+
+    setRequestCreationProps(request);
+    
     form.reset();
   }
+
   useEffect(() => {
     if (requestId) {
-      // Getting search params from url and redirect to the upload page
-      const url = `${
-        window.location.origin
-      }/upload/request?requestId=${requestId}&requestName=${searchParams.get(
-        "requestName"
-      )}&requestDescription=${searchParams.get(
-        "requestDescription"
-      )}&maxFileSize=${searchParams.get(
-        "maxFileSize"
-      )}&maxFiles=${searchParams.get("maxFiles")}&dateLimit=${searchParams.get(
-        "dateLimit"
-      )}
-            `;
-      console.log("Request URL:", url);
-
+      const url = urlCreator({ params: urlParams });
       router.push(url);
     }
   }, [requestId]);
