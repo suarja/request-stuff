@@ -7,9 +7,12 @@ import {
   getDocs,
   getFirestore,
   updateDoc,
-  collection as Collection,
+  collection,
   setDoc,
   Firestore,
+  collection as Collection,
+  query,
+  where,
 } from "firebase/firestore";
 export const FirestoreDB = getFirestore(firebase_app);
 
@@ -18,6 +21,35 @@ export class FirestoreFactory {
 
   constructor({ db }: { db: Firestore }) {
     this.db = db;
+  }
+
+  // Make a query to the database
+  async queryWhere({
+    ref,
+    a,
+    b,
+    operand,
+  }: {
+    ref: string;
+    a: string;
+    b: string | boolean | number;
+    operand:
+      | "<"
+      | "<="
+      | "=="
+      | ">="
+      | ">"
+      | "!="
+      | "array-contains"
+      | "in"
+      | "array-contains-any"
+      | "not-in";
+  }) {
+    const queryRef = collection(this.db, ref);
+    const q = query(queryRef, where(a, operand, b));
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map((doc) => doc.data());
+    return data;
   }
 
   // A method to get a document from a collection
