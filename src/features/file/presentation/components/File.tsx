@@ -13,7 +13,7 @@ export function File({ file }: FileProps) {
         <div className="flex items-center space-x-2">
           <FileIcon className="w-5 h-5 text-blue-500 group-hover:text-blue-600 dark:text-blue-400 dark:group-hover:text-blue-500" />
           <span className="font-medium text-gray-900 dark:text-gray-50">
-            {file.name}
+            {file.name.slice(0, 20)}
           </span>
         </div>
         <div className="flex items-center space-x-2">

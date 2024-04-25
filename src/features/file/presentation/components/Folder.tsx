@@ -5,6 +5,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { File } from "./File";
 import { useFolderToggle } from "../folder-management";
 import { useState } from "react";
+import SubFolder from "./SubFolder";
 
 export type TreeFile = {
   name: string;
@@ -66,9 +67,10 @@ export function Folder({ props }: FolderProps) {
         <>
           {folders.map((folder, index) => {
             return (
-              <Folder
+              <SubFolder
                 key={index}
-                props={{ name: folder.name, files: [], folders: [] }}
+                name={folder.name}
+                fullPath={folder.fullPath}
               />
             );
           })}
