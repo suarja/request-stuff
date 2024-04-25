@@ -3,7 +3,6 @@
 import FolderIcon from "@/common/icons/FolderIcon";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { File } from "./File";
-import { useFolderToggle } from "../folder-management";
 import { useState } from "react";
 import SubFolder from "./SubFolder";
 
