@@ -14,7 +14,7 @@ import { Textarea } from "@/common/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { RequestSchema } from "../../domain/entities/request-schema";
-import { CreateRequest } from "../../application/repositories/request-repository";
+import { Request } from "../../application/repositories/request-repository";
 import useCreateRequest from "../../application/usecases/services/useCreateRequest";
 import { useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -24,7 +24,7 @@ export default function CreateRequestForm() {
   const router = useRouter();
   const replace = useRouter().replace;
   const pathName = usePathname();
-  const form = useForm<CreateRequest>({
+  const form = useForm<Request>({
     resolver: zodResolver(RequestSchema),
     defaultValues: {
       name: "",
@@ -36,7 +36,7 @@ export default function CreateRequestForm() {
   });
   const searchParams = useSearchParams();
 
-  async function onSubmit(values: CreateRequest) {
+  async function onSubmit(values: Request) {
     setRequestCreationProps(values);
 
     // Build the query string

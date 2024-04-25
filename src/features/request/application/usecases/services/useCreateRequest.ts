@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CreateRequest } from "../../repositories/request-repository";
+import { Request } from "../../repositories/request-repository";
 import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 import path from "path";
@@ -8,7 +8,7 @@ import { requestUsecases } from "../request-usecases";
 export default function useCreateRequest() {
   const [loading, setLoading] = useState(false);
   const [requestCreationProps, setRequestCreationProps] =
-    useState<CreateRequest | null>(null);
+    useState<Request | null>(null);
   const [requestId, setRequestId] = useState<string | null>(null);
   const user = useAuthContext();
   useEffect(() => {

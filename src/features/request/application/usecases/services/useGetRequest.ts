@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { RequestData } from "../../repositories/request-repository";
+import { RequestWithId } from "../../repositories/request-repository";
 import { requestUsecases } from "../request-usecases";
 
 export default function useGetRequest() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [requestId, setRequestId] = useState<string | null>(null);
-  const [request, setRequest] = useState<RequestData | null>(null);
+  const [request, setRequest] = useState<RequestWithId | null>(null);
 
   useEffect(() => {
     if (requestId) {
@@ -20,15 +20,9 @@ export default function useGetRequest() {
             setLoading(false);
             return;
           }
-          const request = {
+          const request: RequestWithId = {
+            ...data,
             id: requestId,
-            userId: data.userId,
-            maxFileSize: data.maxFileSize,
-            dateLimit: data.dateLimit,
-            name: data.name,
-            description: data.description,
-            maxFiles: data.maxFiles,
-            path: data.path,
           };
           setRequest(request);
           setLoading(false);

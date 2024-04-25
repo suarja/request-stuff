@@ -1,8 +1,6 @@
 import { FileSenderData } from "@/features/file/application/repositories/file-repository";
 import { requestRepository } from "../../infra/request-repository-impl";
-import RequestRepository, {
-  CreateRequest,
-} from "../repositories/request-repository";
+import RequestRepository, { Request } from "../repositories/request-repository";
 
 export default class RequestUsecases {
   private requestRepository: RequestRepository;
@@ -14,7 +12,7 @@ export default class RequestUsecases {
   async createRequest({
     props,
   }: {
-    props: CreateRequest;
+    props: Request;
   }): Promise<string | undefined> {
     return await this.requestRepository.createRequest({ props });
   }

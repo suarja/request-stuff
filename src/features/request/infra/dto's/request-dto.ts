@@ -1,14 +1,14 @@
 import { DocumentData } from "firebase/firestore";
 import {
-  CreateRequest,
-  RequestData,
+  Request,
+  RequestWithId,
 } from "../../application/repositories/request-repository";
 
-export default class RequestDto implements DTO<CreateRequest, DocumentData> {
-  fromDomain({ data }: { data: RequestData }): void {
+export default class RequestDto implements DTO<Request, DocumentData> {
+  fromDomain({ data }: { data: RequestWithId }): void {
     throw new Error("Method not implemented.");
   }
-  toDomain({ data }: { data: DocumentData }): CreateRequest {
+  toDomain({ data }: { data: DocumentData }): Request {
     return {
       userId: data.userId,
       maxFileSize: data.maxFileSize,

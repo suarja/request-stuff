@@ -5,31 +5,31 @@ export default abstract class RequestRepository {
   abstract createRequest({
     props,
   }: {
-    props: CreateRequest;
+    props: Request;
   }): Promise<string | undefined>;
   //! Remove infra return type
   abstract getRequest({
     requestId,
   }: {
     requestId: string;
-  }): Promise<DocumentData | null>;
+  }): Promise<Request | null>;
 
   abstract uploadFileFromRequest({
     requestData,
     file,
     fileSenderData,
   }: {
-    requestData: RequestData;
+    requestData: RequestWithId;
     file: File;
     fileSenderData?: FileSenderData;
   }): Promise<void>;
 
-  abstract getRequests({ userId }: { userId: string }): Promise<DocumentData[]>;
+  // abstract getRequests({ userId }: { userId: string }): Promise<DocumentData[]>;
   abstract updateRequest(): Promise<void>;
   abstract deleteRequest(): Promise<void>;
 }
 
-export interface CreateRequest {
+export interface Request {
   userId: string;
   maxFileSize?: number;
   dateLimit?: number;
@@ -39,6 +39,6 @@ export interface CreateRequest {
   path: string;
 }
 
-export interface RequestData extends CreateRequest {
+export interface RequestWithId extends Request {
   id: string;
 }

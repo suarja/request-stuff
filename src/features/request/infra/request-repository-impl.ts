@@ -3,14 +3,15 @@ import {
   firestoreFactory,
 } from "@/firebase/firestore/firestore";
 import RequestRepository, {
-  CreateRequest,
-  RequestData,
+  Request,
+  RequestWithId,
 } from "../application/repositories/request-repository";
 import { DocumentData } from "firebase/firestore";
 import FileRepository, {
   FileSenderData,
 } from "@/features/file/application/repositories/file-repository";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
+import RequestDto from "./dto's/request-dto";
 
 export default class RequestRepositoryImpl extends RequestRepository {
   private firestoreRepository: FirestoreFactory;
@@ -32,7 +33,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     file,
     fileSenderData,
   }: {
-    requestData: RequestData;
+    requestData: RequestWithId;
     file: File;
     fileSenderData: FileSenderData;
   }): Promise<void> {
@@ -46,7 +47,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
   async createRequest({
     props,
   }: {
-    props: CreateRequest;
+    props: Request;
   }): Promise<string | undefined> {
     // const path = `users/${props.userId}/requests`;
     const id = await this.firestoreRepository.addDocument(props.path, props);
@@ -56,11 +57,15 @@ export default class RequestRepositoryImpl extends RequestRepository {
     requestId,
   }: {
     requestId: string;
-  }): Promise<DocumentData | null> {
-    const request = await this.firestoreRepository.getDocument(
+  }): Promise<Request | null> {
+    const requestInfra = await this.firestoreRepository.getDocument(
       "requests",
       requestId
     );
+    if (!requestInfra) return null;
+    const requestDto = new RequestDto();
+
+    const request = requestDto.toDomain({ data: requestInfra });
     return request;
   }
   updateRequest(): Promise<void> {
