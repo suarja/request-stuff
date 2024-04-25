@@ -1,23 +1,23 @@
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
-import FolderTree from "@/features/file/presentation/components/Foldertree";
-import firebase_app from "@/lib/firebase/config";
-import { auth } from "firebase-admin";
+import { getUserIdFromSessionCookie } from "@/lib/firebase/auth/server-side-user-id";
+import { cookies } from "next/headers";
+
 export default async function Page() {
-  const response = await fetch("http://localhost:3000/api/login", {
-    method: "GET",
+  const session = cookies().get("session")?.value || "";
+
+  const userId = getUserIdFromSessionCookie({
+    sessionCookie: session,
   });
-  if (!response.ok) {
+
+  if (!userId) {
     return <div>Not logged in</div>;
   }
-  const data = await response.json();
-  const userId = data.userId;
   const pathContent = await fileRepositoryImplementation.getPathContent({
-    path: `users/${userId}/files`,
+    path: `users/${userId}`,
   });
   console.log({ pathContent });
   console.log({ prefixes: pathContent.prefixes, items: pathContent.items });
-  // const { files, loading } = useGetUserFiles();
-  // if (loading) return <div>Loading...</div>;
+
   return (
     <div>
       <h1 className="text-xl">Prefixes</h1>
