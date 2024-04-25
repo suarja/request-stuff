@@ -6,7 +6,6 @@ import RequestRepository, {
   Request,
   RequestWithId,
 } from "../application/repositories/request-repository";
-import { DocumentData } from "firebase/firestore";
 import FileRepository, {
   FileSenderData,
 } from "@/features/file/application/repositories/file-repository";
@@ -68,6 +67,21 @@ export default class RequestRepositoryImpl extends RequestRepository {
     const request = requestDto.toDomain({ data: requestInfra });
     return request;
   }
+
+  async getRequests({ userId }: { userId: string }): Promise<Request[]> {
+    const requests = await this.firestoreRepository.queryWhere({
+      a: "userId",
+      b: userId,
+      operand: "==",
+      ref: "requests",
+    });
+    const requestDto = new RequestDto();
+    const requestsDomain = requests.map((request) =>
+      requestDto.toDomain({ data: request })
+    );
+    return requestsDomain;
+  }
+
   updateRequest(): Promise<void> {
     throw new Error("Method not implemented.");
   }

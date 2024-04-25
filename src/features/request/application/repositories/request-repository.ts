@@ -24,7 +24,7 @@ export default abstract class RequestRepository {
     fileSenderData?: FileSenderData;
   }): Promise<void>;
 
-  // abstract getRequests({ userId }: { userId: string }): Promise<DocumentData[]>;
+  abstract getRequests({ userId }: { userId: string }): Promise<Request[]>;
   abstract updateRequest(): Promise<void>;
   abstract deleteRequest(): Promise<void>;
 }
