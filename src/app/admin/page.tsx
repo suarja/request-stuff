@@ -5,9 +5,25 @@ import FileUpload from "../../features/file/presentation/components/FileUpload";
 import FilesTable from "../../features/file/presentation/components/FilesTable";
 import CustomDialog from "@/common/components/CustomDialog";
 import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
+import useGetRequests from "@/features/request/application/usecases/services/useGetRequests";
+import { Button } from "@/common/components/ui/button";
+import { useAuthContext } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 function Page(): JSX.Element {
   useAuthMiddleware();
+  const user = useAuthContext();
+  const { loading, requests, setUserId } = useGetRequests();
+
+  useEffect(() => {
+    if (user) {
+      setUserId(user.uid);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (requests) console.log({ requests });
+  }, [requests]);
   return (
     <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start p-12">
       <Nav />
@@ -23,6 +39,7 @@ function Page(): JSX.Element {
             <CreateRequestForm />
           </CustomDialog>
         </div>
+        <Button>Requests</Button>
       </section>
     </main>
   );

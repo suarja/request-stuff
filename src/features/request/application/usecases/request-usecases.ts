@@ -21,6 +21,10 @@ export default class RequestUsecases {
     return this.requestRepository.getRequest({ requestId });
   }
 
+  async getRequests({ userId }: { userId: string }) {
+    return this.requestRepository.getRequests({ userId });
+  }
+
   async uploadFileFromRequest({
     requestId,
     file,
@@ -57,3 +61,4 @@ export default class RequestUsecases {
 export const requestUsecases = new RequestUsecases({
   requestRepository: requestRepository,
 });
+
