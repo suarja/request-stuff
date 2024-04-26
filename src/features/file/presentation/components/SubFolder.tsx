@@ -1,10 +1,15 @@
 import FolderIcon from "@/common/icons/FolderIcon";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Folder, type SubFolder } from "./Folder";
-import { redirect, useParams, useRouter } from "next/navigation";
-import { store } from "@/context/params-server-components";
+import {
+  redirect,
+  useParams,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 export default function SubFolder({ name, fullPath }: SubFolder) {
   const params = useParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
   console.log({
     params,
@@ -15,7 +20,9 @@ export default function SubFolder({ name, fullPath }: SubFolder) {
         className="group pl-8 flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 cursor-pointer"
         onClick={() => {
           if (Array.isArray(params.slug)) {
-            router.push(`${params.slug.join("/")}/${name}`);
+            router.push(
+              `${params.slug.join("/")}/${name}?${searchParams.toString()}`
+            );
           } else {
             router.push(`${params.slug}/${name}`);
           }

@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   store.setData(path);
   const pathContent = await fileRepositoryImplementation.getPathContent({
     path: `users/${userId}/${path}`,
-    root: `root`,
+    root: params.slug[params.slug.length - 1],
   });
   console.log({ pathContent });
 

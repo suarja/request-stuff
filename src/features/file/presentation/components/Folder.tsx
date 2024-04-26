@@ -3,8 +3,10 @@
 import FolderIcon from "@/common/icons/FolderIcon";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { File } from "./File";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SubFolder from "./SubFolder";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export type TreeFile = {
   name: string;
@@ -34,13 +36,36 @@ export type FolderProps = {
 
 export function Folder({ props }: FolderProps) {
   const { files, name, folders } = props;
-  const [open, setOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const [open, setOpen] = useState(() => searchParams.get(name) === "true");
+  const router = useRouter();
+  const pathName = usePathname();
+  useEffect(() => {
+   const isInUrl = searchParams.has(name);
+    if (!isInUrl) {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.set(name, open.toString());
+      router.replace(`${pathName}?${newParams.toString()}`);
+    }
+    
+  }, []);
+
+  function handleToggle() {
+    const isOpen = searchParams.get(name) === "true";
+    setOpen(!isOpen);
+
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set(name, (!isOpen).toString());
+    console.log({ paramsString: newParams.toString() });
+    router.replace(`
+      ${pathName}?${newParams.toString()}`);
+  }
 
   return (
     <>
       <div
         className="group flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 cursor-pointer"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleToggle}
       >
         <div className="flex items-center space-x-2">
           <FolderIcon className="w-5 h-5 text-yellow-500 group-hover:text-yellow-600 dark:text-yellow-400 dark:group-hover:text-yellow-500" />
