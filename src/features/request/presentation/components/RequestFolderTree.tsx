@@ -25,7 +25,6 @@ export default function RequestFolderTree({
             params={params}
             requests={requests}
             path={path}
-            subFolders={subFolders}
           />
         </div>
       </div>

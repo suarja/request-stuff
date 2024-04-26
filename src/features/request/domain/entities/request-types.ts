@@ -42,7 +42,7 @@ export interface RequestFolder {
   title: string;
   path: string;
   requests: Request[];
-  subFolders: RequestSubFolder[];
+  subFolders?: RequestSubFolder[];
 }
 
 export interface RootRequestFolderWithParams extends RequestFolder {

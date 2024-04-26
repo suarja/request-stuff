@@ -75,11 +75,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     return request;
   }
 
-  async getPublicRequests({
-    userId,
-  }: {
-    userId: string;
-  }): Promise<Request[]> {
+  async getPublicRequests({ userId }: { userId: string }): Promise<Request[]> {
     const requests = await this.firestoreRepository.queryWhere({
       a: "userId",
       b: userId,
@@ -92,13 +88,10 @@ export default class RequestRepositoryImpl extends RequestRepository {
     );
     return requestsDomain;
   }
-  async getRequestsByUser({
-    userId,
-  }: {
-    userId: string;
-  }): Promise<Request[]> {
-    const requests = await this.firestoreRepository.getCollection(`
-    users/${userId}/requests`);
+  async getRequestsByUser({ userId }: { userId: string }): Promise<Request[]> {
+    const path = `users/${userId}/requests`;
+    const requests = await this.firestoreRepository.getCollection(path);
+    console.log({ requests, path });
     const requestDto = new RequestDto();
     const requestsDomain = requests.map((request) =>
       requestDto.toDomain({ data: request })

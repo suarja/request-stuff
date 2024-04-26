@@ -1,7 +1,12 @@
-import { mockRequests, mockRequestSubFolders } from "@/app/workspace/[...slug]/mock-request-data";
+import {
+  mockRequests,
+  mockRequestSubFolders,
+} from "@/app/workspace/[...slug]/mock-request-data";
 import CustomDialog from "@/common/components/CustomDialog";
 import { Nav } from "@/common/components/Nav";
+import { fileUsecases } from "@/features/file/application/usecases/file-usecases";
 import FileUpload from "@/features/file/presentation/components/FileUpload";
+import { requestUsecases } from "@/features/request/application/usecases/request-usecases";
 import RequestFolderTree from "@/features/request/presentation/components/RequestFolderTree";
 import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
 import { cookies } from "next/headers";
@@ -10,9 +15,14 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
   const paramsConcat = params.slug.join("/");
   const path = paramsConcat === "files" ? "files" : paramsConcat;
+  const userId = await fileUsecases.getUserIdFromCookies({ session });
 
-  
+  if (!userId) {
+    return <div>Not logged in</div>;
+  }
+  const requests = await requestUsecases.getRequestsByUser({ userId });
 
+  console.log({requests})
   return (
     <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start px-4 py-24  ">
       <Nav />
@@ -20,8 +30,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
         <RequestFolderTree
           params={path}
           title="Requests"
-          requests={mockRequests}
-          subFolders={mockRequestSubFolders}
+          requests={requests}
           path=""
         />
         <div>
