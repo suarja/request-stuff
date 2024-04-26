@@ -1,4 +1,3 @@
-
 import CustomDialog from "@/common/components/CustomDialog";
 import { Nav } from "@/common/components/Nav";
 import { store } from "@/context/params-server-components";
@@ -10,8 +9,8 @@ import { getUserIdFromSessionCookie } from "@/lib/firebase/auth/server-side-user
 import { cookies } from "next/headers";
 
 export default async function Page({ params }: { params: { slug: string[] } }) {
+  //~ Create usecase to get user id from session cookie
   const session = cookies().get("session")?.value || "";
-
   const userId = await getUserIdFromSessionCookie({
     sessionCookie: session,
   });
@@ -23,7 +22,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   const paramsConcat = params.slug.join("/");
   const path = paramsConcat === "files" ? "files" : paramsConcat;
 
-  store.setData(path);
+  //~ Create usecase to get path content and remove repository from application layer
   const pathContent = await fileRepositoryImplementation.getPathContent({
     path: `users/${userId}/${path}`,
     root: params.slug[params.slug.length - 1],
