@@ -43,7 +43,7 @@ export default class RequestUsecases {
     return this.requestRepository.getRequest({ requestId });
   }
 
-  async getRequests({ userId }: { userId: string }) {
+  async getPublicRequests({ userId }: { userId: string }) {
     return this.requestRepository.getPublicRequests({ userId });
   }
 

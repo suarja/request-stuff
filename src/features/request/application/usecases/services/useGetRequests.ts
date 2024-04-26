@@ -13,7 +13,7 @@ export default function useGetRequests() {
       setLoading(true);
 
       requestUsecases
-        .getRequests({ userId })
+        .getPublicRequests({ userId })
         .then((data) => {
           setRequests(data);
           setLoading(false);
