@@ -5,8 +5,6 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { File } from "./File";
 import SubFolder from "./SubFolder";
 import useHandleFolderState from "../../application/usecases/services/useHandleFolderState";
-import AddIcon from "@/common/icons/AddIcon";
-import { PlusIcon } from "@/common/icons/PlusIcon";
 import CustomDialog from "@/common/components/CustomDialog";
 import FileUpload from "./FileUpload";
 

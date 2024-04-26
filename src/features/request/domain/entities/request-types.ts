@@ -20,4 +20,19 @@ export type UserUpload = {
 
 export interface Request extends RequestBase {
   uploads: UserUpload[];
+  numberOfUploads: number;
+}
+
+export interface RequestTree {
+  requests: Request[];
+}
+
+export interface RootRequestFolder {
+  name: string;
+  path: string;
+  requests: Request[];
+}
+
+export interface RootRequestFolderWithParams extends RootRequestFolder {
+  params: string;
 }
