@@ -28,7 +28,7 @@ export interface RequestTree {
 }
 
 export interface RootRequestFolder {
-  name: string;
+  title: string;
   path: string;
   requests: Request[];
 }
