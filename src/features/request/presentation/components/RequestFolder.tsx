@@ -1,7 +1,7 @@
 import { PlusIcon } from "@radix-ui/react-icons";
 import { RootRequestFolderWithParams } from "../../domain/entities/request-types";
 
-export default function RequestFolder({
+export default function RequestFolderTree({
   title,
   path,
   requests,
