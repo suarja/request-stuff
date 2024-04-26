@@ -75,6 +75,8 @@ export class FirestoreFactory {
     return data;
   }
 
+
+
   // A method to add a document to a collection
   async addDocument(collection: string, data: any, id?: string) {
     if (id) {

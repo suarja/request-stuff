@@ -8,7 +8,7 @@ import FileRepository, {
 } from "@/features/file/application/repositories/file-repository";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 import RequestDto from "./dto's/request-dto";
-import { RequestBase } from "../domain/entities/request-types";
+import { Request, RequestBase } from "../domain/entities/request-types";
 
 export default class RequestRepositoryImpl extends RequestRepository {
   private firestoreRepository: FirestoreFactory;
@@ -41,7 +41,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
       customMetadata: fileSenderData,
     });
   }
-  async createRequest({
+  async addRequestToPublic({
     props,
   }: {
     props: RequestBase;
@@ -82,6 +82,23 @@ export default class RequestRepositoryImpl extends RequestRepository {
       requestDto.toDomain({ data: request })
     );
     return requestsDomain;
+  }
+
+  async addRequestToUser({
+    path,
+    userId,
+    request,
+  }: {
+    path: string;
+    userId: string;
+    request: Request;
+  }): Promise<"ok" | "not ok"> {
+    try {
+      await this.firestoreRepository.addDocument(path, request, request.id);
+      return "ok";
+    } catch (error) {
+      return "not ok";
+    }
   }
 
   updateRequest(): Promise<void> {

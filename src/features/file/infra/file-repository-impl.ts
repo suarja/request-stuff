@@ -134,6 +134,8 @@ export default class FileRepositoryImplementation extends FileRepository {
     }
   }
 
+ 
+
   async clear(): Promise<void> {
     throw new Error("Method not implemented.");
   }
