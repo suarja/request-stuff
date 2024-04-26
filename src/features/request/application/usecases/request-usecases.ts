@@ -44,7 +44,7 @@ export default class RequestUsecases {
   }
 
   async getRequests({ userId }: { userId: string }) {
-    return this.requestRepository.getRequests({ userId });
+    return this.requestRepository.getPublicRequests({ userId });
   }
 
   async uploadFileFromRequest({

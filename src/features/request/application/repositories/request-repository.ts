@@ -28,14 +28,18 @@ export default abstract class RequestRepository {
   abstract addRequestToUser({
     path,
     userId,
-    request
+    request,
   }: {
     path: string;
     userId: string;
     request: Request;
   }): Promise<Either<Error, void>>;
 
-  abstract getRequests({ userId }: { userId: string }): Promise<RequestBase[]>;
+  abstract getPublicRequests({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<RequestBase[]>;
   abstract updateRequest(): Promise<void>;
   abstract deleteRequest(): Promise<void>;
 }

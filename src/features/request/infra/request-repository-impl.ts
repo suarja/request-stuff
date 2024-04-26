@@ -75,7 +75,11 @@ export default class RequestRepositoryImpl extends RequestRepository {
     return request;
   }
 
-  async getRequests({ userId }: { userId: string }): Promise<RequestBase[]> {
+  async getPublicRequests({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<RequestBase[]> {
     const requests = await this.firestoreRepository.queryWhere({
       a: "userId",
       b: userId,
