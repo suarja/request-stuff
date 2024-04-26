@@ -24,9 +24,9 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   });
 
   return (
-    <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start p-12">
+    <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start px-4 py-24  ">
       <Nav />
-      <section className="flex flex-col h-full w-full justify-center gap-4 p-1">
+      <section className="flex flex-col h-full w-full justify-center gap-4 ">
         <FolderTree title="Documents" root={pathContent} />
         <div>
           <CustomDialog buttonText="Add File" title="Add File">

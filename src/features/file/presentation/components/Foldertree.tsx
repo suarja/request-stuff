@@ -7,7 +7,7 @@ type FolderTreeProps = {
 };
 export default function FolderTree({ root, title }: FolderTreeProps) {
   return (
-    <div className="w-full  max-w-md mx-auto">
+    <div className="w-full   md:max-w-xl mx-auto">
       <div className="bg-white rounded-lg shadow-md dark:bg-gray-950 overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
           <h3 className="text-lg font-medium">{title}</h3>
