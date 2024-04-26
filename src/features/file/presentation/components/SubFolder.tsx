@@ -11,9 +11,7 @@ export default function SubFolder({ name, fullPath }: SubFolder) {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
-  console.log({
-    params,
-  });
+ 
   return (
     <>
       <div

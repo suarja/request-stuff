@@ -49,7 +49,7 @@ export function Folder({ props }: FolderProps) {
   return (
     <>
       <div
-        className="group flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 cursor-pointer"
+        className="group flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 "
         onClick={handleToggle}
       >
         <div className="flex items-center space-x-2">

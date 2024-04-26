@@ -14,11 +14,13 @@ export type FileProps = {
 
 export function File({ file }: FileProps) {
   return (
-    <div className="pl-8 space-y-2 ">
+    <div className=" pl-8 space-y-2 ">
       {/* Files in Documents folder */}
-      <div className="sm:flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 cursor-pointer">
-        <div className="flex items-center space-x-2">
-          <FileIcon className="w-5 h-5 text-blue-500 group-hover:text-blue-600 dark:text-blue-400 dark:group-hover:text-blue-500" />
+      <div className="sm:flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 ">
+        <div className="flex items-center space-x-2 ">
+          <span className="pl-2">
+            <FileIcon className="w-5 h-5  text-blue-500 group-hover:text-blue-600 dark:text-blue-400 dark:group-hover:text-blue-500" />
+          </span>
           <Link
             href={file.url ?? "/"}
             className="font-medium text-gray-900 dark:text-gray-50"
@@ -39,9 +41,14 @@ export function File({ file }: FileProps) {
               showDaysAgo: true,
             })}
           </span>
-          <span className="text-gray-500 text-sm dark:text-gray-400 ">
+          <button
+            onClick={() => {
+              console.log("Delete file");
+            }}
+            className="text-gray-500 text-sm dark:text-red-400 pr-2"
+          >
             <DeleteIcon />
-          </span>
+          </button>
         </div>
       </div>
     </div>
