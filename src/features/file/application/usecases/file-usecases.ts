@@ -24,6 +24,10 @@ export default class FileUsecases {
       sessionCookie: session,
     });
   }
+
+  async getPathContent({ path, root }: { path: string; root: string }) {
+    return await this.fileRepository.getPathContent({ path, root });
+  }
 }
 
 export const fileUsecases = new FileUsecases({
