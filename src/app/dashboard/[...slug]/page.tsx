@@ -1,7 +1,4 @@
-import {
-  mockRequests,
-  mockRequestSubFolders,
-} from "@/app/workspace/[...slug]/mock-request-data";
+
 import CustomDialog from "@/common/components/CustomDialog";
 import { Nav } from "@/common/components/Nav";
 import { fileUsecases } from "@/features/file/application/usecases/file-usecases";
@@ -22,10 +19,8 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   }
   const requests = await requestUsecases.getRequestsByUser({ userId });
 
-  console.log({requests})
   return (
-    <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start px-4 py-24  ">
-      <Nav />
+    
       <section className="flex flex-col h-full w-full justify-center gap-4 ">
         <RequestFolderTree
           params={path}
@@ -44,6 +39,6 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
           </CustomDialog>
         </div>
       </section>
-    </main>
+
   );
 }

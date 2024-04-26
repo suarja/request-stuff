@@ -2,6 +2,7 @@ import { AuthContextProvider } from "@/context/AuthContext";
 import "./globals.css";
 import { ThemeProvider } from "@/common/style/ThemeProvider";
 import { Toaster } from "@/common/components/ui/sonner";
+import { Nav } from "@/common/components/Nav";
 
 export const metadata = {
   title: "RequestStuff",
@@ -25,7 +26,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthContextProvider>
-            {children}
+            <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start px-4 py-24  ">
+              <Nav />
+              {children}
+            </main>
             <Toaster richColors expand={false} />
           </AuthContextProvider>
         </ThemeProvider>
