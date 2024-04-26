@@ -1,7 +1,11 @@
+
+import CustomDialog from "@/common/components/CustomDialog";
 import { Nav } from "@/common/components/Nav";
 import { store } from "@/context/params-server-components";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
+import FileUpload from "@/features/file/presentation/components/FileUpload";
 import FolderTree from "@/features/file/presentation/components/Foldertree";
+import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
 import { getUserIdFromSessionCookie } from "@/lib/firebase/auth/server-side-user-id";
 import { cookies } from "next/headers";
 
@@ -30,6 +34,16 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
       <Nav />
       <section className="flex flex-col h-full w-full justify-center gap-4 p-1">
         <FolderTree title="Documents" root={pathContent} />
+        <div>
+          <CustomDialog buttonText="Add File" title="Add File">
+            <FileUpload />
+          </CustomDialog>
+        </div>
+        <div>
+          <CustomDialog buttonText="Create Request" title="Create Request">
+            <CreateRequestForm />
+          </CustomDialog>
+        </div>
       </section>
     </main>
   );

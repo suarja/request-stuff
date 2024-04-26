@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import useUploadFile from "../../application/usecases/services/useUploadFile";
 import { toast } from "sonner";
