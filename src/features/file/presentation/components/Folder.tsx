@@ -35,15 +35,17 @@ export type SubFolder = {
   fullPath: string;
 };
 
-export type RootFolder = {
+export interface RootFolder {
   name: string;
   files: TreeFile[];
   folders: SubFolder[];
+}
+export interface RootFolderWithParams extends RootFolder {
   params: string;
-};
+}
 
 export type FolderProps = {
-  props: RootFolder;
+  props: RootFolderWithParams;
 };
 
 export function Folder({ props }: FolderProps) {
