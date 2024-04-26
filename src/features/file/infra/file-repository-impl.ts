@@ -7,7 +7,6 @@ import FileRepository, {
 import {
   FirebaseStorage,
   FullMetadata,
-  ListResult,
   StorageReference,
   UploadResult,
   getDownloadURL,
