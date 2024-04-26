@@ -39,7 +39,7 @@ export default abstract class RequestRepository {
     userId,
   }: {
     userId: string;
-  }): Promise<Request[]>;
+  }): Promise<RequestBase[]>;
   abstract getRequestsByUser({
     userId,
   }: {
