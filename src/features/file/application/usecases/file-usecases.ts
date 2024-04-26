@@ -1,7 +1,6 @@
 import { UploadResult } from "firebase/storage";
 import { fileRepositoryImplementation } from "../../infra/file-repository-impl";
 import FileRepository from "../repositories/file-repository";
-import { cookies } from "next/headers";
 import { getUserIdFromSessionCookie } from "@/lib/firebase/auth/server-side-user-id";
 
 export default class FileUsecases {

@@ -4,7 +4,6 @@ import { formatDate } from "@/common/utils/date-format";
 import { convertKbToMb } from "@/common/utils/from-kb-to-mb";
 import { convertMimeTypeToDescription } from "@/common/utils/content-type";
 import Link from "next/link";
-import DeleteIcon from "@/common/icons/DeleteIcon";
 import DeleteButton from "./DeleteButton";
 
 export type FileProps = {
