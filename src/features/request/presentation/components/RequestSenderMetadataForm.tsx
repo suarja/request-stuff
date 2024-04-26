@@ -13,8 +13,6 @@ import { Input } from "@/common/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { object, string, z } from "zod";
-import { useRouter } from "next/navigation";
-import { PageProps } from "@/app/upload/[slug]/page";
 import useUploadFileFromRequest, {
   UseUploadFileFromRequestProps,
 } from "../../application/usecases/services/useUploadFileFromRequest";
