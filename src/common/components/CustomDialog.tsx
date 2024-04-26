@@ -11,6 +11,8 @@ import {
 
 import { Button } from "@/common/components/ui/button";
 import AddIcon from "../icons/AddIcon";
+import { PlusIcon } from "../icons/PlusIcon";
+import { cn } from "@/lib/utils";
 
 /**
  * CustomDialog component displays a dialog with a title, description, and optional button.
@@ -38,7 +40,7 @@ export default function CustomDialog({
   open,
   title,
   description = "",
-  icon = <AddIcon />,
+  icon = <PlusIcon />,
   children,
   testId,
   buttonText,
@@ -67,13 +69,14 @@ export default function CustomDialog({
       <Dialog open={open}>
         <DialogTrigger asChild>
           {displayButton && (
-            <Button
-              variant={buttonVariant ?? "default"}
-              size={buttonSize ?? null}
+            <button
+              className={cn(
+                `className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 focus:outline-none`
+              )}
               data-testid={testId}
             >
-              {buttonText ?? icon}
-            </Button>
+              {buttonText ?? <PlusIcon className="w-5 h-5" />}
+            </button>
           )}
         </DialogTrigger>
         <DialogContent>
