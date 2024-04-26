@@ -4,6 +4,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import CustomDialog from "@/common/components/CustomDialog";
 import { RootRequestFolderWithParams } from "../../domain/entities/request-types";
 import useHandleFolderState from "@/features/file/application/usecases/services/useHandleFolderState";
+import RequestSubFolder from "./RequestSubFolder";
 
 export function RequestFolder(props: RootRequestFolderWithParams) {
   const { title, path, requests, params, subFolders } = props;
@@ -39,18 +40,24 @@ export function RequestFolder(props: RootRequestFolderWithParams) {
       </div>
       {open && (
         <>
-          {/* {folders.map((folder, index) => {
+          {requests.map((folder, index) => {
             return (
-              <SubFolder
+              <RequestSubFolder
                 key={index}
-                name={folder.name}
-                fullPath={folder.fullPath}
+                title={folder.name}
+                path={folder.path}
               />
             );
           })}
-          {files.map((file, index) => {
-            return <File key={index} file={file} />;
-          })} */}
+          {subFolders.map((subFolder, index) => {
+            return (
+              <RequestSubFolder
+                key={subFolder.title}
+                title={subFolder.title}
+                path={subFolder.path}
+              />
+            );
+          })}
         </>
       )}
     </>
