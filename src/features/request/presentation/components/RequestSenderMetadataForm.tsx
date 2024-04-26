@@ -75,8 +75,6 @@ export default function SenderMetadataForm({
       senderData: {
         senderName: form.getValues("name"),
         senderEmail: form.getValues("email"),
-        requestId,
-        requestName,
       },
     };
 
