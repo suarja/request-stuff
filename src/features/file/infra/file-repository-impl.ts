@@ -7,8 +7,10 @@ import FileRepository, {
 import {
   FirebaseStorage,
   ListResult,
+  StorageReference,
   UploadResult,
   getDownloadURL,
+  getMetadata,
   listAll,
   ref,
   uploadBytes,
@@ -88,6 +90,20 @@ export default class FileRepositoryImplementation extends FileRepository {
       folders,
     };
     return rootFolder;
+  }
+
+  async getFileUrlAndMetadata({ ref }: { ref: StorageReference }) {
+    const fileInformation = await Promise.allSettled([
+      getDownloadURL(ref),
+      getMetadata(ref),
+    ]);
+
+    const url =
+      fileInformation[0].status === "fulfilled" ? fileInformation[0].value : "";
+    const metadata =
+      fileInformation[1].status === "fulfilled" ? fileInformation[1].value : {};
+
+    return { url, metadata };
   }
 
   async remove(key: string): Promise<void> {
