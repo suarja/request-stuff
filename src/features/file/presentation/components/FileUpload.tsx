@@ -5,7 +5,11 @@ import useUploadFile from "../../application/usecases/services/useUploadFile";
 import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 
-function FileUpload() {
+type FileUploadProps = {
+  path: string;
+} ;
+
+function FileUpload({ props }: { props?: FileUploadProps }) {
   const { setUploadFileProps, loading, error, success } = useUploadFile();
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const user = useAuthContext();
@@ -42,6 +46,7 @@ function FileUpload() {
       setUploadFileProps({
         file: fileSelected,
         userId: user.uid,
+        path: props?.path,
       });
     }
   };

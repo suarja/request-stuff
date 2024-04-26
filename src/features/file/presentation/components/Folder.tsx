@@ -39,6 +39,7 @@ export type RootFolder = {
   name: string;
   files: TreeFile[];
   folders: SubFolder[];
+  params: string;
 };
 
 export type FolderProps = {
@@ -46,7 +47,7 @@ export type FolderProps = {
 };
 
 export function Folder({ props }: FolderProps) {
-  const { files, name, folders } = props;
+  const { files, name, folders, params } = props;
 
   const { open, handleToggle } = useHandleFolderState(name);
 
@@ -58,9 +59,9 @@ export function Folder({ props }: FolderProps) {
           <span className="font-medium text-gray-900 dark:text-gray-50">
             {name}
           </span>
-            <CustomDialog title="Add File" buttonVariant="outline">
-              <FileUpload />
-            </CustomDialog>
+          <CustomDialog title="Add File" buttonVariant="outline">
+            <FileUpload props={{ path: params }} />
+          </CustomDialog>
         </div>
         <div className="flex items-center space-x-2">
           <span className="text-gray-500 text-sm dark:text-gray-400">

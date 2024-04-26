@@ -4,8 +4,9 @@ import { Folder, RootFolder } from "./Folder";
 type FolderTreeProps = {
   title: string;
   root: RootFolder;
+  params: string;
 };
-export default function FolderTree({ root, title }: FolderTreeProps) {
+export default function FolderTree({ root, title, params }: FolderTreeProps) {
   return (
     <div className="w-full   sm:max-w-2xl mx-auto">
       <div className="bg-white rounded-lg shadow-md dark:bg-gray-950 overflow-hidden">
@@ -22,6 +23,7 @@ export default function FolderTree({ root, title }: FolderTreeProps) {
               name: root.name,
               files: root.files,
               folders: root.folders,
+              params
             }}
           />
         </div>
