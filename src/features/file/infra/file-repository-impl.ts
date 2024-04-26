@@ -9,6 +9,7 @@ import {
   FullMetadata,
   StorageReference,
   UploadResult,
+  deleteObject,
   getDownloadURL,
   getMetadata,
   listAll,
@@ -123,8 +124,14 @@ export default class FileRepositoryImplementation extends FileRepository {
     return { url, metadata };
   }
 
-  async remove(key: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async remove({ path }: { path: string }): Promise<"ok" | "not ok"> {
+    try {
+      const refPath = ref(this.bucket, path);
+      await deleteObject(refPath);
+      return "ok";
+    } catch (error) {
+      return "not ok";
+    }
   }
 
   async clear(): Promise<void> {

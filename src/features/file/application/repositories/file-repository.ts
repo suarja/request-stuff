@@ -25,7 +25,7 @@ export default abstract class FileRepository {
     root: string;
   }): Promise<RootFolder>;
 
-  abstract remove(key: string): Promise<void>;
+  abstract remove({ path }: { path: string }): Promise<"ok" | "not ok">;
   abstract clear(): Promise<void>;
 }
 
