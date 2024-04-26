@@ -14,7 +14,7 @@ export type FileProps = {
 
 export function File({ file }: FileProps) {
   return (
-    <div className=" pl-8 space-y-2 ">
+    <div className=" pl-4 space-y-2 ">
       {/* Files in Documents folder */}
       <div className="sm:flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 ">
         <div className="flex items-center space-x-2 ">
