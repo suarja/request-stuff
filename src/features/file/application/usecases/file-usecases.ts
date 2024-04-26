@@ -28,7 +28,11 @@ export default class FileUsecases {
   async getPathContent({ path, root }: { path: string; root: string }) {
     return await this.fileRepository.getPathContent({ path, root });
   }
+  async removeFile({ path }: { path: string }) {
+    return await this.fileRepository.remove({ path });
+  }
 }
+
 
 export const fileUsecases = new FileUsecases({
   fileRepository: fileRepositoryImplementation,
