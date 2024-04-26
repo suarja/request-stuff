@@ -8,6 +8,8 @@ import {
   Avatar,
 } from "@/common/components/ui/avatar";
 import Link from "next/link";
+import CopyToClipBoardIcon from "../../../../../CopyToClipboard";
+import { toast } from "sonner";
 
 export default function RequestPage({ request }: { request: Request }) {
   return (
@@ -19,6 +21,23 @@ export default function RequestPage({ request }: { request: Request }) {
         </p>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Request url
+          </p>
+          <p>
+            {/* Add a button to copy the url to clipboard */}
+            <button
+              className=" text-white font-bold py-2 px-4 rounded"
+              onClick={() => {
+                navigator.clipboard.writeText(request.url);
+                toast.success("Copied to clipboard");
+              }}
+            >
+              <CopyToClipBoardIcon />
+            </button>
+          </p>
+        </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Maximum File Size
