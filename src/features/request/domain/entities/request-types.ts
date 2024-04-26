@@ -1,5 +1,12 @@
 import { FileSenderData } from "@/features/file/application/repositories/file-repository";
 
+// export type FileSenderData = {
+//   senderName?: string;
+//   senderEmail?: string;
+//   message?: string;
+//   uploadDate?: string;
+// };
+
 export interface RequestBase {
   id: string;
   userId: string;
@@ -27,12 +34,17 @@ export interface RequestTree {
   requests: Request[];
 }
 
-export interface RootRequestFolder {
+export type RequestSubFolder = {
+  title: string;
+  path: string;
+};
+export interface RequestFolder {
   title: string;
   path: string;
   requests: Request[];
+  subFolders: RequestSubFolder[];
 }
 
-export interface RootRequestFolderWithParams extends RootRequestFolder {
+export interface RootRequestFolderWithParams extends RequestFolder {
   params: string;
 }

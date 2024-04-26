@@ -1,24 +1,58 @@
-import { PlusIcon } from "@radix-ui/react-icons";
+"use client";
+import FolderIcon from "@/common/icons/FolderIcon";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import CustomDialog from "@/common/components/CustomDialog";
 import { RootRequestFolderWithParams } from "../../domain/entities/request-types";
+import useHandleFolderState from "@/features/file/application/usecases/services/useHandleFolderState";
 
-export default function RequestFolderTree({
-  title,
-  path,
-  requests,
-  params,
-}: RootRequestFolderWithParams) {
+export function RequestFolder(props: RootRequestFolderWithParams) {
+  const { title, path, requests, params, subFolders } = props;
+
+  const { open, handleToggle } = useHandleFolderState(title);
+
   return (
-    <div className="w-full   sm:max-w-2xl mx-auto">
-      <div className="bg-secondary rounded-lg shadow-md dark:bg-gray-950 overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
-          <h3 className="text-lg font-medium">{title}</h3>
-          <button className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 focus:outline-none">
-            <PlusIcon className="w-5 h-5" />
-            <span className="sr-only">Add new file</span>
+    <>
+      <div className="group flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 ">
+        <div className="flex items-center space-x-2">
+          <FolderIcon className="w-5 h-5 text-yellow-500 group-hover:text-yellow-600 dark:text-yellow-400 dark:group-hover:text-yellow-500" />
+          <span className="font-medium text-gray-900 dark:text-gray-50">
+            {title}
+          </span>
+          <CustomDialog title="Add File" buttonVariant="outline"></CustomDialog>
+        </div>
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-500 text-sm dark:text-gray-400">
+            {requests.length} items
+          </span>
+          <button
+            onClick={handleToggle}
+            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 focus:outline-none"
+          >
+            {open ? (
+              <ChevronDownIcon className="w-5 h-5" />
+            ) : (
+              <ChevronDownIcon className="w-5 h-5" />
+            )}
+            <span className="sr-only">Toggle folder</span>
           </button>
         </div>
-        <div className="p-4 space-y-2"></div>
       </div>
-    </div>
+      {open && (
+        <>
+          {/* {folders.map((folder, index) => {
+            return (
+              <SubFolder
+                key={index}
+                name={folder.name}
+                fullPath={folder.fullPath}
+              />
+            );
+          })}
+          {files.map((file, index) => {
+            return <File key={index} file={file} />;
+          })} */}
+        </>
+      )}
+    </>
   );
 }
