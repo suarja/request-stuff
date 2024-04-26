@@ -2,8 +2,9 @@ import { FileIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { type Request } from "../../domain/entities/request-types";
 import DeleteIcon from "@/common/icons/DeleteIcon";
+import { formatDate } from "@/common/utils/date-format";
 
-export function Request(request: Request) {
+export function Request({ request }: { request: Request }) {
   return (
     <div className=" pl-4 space-y-2 ">
       {/* Files in Documents folder */}
@@ -24,7 +25,7 @@ export function Request(request: Request) {
             {request.numberOfUploads} uploads
           </span>
           <span className="text-gray-500 text-sm dark:text-gray-400">
-            date limit: {request.dateLimit}
+             limit: {formatDate({ date: new Date(request.dateLimit ?? 0) })}
           </span>
           <DeleteIcon />
           {/* <DeleteButton path={file.fullPath} /> */}

@@ -5,6 +5,7 @@ import CustomDialog from "@/common/components/CustomDialog";
 import { RootRequestFolderWithParams } from "../../domain/entities/request-types";
 import useHandleFolderState from "@/features/file/application/usecases/services/useHandleFolderState";
 import RequestSubFolder from "./RequestSubFolder";
+import { Request } from "./Request";
 
 export function RequestFolder(props: RootRequestFolderWithParams) {
   const { title, path, requests, params, subFolders } = props;
@@ -40,13 +41,9 @@ export function RequestFolder(props: RootRequestFolderWithParams) {
       </div>
       {open && (
         <>
-          {requests.map((folder, index) => {
+          {requests.map((requestData, index) => {
             return (
-              <RequestSubFolder
-                key={index}
-                title={folder.name}
-                path={folder.path}
-              />
+              <Request key={index} request={requestData}  />
             );
           })}
           {subFolders.map((subFolder, index) => {
