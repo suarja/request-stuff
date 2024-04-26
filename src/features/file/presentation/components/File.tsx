@@ -3,10 +3,9 @@ import { RootFolder } from "./Folder";
 import { formatDate } from "@/common/utils/date-format";
 import { convertKbToMb } from "@/common/utils/from-kb-to-mb";
 import { convertMimeTypeToDescription } from "@/common/utils/content-type";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import PaperclipIcon from "@/common/icons/PaperClipIcon";
 import DeleteIcon from "@/common/icons/DeleteIcon";
+import DeleteButton from "./DeleteButton";
 
 export type FileProps = {
   file: RootFolder["files"][number];
@@ -41,14 +40,7 @@ export function File({ file }: FileProps) {
               showDaysAgo: true,
             })}
           </span>
-          <button
-            onClick={() => {
-              console.log("Delete file");
-            }}
-            className="text-gray-500 text-sm dark:text-red-400 pr-2"
-          >
-            <DeleteIcon />
-          </button>
+          <DeleteButton path={file.fullPath} />
         </div>
       </div>
     </div>
