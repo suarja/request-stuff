@@ -55,7 +55,6 @@ export default class RequestRepositoryImpl extends RequestRepository {
       );
       return right(undefined);
     } catch (error) {
-      console.log({ error });
       return left(new Error("Error adding request to public collection"));
     }
   }
@@ -91,7 +90,6 @@ export default class RequestRepositoryImpl extends RequestRepository {
   async getRequestsByUser({ userId }: { userId: string }): Promise<Request[]> {
     const path = `users/${userId}/requests`;
     const requests = await this.firestoreRepository.getCollection(path);
-    console.log({ requests, path });
     const requestDto = new RequestDto();
     const requestsDomain = requests.map((request) =>
       requestDto.toDomain({ data: request })
