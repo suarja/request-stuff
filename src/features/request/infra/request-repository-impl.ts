@@ -9,6 +9,7 @@ import FileRepository, {
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 import RequestDto from "./dto's/request-dto";
 import { Request, RequestBase } from "../domain/entities/request-types";
+import { Either, left, right } from "fp-ts/lib/Either";
 
 export default class RequestRepositoryImpl extends RequestRepository {
   private firestoreRepository: FirestoreFactory;
@@ -45,14 +46,18 @@ export default class RequestRepositoryImpl extends RequestRepository {
     props,
   }: {
     props: RequestBase;
-  }): Promise<string | undefined> {
-    // const path = `users/${props.userId}/requests`;
-    const id = await this.firestoreRepository.addDocument(
-      props.path,
-      props,
-      props.id
-    );
-    return id;
+  }): Promise<Either<Error, void>> {
+    try {
+      // const path = `users/${props.userId}/requests`;
+      const id = await this.firestoreRepository.addDocument(
+        props.path,
+        props,
+        props.id
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(new Error("Error adding request to public collection"));
+    }
   }
   async getRequest({
     requestId,
@@ -92,12 +97,12 @@ export default class RequestRepositoryImpl extends RequestRepository {
     path: string;
     userId: string;
     request: Request;
-  }): Promise<"ok" | "not ok"> {
+  }): Promise<Either<Error, void>> {
     try {
       await this.firestoreRepository.addDocument(path, request, request.id);
-      return "ok";
+      return right(undefined);
     } catch (error) {
-      return "not ok";
+      return left(new Error("Error adding request to user collection"));
     }
   }
 

@@ -56,6 +56,9 @@ dependencies:
   firebase-admin:
     specifier: ^12.1.0
     version: 12.1.0
+  fp-ts:
+    specifier: ^2.16.5
+    version: 2.16.5
   next:
     specifier: 14.2.2
     version: 14.2.2(react-dom@18.2.0)(react@18.2.0)
@@ -3005,6 +3008,10 @@ packages:
       mime-types: 2.1.35
     dev: false
     optional: true
+
+  /fp-ts@2.16.5:
+    resolution: {integrity: sha512-N8T8PwMSeTKKtkm9lkj/zSTAnPC/aJIIrQhnHxxkL0KLsRCNUPANksJOlMXxcKKCo7H1ORP3No9EMD+fP0tsdA==}
+    dev: false
 
   /fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
