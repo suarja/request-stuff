@@ -12,16 +12,38 @@ import {
 import { Button } from "@/common/components/ui/button";
 import AddIcon from "../icons/AddIcon";
 
+/**
+ * CustomDialog component displays a dialog with a title, description, and optional button.
+ *
+ * @param displayButton - Determines whether to display the button. Default is true.
+ * @param open - Determines whether the dialog is open. Default is undefined.
+ * @param title - The title of the dialog.
+ * @param description - The description of the dialog. Default is an empty string.
+ * @param icon - The icon to be displayed in the button. Default is the AddIcon component.
+ * @param children - The content to be displayed inside the dialog.
+ * @param testId - The test ID for the button.
+ * @param buttonText - The text to be displayed on the button. If not provided, the icon will be used.
+ * @param buttonVariant - The variant of the button. Can be one of: "link", "default", "destructive", "outline", "secondary", "ghost". Default is "default".
+ * @param buttonSize - The size of the button. Can be one of: "default", "icon", "sm", "lg". Default is null.
+ *
+ * @returns The CustomDialog component.
+ *
+ * @example
+ * <CustomDialog buttonText="Add File" title="Add File">
+ *  <FileUpload />
+ * </CustomDialog>
+ */
 export default function CustomDialog({
-  icon = <AddIcon />,
+  displayButton = true,
+  open,
   title,
   description = "",
+  icon = <AddIcon />,
   children,
   testId,
-  open,
-  displayButton = true,
   buttonText,
   buttonVariant,
+  buttonSize,
 }: {
   displayButton?: boolean;
   open?: boolean;
@@ -38,6 +60,7 @@ export default function CustomDialog({
     | "outline"
     | "secondary"
     | "ghost";
+  buttonSize?: "default" | "icon" | "sm" | "lg" | null | undefined;
 }) {
   return (
     <>
@@ -46,9 +69,8 @@ export default function CustomDialog({
           {displayButton && (
             <Button
               variant={buttonVariant ?? "default"}
-              size={buttonText ? "sm" : "icon"}
+              size={buttonSize ?? null}
               data-testid={testId}
-              className="p-2 "
             >
               {buttonText ?? icon}
             </Button>
