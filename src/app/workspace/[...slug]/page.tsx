@@ -1,6 +1,7 @@
 import CustomDialog from "@/common/components/CustomDialog";
 import { Nav } from "@/common/components/Nav";
 import { store } from "@/context/params-server-components";
+import { fileUsecases } from "@/features/file/application/usecases/file-usecases";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 import FileUpload from "@/features/file/presentation/components/FileUpload";
 import FolderTree from "@/features/file/presentation/components/Foldertree";
@@ -11,9 +12,8 @@ import { cookies } from "next/headers";
 export default async function Page({ params }: { params: { slug: string[] } }) {
   //~ Create usecase to get user id from session cookie
   const session = cookies().get("session")?.value || "";
-  const userId = await getUserIdFromSessionCookie({
-    sessionCookie: session,
-  });
+
+  const userId = await fileUsecases.getUserIdFromCookies({ session });
 
   if (!userId) {
     return <div>Not logged in</div>;
