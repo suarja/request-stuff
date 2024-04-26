@@ -1,7 +1,7 @@
 import { FileSenderData } from "@/features/file/application/repositories/file-repository";
 import { requestRepository } from "../../infra/request-repository-impl";
-import RequestRepository, { Request } from "../repositories/request-repository";
-
+import RequestRepository from "../repositories/request-repository";
+import { RequestBase } from "../../domain/entities/request-types";
 export default class RequestUsecases {
   private requestRepository: RequestRepository;
 
@@ -12,7 +12,7 @@ export default class RequestUsecases {
   async createRequest({
     props,
   }: {
-    props: Request;
+    props: RequestBase;
   }): Promise<string | undefined> {
     return await this.requestRepository.createRequest({ props });
   }
@@ -40,7 +40,7 @@ export default class RequestUsecases {
     if (!requestPayload) {
       throw new Error("Request not found");
     }
-    
+
     await this.requestRepository.uploadFileFromRequest({
       requestData: requestPayload,
       file,
@@ -52,4 +52,3 @@ export default class RequestUsecases {
 export const requestUsecases = new RequestUsecases({
   requestRepository: requestRepository,
 });
-

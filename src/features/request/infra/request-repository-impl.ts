@@ -2,15 +2,13 @@ import {
   FirestoreFactory,
   firestoreFactory,
 } from "@/lib/firebase/firestore/firestore";
-import RequestRepository, {
-  Request,
-  RequestWithId,
-} from "../application/repositories/request-repository";
+import RequestRepository from "../application/repositories/request-repository";
 import FileRepository, {
   FileSenderData,
 } from "@/features/file/application/repositories/file-repository";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 import RequestDto from "./dto's/request-dto";
+import { RequestBase } from "../domain/entities/request-types";
 
 export default class RequestRepositoryImpl extends RequestRepository {
   private firestoreRepository: FirestoreFactory;
@@ -32,7 +30,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     file,
     fileSenderData,
   }: {
-    requestData: RequestWithId;
+    requestData: RequestBase;
     file: File;
     fileSenderData: FileSenderData;
   }): Promise<void> {
@@ -46,7 +44,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
   async createRequest({
     props,
   }: {
-    props: Request;
+    props: RequestBase;
   }): Promise<string | undefined> {
     // const path = `users/${props.userId}/requests`;
     const id = await this.firestoreRepository.addDocument(
@@ -60,7 +58,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     requestId,
   }: {
     requestId: string;
-  }): Promise<Request | null> {
+  }): Promise<RequestBase | null> {
     const requestInfra = await this.firestoreRepository.getDocument(
       "requests",
       requestId
@@ -72,7 +70,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     return request;
   }
 
-  async getRequests({ userId }: { userId: string }): Promise<Request[]> {
+  async getRequests({ userId }: { userId: string }): Promise<RequestBase[]> {
     const requests = await this.firestoreRepository.queryWhere({
       a: "userId",
       b: userId,
