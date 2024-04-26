@@ -74,16 +74,30 @@ export default class FileRepositoryImplementation extends FileRepository {
         fullPath: folder.fullPath,
       };
     });
-    const files: TreeFile[] = pathContentInfra.items.map((file) => {
-      return {
+    const files: TreeFile[] = [];
+    for (const file of pathContentInfra.items) {
+      const { url, metadata } = await this.getFileUrlAndMetadata({
+        ref: file,
+      });
+      files.push({
         name: file.name,
         fullPath: file.fullPath,
+        url,
+        size: metadata?.size ?? 0,
+        metadata: {
+          name: metadata?.name ?? "",
+          fullPath: metadata?.fullPath ?? "",
+          contentType: metadata?.contentType ?? "",
+          size: metadata?.size ?? 0,
+          timeCreated: metadata?.timeCreated ?? "",
+          updated: metadata?.updated ?? "",
+        },
         parent: {
           name: file.parent?.name || "",
           fullPath: file.parent?.fullPath || "",
         },
-      };
-    });
+      });
+    }
 
     const rootFolder: RootFolder = {
       name: root,

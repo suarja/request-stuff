@@ -11,7 +11,15 @@ export type TreeFile = {
   fullPath: string;
   url?: string;
   size?: number;
+  metadata: {
+    name: string;
+    fullPath: string;
+    contentType: string;
+    timeCreated: string;
+    updated: string;
 
+    size: number;
+  } | null;
   parent: {
     name: string;
     fullPath: string;
