@@ -1,11 +1,13 @@
 import { PlusIcon } from "@radix-ui/react-icons";
 import { RootRequestFolderWithParams } from "../../domain/entities/request-types";
+import { RequestFolder } from "./RequestFolder";
 
 export default function RequestFolderTree({
   title,
   path,
   requests,
   params,
+  subFolders,
 }: RootRequestFolderWithParams) {
   return (
     <div className="w-full   sm:max-w-2xl mx-auto">
@@ -17,7 +19,15 @@ export default function RequestFolderTree({
             <span className="sr-only">Add new file</span>
           </button>
         </div>
-        <div className="p-4 space-y-2"></div>
+        <div className="p-4 space-y-2">
+          <RequestFolder
+            title={title}
+            params={params}
+            requests={requests}
+            path={path}
+            subFolders={subFolders}
+          />
+        </div>
       </div>
     </div>
   );
