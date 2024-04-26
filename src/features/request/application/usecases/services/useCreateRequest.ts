@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Request } from "../../repositories/request-repository";
 import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
 import path from "path";
 import { requestUsecases } from "../request-usecases";
+import { Request } from "@/features/request/domain/entities/request-types";
+import { isRight } from "fp-ts/lib/Either";
 
 export default function useCreateRequest() {
   const [loading, setLoading] = useState(false);
@@ -24,10 +25,14 @@ export default function useCreateRequest() {
         .createRequest({
           props,
         })
-        .then((id) => {
-          if (id) {
-            setRequestId(id);
-            toast.success(`Request created successfully with id: ${id}`);
+        .then((eitherErrorOrUndefined) => {
+          if (isRight(eitherErrorOrUndefined)) {
+            setRequestId(props.id);
+            toast.success(
+              `Request created successfully with id: ${eitherErrorOrUndefined}`
+            );
+          } else {
+            toast.error("Failed to create request");
           }
         })
         .catch((error) => {
