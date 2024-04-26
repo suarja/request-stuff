@@ -1,14 +1,14 @@
 import { PlusIcon } from "@radix-ui/react-icons";
-import { RootRequestFolderWithParams } from "../../domain/entities/request-types";
 import { RequestFolder } from "./RequestFolder";
+import { ClientRequestFolder } from "../../domain/entities/request-types";
 
 export default function RequestFolderTree({
   title,
   path,
   requests,
   params,
-  subFolders,
-}: RootRequestFolderWithParams) {
+  setSelectedRequest
+}: ClientRequestFolder) {
   return (
     <div className="w-full   sm:max-w-2xl mx-auto">
       <div className="bg-secondary rounded-lg shadow-md dark:bg-gray-950 overflow-hidden">
@@ -21,6 +21,7 @@ export default function RequestFolderTree({
         </div>
         <div className="p-4 space-y-2">
           <RequestFolder
+            setSelectedRequest={setSelectedRequest}
             title={title}
             params={params}
             requests={requests}

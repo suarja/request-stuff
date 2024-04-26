@@ -2,13 +2,13 @@
 import FolderIcon from "@/common/icons/FolderIcon";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import CustomDialog from "@/common/components/CustomDialog";
-import { RootRequestFolderWithParams } from "../../domain/entities/request-types";
+import { ClientRequestFolder } from "../../domain/entities/request-types";
 import useHandleFolderState from "@/features/file/application/usecases/services/useHandleFolderState";
 import { Request } from "./Request";
 import CreateRequestForm from "./RequestForm";
 
-export function RequestFolder(props: RootRequestFolderWithParams) {
-  const { title, path, requests, params, subFolders } = props;
+export function RequestFolder(props: ClientRequestFolder) {
+  const { title, requests, setSelectedRequest} = props;
 
   const { open, handleToggle } = useHandleFolderState(title);
 
@@ -44,7 +44,7 @@ export function RequestFolder(props: RootRequestFolderWithParams) {
       {open && (
         <>
           {requests.map((requestData, index) => {
-            return <Request key={index} request={requestData} />;
+            return <Request key={index} request={requestData} setSelectedRequest={setSelectedRequest} />;
           })}
           {/* {subFolders.map((subFolder, index) => {
             return (

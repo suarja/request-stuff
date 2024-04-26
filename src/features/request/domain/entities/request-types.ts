@@ -1,4 +1,5 @@
 import { FileSenderData } from "@/features/file/application/repositories/file-repository";
+import { Dispatch, SetStateAction } from "react";
 
 // export type FileSenderData = {
 //   senderName?: string;
@@ -43,8 +44,10 @@ export interface RequestFolder {
   path: string;
   requests: Request[];
   subFolders?: RequestSubFolder[];
-}
-
-export interface RootRequestFolderWithParams extends RequestFolder {
   params: string;
 }
+
+export interface ClientRequestFolder extends RequestFolder {
+  setSelectedRequest: Dispatch<SetStateAction<Request | null>>;
+}
+
