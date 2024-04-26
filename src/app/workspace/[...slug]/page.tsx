@@ -15,9 +15,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
     return <div>Not logged in</div>;
   }
 
-  console.log({ params });
   const paramsConcat = params.slug.join("/");
-  console.log({ paramsConcat });
   const path = paramsConcat === "files" ? "files" : paramsConcat;
 
   store.setData(path);
@@ -25,7 +23,6 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
     path: `users/${userId}/${path}`,
     root: params.slug[params.slug.length - 1],
   });
-  console.log({ pathContent });
 
   return (
     <div>

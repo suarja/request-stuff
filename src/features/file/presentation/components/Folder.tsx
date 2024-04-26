@@ -40,6 +40,7 @@ export function Folder({ props }: FolderProps) {
   const [open, setOpen] = useState(() => searchParams.get(name) === "true");
   const router = useRouter();
   const pathName = usePathname();
+  
   useEffect(() => {
    const isInUrl = searchParams.has(name);
     if (!isInUrl) {
