@@ -1,11 +1,7 @@
 import { DocumentData } from "firebase/firestore";
-import {
-  Request,
-  RequestWithId,
-} from "../../application/repositories/request-repository";
-
+import { Request } from "../../domain/entities/request-types";
 export default class RequestDto implements DTO<Request, DocumentData> {
-  fromDomain({ data }: { data: RequestWithId }): void {
+  fromDomain({ data }: { data: Request }): void {
     throw new Error("Method not implemented.");
   }
   toDomain({ data }: { data: DocumentData }): Request {
@@ -19,6 +15,8 @@ export default class RequestDto implements DTO<Request, DocumentData> {
       path: data.path,
       url: data.url,
       id: data.id,
+      uploads: data.uploads ?? [],
+      numberOfUploads: data.numberOfUploads ?? 0,
     };
   }
 }

@@ -14,7 +14,7 @@ import { Textarea } from "@/common/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { RequestSchema } from "../../domain/entities/request-schema";
-import { Request } from "../../application/repositories/request-repository";
+import { Request } from "../../domain/entities/request-types"; 
 import useCreateRequest from "../../application/usecases/services/useCreateRequest";
 import { useEffect } from "react";
 import {

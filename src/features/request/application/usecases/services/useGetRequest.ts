@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { RequestWithId } from "../../repositories/request-repository";
 import { requestUsecases } from "../request-usecases";
+import {
+  RequestBase,
+} from "@/features/request/domain/entities/request-types";
 
 export default function useGetRequest() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [requestId, setRequestId] = useState<string | null>(null);
-  const [request, setRequest] = useState<RequestWithId | null>(null);
+  const [request, setRequest] = useState<RequestBase | null>(null);
 
   useEffect(() => {
     if (requestId) {
@@ -20,7 +22,7 @@ export default function useGetRequest() {
             setLoading(false);
             return;
           }
-          const request: RequestWithId = {
+          const request = {
             ...data,
             id: requestId,
           };

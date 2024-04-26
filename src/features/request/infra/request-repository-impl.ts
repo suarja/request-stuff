@@ -48,7 +48,6 @@ export default class RequestRepositoryImpl extends RequestRepository {
     props: RequestBase;
   }): Promise<Either<Error, void>> {
     try {
-      // const path = `users/${props.userId}/requests`;
       const id = await this.firestoreRepository.addDocument(
         props.path,
         props,
@@ -56,6 +55,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
       );
       return right(undefined);
     } catch (error) {
+      console.log({ error });
       return left(new Error("Error adding request to public collection"));
     }
   }

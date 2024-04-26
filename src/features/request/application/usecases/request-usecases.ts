@@ -15,10 +15,11 @@ export default class RequestUsecases {
   }: {
     props: RequestBase;
   }): Promise<Either<Error, void>> {
+    const pathForUserCollection = `users/${props.userId}/requests`;
     const batch = await Promise.allSettled([
       this.requestRepository.addRequestToPublic({ props }),
       this.requestRepository.addRequestToUser({
-        path: props.path,
+        path: pathForUserCollection,
         userId: props.userId,
         request: { ...props, numberOfUploads: 0, uploads: [] },
       }),
@@ -32,6 +33,7 @@ export default class RequestUsecases {
       return isLeft(asyncResult.value);
     });
     if (isAnyError) {
+      console.log({ isAnyError });
       return left(new Error("Error while batching request creations promises"));
     }
     return right(undefined);
