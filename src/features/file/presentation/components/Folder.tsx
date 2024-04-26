@@ -11,6 +11,7 @@ export type TreeFile = {
   fullPath: string;
   url?: string;
   size?: number;
+
   parent: {
     name: string;
     fullPath: string;
@@ -34,7 +35,6 @@ export type FolderProps = {
 
 export function Folder({ props }: FolderProps) {
   const { files, name, folders } = props;
- 
 
   const { open, handleToggle } = useHandleFolderState(name);
 

@@ -6,6 +6,7 @@ import FileRepository, {
 } from "../application/repositories/file-repository";
 import {
   FirebaseStorage,
+  FullMetadata,
   ListResult,
   StorageReference,
   UploadResult,
@@ -100,8 +101,11 @@ export default class FileRepositoryImplementation extends FileRepository {
 
     const url =
       fileInformation[0].status === "fulfilled" ? fileInformation[0].value : "";
-    const metadata =
-      fileInformation[1].status === "fulfilled" ? fileInformation[1].value : {};
+
+    const metadata: FullMetadata | null =
+      fileInformation[1].status === "fulfilled"
+        ? fileInformation[1].value
+        : null;
 
     return { url, metadata };
   }
