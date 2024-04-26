@@ -1,9 +1,6 @@
-import CustomDialog from "@/common/components/CustomDialog";
 import { Nav } from "@/common/components/Nav";
 import { fileUsecases } from "@/features/file/application/usecases/file-usecases";
-import FileUpload from "@/features/file/presentation/components/FileUpload";
 import FolderTree from "@/features/file/presentation/components/Foldertree";
-import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
 import { cookies } from "next/headers";
 
 export default async function Page({ params }: { params: { slug: string[] } }) {
