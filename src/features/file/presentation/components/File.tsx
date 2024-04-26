@@ -2,6 +2,7 @@ import { FileIcon } from "@radix-ui/react-icons";
 import { RootFolder } from "./Folder";
 import { formatDate } from "@/common/utils/date-format";
 import { convertKbToMb } from "@/common/utils/from-kb-to-mb";
+import { convertMimeTypeToDescription } from "@/common/utils/content-type";
 
 export type FileProps = {
   file: RootFolder["files"][number];
@@ -20,7 +21,7 @@ export function File({ file }: FileProps) {
         </div>
         <div className="flex items-center space-x-2">
           <span className="text-gray-500 text-sm dark:text-gray-400">
-            {file.metadata?.size} KB
+            {convertMimeTypeToDescription(file.metadata?.contentType ?? "")}
           </span>
           <span className="text-gray-500 text-sm dark:text-gray-400">
             {convertKbToMb(file.metadata?.size ?? 0)}
