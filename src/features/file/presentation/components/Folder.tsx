@@ -3,10 +3,8 @@
 import FolderIcon from "@/common/icons/FolderIcon";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { File } from "./File";
-import { useEffect, useState } from "react";
 import SubFolder from "./SubFolder";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import useHandleFolderState from "../../application/usecases/services/useHandleFolderState";
 
 export type TreeFile = {
   name: string;
@@ -36,31 +34,9 @@ export type FolderProps = {
 
 export function Folder({ props }: FolderProps) {
   const { files, name, folders } = props;
-  const searchParams = useSearchParams();
-  const [open, setOpen] = useState(() => searchParams.get(name) === "true");
-  const router = useRouter();
-  const pathName = usePathname();
-  
-  useEffect(() => {
-   const isInUrl = searchParams.has(name);
-    if (!isInUrl) {
-      const newParams = new URLSearchParams(searchParams.toString());
-      newParams.set(name, open.toString());
-      router.replace(`${pathName}?${newParams.toString()}`);
-    }
-    
-  }, []);
+ 
 
-  function handleToggle() {
-    const isOpen = searchParams.get(name) === "true";
-    setOpen(!isOpen);
-
-    const newParams = new URLSearchParams(searchParams.toString());
-    newParams.set(name, (!isOpen).toString());
-    console.log({ paramsString: newParams.toString() });
-    router.replace(`
-      ${pathName}?${newParams.toString()}`);
-  }
+  const { open, handleToggle } = useHandleFolderState(name);
 
   return (
     <>
