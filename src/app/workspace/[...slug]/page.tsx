@@ -1,3 +1,4 @@
+import { Nav } from "@/common/components/Nav";
 import { store } from "@/context/params-server-components";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 import FolderTree from "@/features/file/presentation/components/Foldertree";
@@ -25,8 +26,11 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   });
 
   return (
-    <div>
-      <FolderTree title="Documents" root={pathContent} />
-    </div>
+    <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start p-12">
+      <Nav />
+      <section className="flex flex-col h-full w-full justify-center gap-4 p-1">
+        <FolderTree title="Documents" root={pathContent} />
+      </section>
+    </main>
   );
 }

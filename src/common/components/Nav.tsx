@@ -1,3 +1,4 @@
+"use client";
 import { ModeToggle } from "./ModeToggle";
 import NavbarLogo from "./NavBarLogo";
 import { Button } from "@/common/components/ui/button";
