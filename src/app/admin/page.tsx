@@ -5,7 +5,7 @@ import FileUpload from "../../features/file/presentation/components/FileUpload";
 import FilesTable from "../../features/file/presentation/components/FilesTable";
 import CustomDialog from "@/common/components/CustomDialog";
 import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
-import useGetRequests from "@/features/request/application/usecases/services/useGetRequests";
+import useGetPublicRequests from "@/features/request/application/usecases/services/useGetPublicRequests";
 import { Button } from "@/common/components/ui/button";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEffect } from "react";
@@ -13,7 +13,7 @@ import { useEffect } from "react";
 function Page(): JSX.Element {
   useAuthMiddleware();
   const user = useAuthContext();
-  const { loading, requests, setUserId } = useGetRequests();
+  const { loading, requests, setUserId } = useGetPublicRequests();
 
   useEffect(() => {
     if (user) {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { requestUsecases } from "../request-usecases";
 import { RequestBase } from "@/features/request/domain/entities/request-types";
 
-export default function useGetRequests() {
+export default function useGetPublicRequests() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
