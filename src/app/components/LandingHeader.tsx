@@ -19,7 +19,7 @@ export default function LandingHeader() {
           Contact
         </Link>
       </nav>
-      <Link href={"/admin"}>Get Started</Link>
+      <Link href={"/dashboard/requests?"}>Get Started</Link>
     </header>
   );
 }
