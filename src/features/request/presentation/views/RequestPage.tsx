@@ -51,13 +51,11 @@ export default function RequestPage({ request }: { request: Request }) {
         <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
           No files uploaded yet.
         </div>
-        <div className="space-y-4">
-          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-950">
+       
             {request.uploads.map((upload, index) => (
               <UploadCard key={index} upload={upload} />
             ))}
-          </div>
-        </div>
+         
       </div>
     </div>
   );
