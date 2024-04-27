@@ -10,7 +10,7 @@ import CreateRequestForm from "./RequestForm";
 export function RequestFolder(props: ClientRequestFolder) {
   const { title, requests, setSelectedRequest} = props;
 
-  const { open, handleToggle } = useHandleFolderState(title);
+  const { open, handleToggle } = useHandleFolderState();
 
   return (
     <>

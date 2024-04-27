@@ -49,7 +49,7 @@ export type FolderProps = {
 export function Folder({ props }: FolderProps) {
   const { files, name, folders, params } = props;
 
-  const { open, handleToggle } = useHandleFolderState(name);
+  const { open, handleToggle } = useHandleFolderState();
 
   return (
     <>

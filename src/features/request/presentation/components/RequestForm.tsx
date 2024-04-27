@@ -14,21 +14,14 @@ import { Textarea } from "@/common/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { RequestSchema } from "../../domain/entities/request-schema";
-import { Request } from "../../domain/entities/request-types"; 
+import { Request } from "../../domain/entities/request-types";
 import useCreateRequest from "../../application/usecases/services/useCreateRequest";
-import {
-  ReadonlyURLSearchParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { usePathname } from "next/navigation";
+import useHandleFolderState from "@/features/file/application/usecases/services/useHandleFolderState";
 
 export default function CreateRequestForm() {
-  const { loading, requestId, setRequestCreationProps } = useCreateRequest();
-  const router = useRouter();
-  const replace = useRouter().replace;
+  const { setRequestCreationProps } = useCreateRequest();
   const pathName = usePathname();
-  const urlParams = useSearchParams();
 
   const form = useForm<Request>({
     resolver: zodResolver(RequestSchema),
@@ -40,31 +33,35 @@ export default function CreateRequestForm() {
       dateLimit: 0,
     },
   });
+  useHandleFolderState();
 
-  function urlCreator({ params }: { params: ReadonlyURLSearchParams }) {
-    return `${window.location.origin}/upload/request?${params.toString()}`;
-  }
-  function updateStateUrl({
-    form,
-    id,
-  }: {
+  function constructUrlWithQueryParams(
+    pathName: string,
+    form: UseFormReturn<Request, any, undefined>
+  ): {
+    url: string;
     id: string;
-    form: UseFormReturn<Request, any, undefined>;
-  }) {
+  } {
     // Build the query string
     const params = new URLSearchParams();
-    params.append("requestId", id);
-    
-
-    replace(`${pathName}?${params.toString()}`);
-  }
-
-  async function onSubmit(values: Request) {
     const id = crypto.randomUUID();
+    params.append("requestId", id);
+    params.append("requestName", form.getValues("name"));
+    params.append("requestDescription", form.getValues("description") || "");
+    params.append(
+      "maxFileSize",
+      form.getValues("maxFileSize")?.toString() || "10"
+    );
+    params.append("maxFiles", form.getValues("maxFiles")?.toString() || "10");
+    params.append("dateLimit", form.getValues("dateLimit")?.toString() || "");
 
-    updateStateUrl({ form, id });
-
-    const url = urlCreator({ params: urlParams });
+    return {
+      url: `${window.location.origin}/upload/request?${params.toString()}`,
+      id,
+    };
+  }
+  async function onSubmit(values: Request) {
+    const { url, id } = constructUrlWithQueryParams(pathName, form);
 
     const request = {
       ...values,
@@ -73,16 +70,9 @@ export default function CreateRequestForm() {
     };
 
     setRequestCreationProps(request);
-    
+
     form.reset();
   }
-
-  // useEffect(() => {
-  //   if (requestId) {
-  //     const url = urlCreator({ params: urlParams });
-  //     router.push(url);
-  //   }
-  // }, [requestId]);
 
   return (
     <>
