@@ -25,20 +25,21 @@ export default function RequestGrid({
           }  `
         )}
       >
-        <RequestFolderTree
-          setSelectedRequest={setSelectedRequest}
-          params={params}
-          title="Requests"
-          requests={requests}
-          path=""
-        />
-        {selectedRequest && (
+        {selectedRequest ? (
           <>
             <RequestPage
               request={selectedRequest}
               setSelectedRequest={setSelectedRequest}
             />
           </>
+        ) : (
+          <RequestFolderTree
+            setSelectedRequest={setSelectedRequest}
+            params={params}
+            title="Requests"
+            requests={requests}
+            path=""
+          />
         )}
       </section>
     </>
