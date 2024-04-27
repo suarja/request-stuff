@@ -1,4 +1,3 @@
-import { UploadResult } from "firebase/storage";
 import { fileRepositoryImplementation } from "../../infra/file-repository-impl";
 import FileRepository from "../repositories/file-repository";
 import { getUserIdFromSessionCookie } from "@/lib/firebase/auth/server-side-user-id";
@@ -9,8 +8,7 @@ export default class FileUsecases {
     this.fileRepository = fileRepository;
   }
 
-  //! TODO: Remove infra return type, update props and add business logic and validation
-  async uploadFile(path: string, value: any): Promise<UploadResult> {
+  async uploadFile(path: string, value: any): Promise<string> {
     return await this.fileRepository.uploadFile({ path, value });
   }
 
