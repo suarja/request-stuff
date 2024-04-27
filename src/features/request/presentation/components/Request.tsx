@@ -6,6 +6,7 @@ import {
 } from "../../domain/entities/request-types";
 import DeleteIcon from "@/common/icons/DeleteIcon";
 import { formatDate } from "@/common/utils/date-format";
+import { CopyToClipBoardComponent } from "../views/RequestPage";
 
 export function Request({
   request,
@@ -36,6 +37,7 @@ export function Request({
           <span className="text-gray-500 text-sm dark:text-gray-400">
             limit: {formatDate({ date: new Date(request.dateLimit ?? 0) })}
           </span>
+          <CopyToClipBoardComponent url={request.url} />
           <DeleteIcon />
           {/* <DeleteButton path={file.fullPath} /> */}
         </div>
