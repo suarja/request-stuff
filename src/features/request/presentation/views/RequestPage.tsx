@@ -25,18 +25,7 @@ export default function RequestPage({ request }: { request: Request }) {
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Request url
           </p>
-          <p>
-            {/* Add a button to copy the url to clipboard */}
-            <button
-              className=" text-white font-bold py-2 px-4 rounded"
-              onClick={() => {
-                navigator.clipboard.writeText(request.url);
-                toast.success("Copied to clipboard");
-              }}
-            >
-              <CopyToClipBoardIcon />
-            </button>
-          </p>
+          <CopyToClipBoardComponent url={request.url} />
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -71,6 +60,20 @@ export default function RequestPage({ request }: { request: Request }) {
         </div>
       </div>
     </div>
+  );
+}
+
+export function CopyToClipBoardComponent({ url }: { url: string }) {
+  return (
+    <button
+      className=" text-white font-bold py-2 px-4 rounded"
+      onClick={() => {
+        navigator.clipboard.writeText(url);
+        toast.success("Copied to clipboard");
+      }}
+    >
+      <CopyToClipBoardIcon />
+    </button>
   );
 }
 
