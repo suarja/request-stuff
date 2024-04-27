@@ -34,7 +34,10 @@ export default function RequestGrid({
         />
         {selectedRequest && (
           <>
-            <RequestPage request={selectedRequest} />
+            <RequestPage
+              request={selectedRequest}
+              setSelectedRequest={setSelectedRequest}
+            />
           </>
         )}
       </section>

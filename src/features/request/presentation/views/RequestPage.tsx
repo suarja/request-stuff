@@ -1,19 +1,29 @@
 import {
+  ClientRequestFolder,
   Request,
   UserUpload,
 } from "@/features/request/domain/entities/request-types";
-import {
-  AvatarImage,
-  AvatarFallback,
-  Avatar,
-} from "@/common/components/ui/avatar";
+import { AvatarFallback, Avatar } from "@/common/components/ui/avatar";
 import Link from "next/link";
 import CopyToClipBoardIcon from "../../../../../CopyToClipboard";
 import { toast } from "sonner";
+import CloseIcon from "@/common/icons/CloseIcon";
 
-export default function RequestPage({ request }: { request: Request }) {
+export default function RequestPage({
+  request,
+  setSelectedRequest,
+}: {
+  request: Request;
+  setSelectedRequest: ClientRequestFolder["setSelectedRequest"];
+}) {
   return (
     <div className="grid gap-6 md:gap-8 bg-secondary rounded-lg shadow-md dark:bg-gray-950 overflow-hidden px-4 py-3">
+      <div
+        onClick={() => setSelectedRequest(null)}
+        className="flex justify-end cursor-pointer "
+      >
+        <CloseIcon className="h-6 w-6" />
+      </div>
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold">File Request: {request.name} </h1>
         <p className="text-gray-500 dark:text-gray-400">
@@ -51,11 +61,10 @@ export default function RequestPage({ request }: { request: Request }) {
         <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
           No files uploaded yet.
         </div>
-       
-            {request.uploads.map((upload, index) => (
-              <UploadCard key={index} upload={upload} />
-            ))}
-         
+
+        {request.uploads.map((upload, index) => (
+          <UploadCard key={index} upload={upload} />
+        ))}
       </div>
     </div>
   );
