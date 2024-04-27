@@ -5,7 +5,7 @@ import {
 } from "@/features/request/domain/entities/request-types";
 import { AvatarFallback, Avatar } from "@/common/components/ui/avatar";
 import Link from "next/link";
-import CopyToClipBoardIcon from "../../../../../CopyToClipboard";
+import CopyToClipBoardIcon from "../../../../common/icons/CopyToClipboard";
 import { toast } from "sonner";
 import CloseIcon from "@/common/icons/CloseIcon";
 import React from "react";
