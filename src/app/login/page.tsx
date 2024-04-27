@@ -8,14 +8,18 @@ import signIn from "@/lib/firebase/auth/signIn";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BASE_URL } from "@/common/constants";
+import { set } from "zod";
+import LoadingIcon from "@/common/icons/LoadingIcon";
 
 export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleForm = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    setLoading(true);
 
     // Attempt to sign in with provided email and password
     const { result, error } = await signIn(email, password);
@@ -95,8 +99,8 @@ export default function Component() {
               type="password"
             />
           </div>
-          <Button className="w-full" type="submit">
-            Sign in
+          <Button disabled={loading} className="w-full" type="submit">
+            {loading ? <LoadingIcon /> : "Sign in"}
           </Button>
         </form>
 
