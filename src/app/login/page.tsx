@@ -7,6 +7,7 @@ import Link from "next/link";
 import signIn from "@/lib/firebase/auth/signIn";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BASE_URL } from "@/common/constants";
 
 export default function Component() {
   const [email, setEmail] = useState("");
@@ -36,7 +37,7 @@ export default function Component() {
 
     // Typically you would send the token_id to your backend and verify the token_id
     // and then create a session for the user
-    const response = await fetch("/api/login", {
+    const response = await fetch(`${BASE_URL}/api/login`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${await result.user.getIdToken()}`,
