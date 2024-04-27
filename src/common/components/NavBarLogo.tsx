@@ -1,7 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 const NavbarLogo = () => {
   return (
-    <div className="flex items-center bg-primary ">
+    <Link href={"/"} className="flex items-center bg-primary ">
       <Image
         src="/logo.webp"
         alt="RequestStuff Logo"
@@ -10,7 +11,7 @@ const NavbarLogo = () => {
         height={10}
       />
       <h1 className="text-lg font-bold text-foreground pr-2">RequestStuff</h1>
-    </div>
+    </Link>
   );
 };
 
