@@ -34,6 +34,7 @@ export default function SenderMetadataForm({
   file: File;
   requestId: string;
   requestName: string;
+  
 }) {
   const { error, loading, succes, setUploadFileFromRequestProps } =
     useUploadFileFromRequest();
@@ -71,6 +72,7 @@ export default function SenderMetadataForm({
       file,
       requestId,
       senderData: {
+        fileUrl: "",
         senderName: form.getValues("name"),
         senderEmail: form.getValues("email"),
       },

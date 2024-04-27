@@ -23,7 +23,7 @@ export default abstract class RequestRepository {
     requestData: RequestBase;
     file: File;
     fileSenderData?: FileSenderData;
-  }): Promise<void>;
+  }): Promise<string>;
 
   abstract addRequestToUser({
     path,
@@ -45,6 +45,12 @@ export default abstract class RequestRepository {
   }: {
     userId: string;
   }): Promise<Request[]>;
-  abstract updateRequest(): Promise<void>;
+  abstract updateRequestInUserCollection({
+    requestData,
+    fileSenderData,
+  }: {
+    requestData: RequestBase;
+    fileSenderData: FileSenderData;
+  }): Promise<void>;
   abstract deleteRequest(): Promise<void>;
 }

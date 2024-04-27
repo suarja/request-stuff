@@ -10,7 +10,7 @@ export default abstract class FileRepository {
     path: string;
     value: File;
     customMetadata?: FileSenderData;
-  }): Promise<UploadResult>;
+  }): Promise<string>;
   abstract getUserFiles({
     userId,
   }: {
@@ -25,7 +25,6 @@ export default abstract class FileRepository {
     root: string;
   }): Promise<RootFolder>;
 
-  
   abstract remove({ path }: { path: string }): Promise<"ok" | "not ok">;
   abstract clear(): Promise<void>;
 }
@@ -39,8 +38,8 @@ export type FileFromStorage = {
 export type FileSenderData = {
   senderName: string;
   senderEmail?: string;
+
   message?: string;
   uploadDate?: string;
-  
- 
+  fileUrl: string;
 };

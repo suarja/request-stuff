@@ -67,14 +67,15 @@ export default class RequestUsecases {
         throw new Error("Request not found");
       }
 
-      await this.requestRepository.uploadFileFromRequest({
+      const fileUrl = await this.requestRepository.uploadFileFromRequest({
         requestData: requestPayload,
         file,
         fileSenderData,
       });
+      return fileUrl;
     } catch (error) {
       console.error(error);
-      return null
+      return null;
     }
   }
 }

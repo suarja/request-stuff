@@ -34,13 +34,42 @@ export default class RequestRepositoryImpl extends RequestRepository {
     requestData: RequestBase;
     file: File;
     fileSenderData: FileSenderData;
-  }): Promise<void> {
+  }): Promise<string> {
     const path = `users/${requestData.userId}/requests/${requestData.id}/files/${file.name}`;
-    await this.fileRepository.uploadFile({
+    console.log({ path, fileSenderData });
+    const fileUrl = await this.fileRepository.uploadFile({
       path,
       value: file,
       customMetadata: fileSenderData,
     });
+    // Update user request entry
+    await this.updateRequestInUserCollection({
+      requestData,
+      fileSenderData: {
+        ...fileSenderData,
+        fileUrl,
+      },
+    });
+    return fileUrl;
+  }
+
+  async updateRequestInUserCollection({
+    requestData,
+    fileSenderData,
+  }: {
+    requestData: RequestBase;
+    fileSenderData: FileSenderData;
+  }): Promise<void> {
+    const path = `users/${requestData.userId}/requests`;
+    console.log({ path, requestId: requestData.id, requestData });
+    await this.firestoreRepository.updateArrayInDocument({
+      collection: path,
+      field: "uploads",
+      data: fileSenderData,
+      id: requestData.id,
+      incrementNumber: "numberOfUploads",
+    });
+    return;
   }
   async addRequestToPublic({
     props,

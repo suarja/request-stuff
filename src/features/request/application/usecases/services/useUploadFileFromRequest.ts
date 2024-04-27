@@ -24,7 +24,12 @@ export default function useUploadFileFromRequest() {
           file: uploadFileFromRequestProps.file,
           fileSenderData: uploadFileFromRequestProps.senderData,
         })
-        .then(() => {
+        .then((fileUrl) => {
+          if (!fileUrl) {
+            setError("Error uploading file");
+            setLoading(false);
+            return;
+          }
           setSuccess(true);
           setLoading(false);
         })

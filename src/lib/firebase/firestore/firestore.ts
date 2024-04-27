@@ -14,6 +14,7 @@ import {
   query,
   where,
   arrayUnion,
+  increment,
 } from "firebase/firestore";
 export const FirestoreDB = getFirestore(firebase_app);
 
@@ -98,14 +99,17 @@ export class FirestoreFactory {
     id,
     field,
     data,
+    incrementNumber,
   }: {
     collection: string;
     id: string;
     field: string;
     data: any;
+    incrementNumber: string;
   }) {
     const docRef = doc(this.db, collection, id);
     await updateDoc(docRef, {
+      [incrementNumber]: increment(1),
       [field]: arrayUnion(data),
     });
   }

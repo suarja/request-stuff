@@ -8,7 +8,7 @@ import {
   FirebaseStorage,
   FullMetadata,
   StorageReference,
-  UploadResult,
+  UploadResult as string,
   deleteObject,
   getDownloadURL,
   getMetadata,
@@ -36,11 +36,12 @@ export default class FileRepositoryImplementation extends FileRepository {
     path: string;
     value: File;
     customMetadata?: FileSenderData;
-  }): Promise<UploadResult> {
+  }): Promise<string> {
     const storageRef = ref(this.bucket, path);
 
     const result = await uploadBytes(storageRef, value, { customMetadata });
-    return result;
+    const url = await getDownloadURL(result.ref);
+    return url;
   }
 
   async getUserFiles({
@@ -133,8 +134,6 @@ export default class FileRepositoryImplementation extends FileRepository {
       return "not ok";
     }
   }
-
- 
 
   async clear(): Promise<void> {
     throw new Error("Method not implemented.");
