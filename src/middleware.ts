@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { BASE_URL } from "./common/constants";
 
 export async function middleware(request: NextRequest, response: NextResponse) {
   const session = request.cookies.get("session");
@@ -10,7 +11,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   }
 
   //Call the authentication endpoint
-  const responseAPI = await fetch("/api/login", {
+  const responseAPI = await fetch(`${BASE_URL}/api/login`, {
     headers: {
       Cookie: `session=${session?.value}`,
     },
