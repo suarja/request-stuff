@@ -1,6 +1,11 @@
-export default function CopyToClipBoardIcon() {
+import React from "react";
+
+export default function CopyToClipBoardIcon(
+  props: React.SVGProps<SVGSVGElement>
+) {
   return (
     <svg
+      {...props}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

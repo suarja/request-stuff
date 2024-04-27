@@ -8,6 +8,7 @@ import Link from "next/link";
 import CopyToClipBoardIcon from "../../../../../CopyToClipboard";
 import { toast } from "sonner";
 import CloseIcon from "@/common/icons/CloseIcon";
+import React from "react";
 
 export default function RequestPage({
   request,
@@ -70,10 +71,16 @@ export default function RequestPage({
   );
 }
 
-export function CopyToClipBoardComponent({ url }: { url: string }) {
+export function CopyToClipBoardComponent({
+  url,
+  props,
+}: {
+  url: string;
+  props?: React.ComponentProps<"button">;
+}) {
   return (
     <button
-      className=" text-white font-bold py-2 px-4 rounded"
+      {...props}
       onClick={() => {
         navigator.clipboard.writeText(url);
         toast.success("Copied to clipboard");

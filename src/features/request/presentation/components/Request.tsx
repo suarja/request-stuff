@@ -30,15 +30,18 @@ export function Request({
             {request.name}
           </button>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
           <span className="text-gray-500 text-sm dark:text-gray-400">
             {request.numberOfUploads} uploads
           </span>
           <span className="text-gray-500 text-sm dark:text-gray-400">
             limit: {formatDate({ date: new Date(request.dateLimit ?? 0) })}
           </span>
-          <CopyToClipBoardComponent url={request.url} />
-          <DeleteIcon />
+          <CopyToClipBoardComponent
+            url={request.url}
+            props={{ className: "" }}
+          />
+          <DeleteIcon className="h-6 text-red-700" />
           {/* <DeleteButton path={file.fullPath} /> */}
         </div>
       </div>
