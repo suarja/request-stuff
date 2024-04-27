@@ -21,6 +21,7 @@ import {
   SubFolder,
   TreeFile,
 } from "../presentation/components/Folder";
+import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 export default class FileRepositoryImplementation extends FileRepository {
   private bucket: FirebaseStorage;
 
@@ -37,11 +38,16 @@ export default class FileRepositoryImplementation extends FileRepository {
     value: File;
     customMetadata?: FileSenderData;
   }): Promise<string> {
-    const storageRef = ref(this.bucket, path);
+    try {
+      const storageRef = ref(this.bucket, path);
 
-    const result = await uploadBytes(storageRef, value, { customMetadata });
-    const url = await getDownloadURL(result.ref);
-    return url;
+      const result = await uploadBytes(storageRef, value, { customMetadata });
+      const url = await getDownloadURL(result.ref);
+      return url;
+    } catch (error) {
+      console.error(error);
+      return "";
+    }
   }
 
   async getUserFiles({

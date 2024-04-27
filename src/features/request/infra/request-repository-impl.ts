@@ -8,7 +8,11 @@ import FileRepository, {
 } from "@/features/file/application/repositories/file-repository";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
 import RequestDto from "./dto's/request-dto";
-import { Request, RequestBase } from "../domain/entities/request-types";
+import {
+  Request,
+  RequestBase,
+  UserUpload,
+} from "../domain/entities/request-types";
 import { Either, left, right } from "fp-ts/lib/Either";
 
 export default class RequestRepositoryImpl extends RequestRepository {
@@ -61,11 +65,17 @@ export default class RequestRepositoryImpl extends RequestRepository {
     fileSenderData: FileSenderData;
   }): Promise<void> {
     const path = `users/${requestData.userId}/requests`;
+    const data: UserUpload = {
+      fileUrl: fileSenderData.fileUrl,
+      fileSenderData: {
+        ...fileSenderData,
+      },
+    };
     console.log({ path, requestId: requestData.id, requestData });
     await this.firestoreRepository.updateArrayInDocument({
       collection: path,
       field: "uploads",
-      data: fileSenderData,
+      data,
       id: requestData.id,
       incrementNumber: "numberOfUploads",
     });

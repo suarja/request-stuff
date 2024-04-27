@@ -107,11 +107,15 @@ export class FirestoreFactory {
     data: any;
     incrementNumber: string;
   }) {
-    const docRef = doc(this.db, collection, id);
-    await updateDoc(docRef, {
-      [incrementNumber]: increment(1),
-      [field]: arrayUnion(data),
-    });
+    try {
+      const docRef = doc(this.db, collection, id);
+      await updateDoc(docRef, {
+        [incrementNumber]: increment(1),
+        [field]: arrayUnion(data),
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   // A method to delete a document from a collection

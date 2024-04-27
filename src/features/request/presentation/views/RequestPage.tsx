@@ -17,6 +17,7 @@ export default function RequestPage({
   request: Request;
   setSelectedRequest: ClientRequestFolder["setSelectedRequest"];
 }) {
+  console.log({ request });
   return (
     <div className="grid gap-6 md:gap-8 bg-secondary rounded-lg shadow-md dark:bg-gray-950 overflow-hidden px-8 py-4 pb-8 transition-opacity duration-500">
       <div
@@ -73,7 +74,7 @@ export default function RequestPage({
 
 export function CopyToClipBoardComponent({
   url,
-  props
+  props,
 }: {
   url: string;
   props?: React.ComponentProps<"button">;
@@ -93,6 +94,7 @@ export function CopyToClipBoardComponent({
 }
 
 export function UploadCard({ upload }: { upload: UserUpload }) {
+  console.log({ upload });
   return (
     <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-950">
       <Avatar>
