@@ -5,6 +5,7 @@ import path from "path";
 import { requestUsecases } from "../request-usecases";
 import { Request } from "@/features/request/domain/entities/request-types";
 import { isRight } from "fp-ts/lib/Either";
+import { useRouter } from "next/navigation";
 
 export default function useCreateRequest() {
   const [loading, setLoading] = useState(false);
@@ -12,6 +13,7 @@ export default function useCreateRequest() {
     useState<Request | null>(null);
   const [requestId, setRequestId] = useState<string | null>(null);
   const user = useAuthContext();
+  const router = useRouter();
   useEffect(() => {
     if (requestCreationProps && user) {
       const props = {
@@ -31,6 +33,7 @@ export default function useCreateRequest() {
             toast.success(
               `Request created successfully with id: ${eitherErrorOrUndefined}`
             );
+            router.refresh();
           } else {
             toast.error("Failed to create request");
           }
