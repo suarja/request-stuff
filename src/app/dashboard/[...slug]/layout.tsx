@@ -12,9 +12,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <>
+    <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start px-4 py-24  ">
       <Nav />
       {children}
-    </>
+    </main>
   );
 }

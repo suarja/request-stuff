@@ -26,9 +26,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthContextProvider>
-            <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start px-4 py-24  ">
               {children}
-            </main>
+            
             <Toaster richColors expand={false} />
           </AuthContextProvider>
         </ThemeProvider>
