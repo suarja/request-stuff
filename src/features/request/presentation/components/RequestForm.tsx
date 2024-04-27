@@ -85,12 +85,12 @@ export default function CreateRequestForm() {
     form.reset();
   }
 
-  useEffect(() => {
-    if (requestId) {
-      const url = urlCreator({ params: urlParams });
-      router.push(url);
-    }
-  }, [requestId]);
+  // useEffect(() => {
+  //   if (requestId) {
+  //     const url = urlCreator({ params: urlParams });
+  //     router.push(url);
+  //   }
+  // }, [requestId]);
 
   return (
     <>
