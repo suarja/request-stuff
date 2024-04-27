@@ -18,11 +18,8 @@ export default function RequestGrid({
       <section
         className={cn(
           "h-full w-full  gap-4 ",
-          `${
-            selectedRequest === null
-              ? "flex items-center flex-col justify-center"
-              : "grid grid-cols-1 sm:grid-cols-2 "
-          }  `
+          "grid grid-cols-1  ",
+         
         )}
       >
         {selectedRequest ? (
