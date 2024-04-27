@@ -15,7 +15,7 @@ export function Nav() {
           <Button
             onClick={() => {
               signOutUser();
-              router.refresh();
+              router.push("/");
             }}
             variant="outline"
           >
