@@ -16,7 +16,6 @@ import { UseFormReturn, useForm } from "react-hook-form";
 import { RequestSchema } from "../../domain/entities/request-schema";
 import { Request } from "../../domain/entities/request-types"; 
 import useCreateRequest from "../../application/usecases/services/useCreateRequest";
-import { useEffect } from "react";
 import {
   ReadonlyURLSearchParams,
   usePathname,

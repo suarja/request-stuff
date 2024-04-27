@@ -18,7 +18,7 @@ export default function RequestPage({
   setSelectedRequest: ClientRequestFolder["setSelectedRequest"];
 }) {
   return (
-    <div className="grid gap-6 md:gap-8 bg-secondary rounded-lg shadow-md dark:bg-gray-950 overflow-hidden px-4 py-3">
+    <div className="grid gap-6 md:gap-8 bg-secondary rounded-lg shadow-md dark:bg-gray-950 overflow-hidden px-8 py-4 pb-8 transition-opacity duration-500">
       <div
         onClick={() => setSelectedRequest(null)}
         className="flex justify-end cursor-pointer "
@@ -73,7 +73,7 @@ export default function RequestPage({
 
 export function CopyToClipBoardComponent({
   url,
-  props,
+  props
 }: {
   url: string;
   props?: React.ComponentProps<"button">;
@@ -81,6 +81,7 @@ export function CopyToClipBoardComponent({
   return (
     <button
       {...props}
+      className="  font-bold py-2 rounded"
       onClick={() => {
         navigator.clipboard.writeText(url);
         toast.success("Copied to clipboard");
