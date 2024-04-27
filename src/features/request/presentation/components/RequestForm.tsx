@@ -54,14 +54,7 @@ export default function CreateRequestForm() {
     // Build the query string
     const params = new URLSearchParams();
     params.append("requestId", id);
-    params.append("requestName", form.getValues("name"));
-    params.append("requestDescription", form.getValues("description") || "");
-    params.append(
-      "maxFileSize",
-      form.getValues("maxFileSize")?.toString() || "10"
-    );
-    params.append("maxFiles", form.getValues("maxFiles")?.toString() || "10");
-    params.append("dateLimit", form.getValues("dateLimit")?.toString() || "");
+    
 
     replace(`${pathName}?${params.toString()}`);
   }

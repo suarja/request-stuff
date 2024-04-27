@@ -13,7 +13,7 @@ export default function useHandleFolderState(name: string) {
     if (!isInUrl) {
       const newParams = new URLSearchParams(searchParams.toString());
       newParams.set(name, open.toString());
-      router.replace(`${pathName}?${newParams.toString()}`);
+      router.replace(`${pathName}?`);
     }
   }, []);
 
