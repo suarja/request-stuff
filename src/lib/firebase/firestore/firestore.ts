@@ -13,6 +13,7 @@ import {
   collection as Collection,
   query,
   where,
+  arrayUnion,
 } from "firebase/firestore";
 export const FirestoreDB = getFirestore(firebase_app);
 
@@ -75,8 +76,6 @@ export class FirestoreFactory {
     return data;
   }
 
-
-
   // A method to add a document to a collection
   async addDocument(collection: string, data: any, id?: string) {
     if (id) {
@@ -92,6 +91,23 @@ export class FirestoreFactory {
   async updateDocument(collection: string, id: string, data: any) {
     const docRef = doc(this.db, collection, id);
     await updateDoc(docRef, data);
+  }
+  // A method to update an array in a document in a collection
+  async updateArrayInDocument({
+    collection,
+    id,
+    field,
+    data,
+  }: {
+    collection: string;
+    id: string;
+    field: string;
+    data: any;
+  }) {
+    const docRef = doc(this.db, collection, id);
+    await updateDoc(docRef, {
+      [field]: arrayUnion(data),
+    });
   }
 
   // A method to delete a document from a collection
