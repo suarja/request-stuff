@@ -59,18 +59,23 @@ export default class RequestUsecases {
     file: File;
     fileSenderData: FileSenderData;
   }) {
-    const requestPayload = await this.requestRepository.getRequest({
-      requestId,
-    });
-    if (!requestPayload) {
-      throw new Error("Request not found");
-    }
+    try {
+      const requestPayload = await this.requestRepository.getRequest({
+        requestId,
+      });
+      if (!requestPayload) {
+        throw new Error("Request not found");
+      }
 
-    await this.requestRepository.uploadFileFromRequest({
-      requestData: requestPayload,
-      file,
-      fileSenderData,
-    });
+      await this.requestRepository.uploadFileFromRequest({
+        requestData: requestPayload,
+        file,
+        fileSenderData,
+      });
+    } catch (error) {
+      console.error(error);
+      return null
+    }
   }
 }
 
