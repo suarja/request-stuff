@@ -8,7 +8,6 @@ import signIn from "@/lib/firebase/auth/signIn";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BASE_URL } from "@/common/constants";
-import { set } from "zod";
 import LoadingIcon from "@/common/icons/LoadingIcon";
 
 export default function Component() {
@@ -53,7 +52,7 @@ export default function Component() {
       // Redirect to the admin page
       // Typically you would want to redirect them to a protected page an add a check to see if they are admin or
       // create a new page for admin
-      router.push("/dashboard/requests?");
+      router.push(`${BASE_URL}/dashboard/requests?`);
     }
   };
   return (
