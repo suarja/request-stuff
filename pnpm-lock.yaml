@@ -59,6 +59,9 @@ dependencies:
   firebase-admin:
     specifier: ^12.1.0
     version: 12.1.0
+  fp-ddd:
+    specifier: ^0.0.1
+    version: 0.0.1(fp-ts@2.16.5)
   fp-ts:
     specifier: ^2.16.5
     version: 2.16.5
@@ -3036,6 +3039,15 @@ packages:
     dev: false
     optional: true
 
+  /fp-ddd@0.0.1(fp-ts@2.16.5):
+    resolution: {integrity: sha512-O2luppweyNIfbqFRWXuMuiaDT8vt6Emu1CKDcZWvtGeUABQvXptN3vM3emnrAskB2WRFtv7xWiJpbHpQRuJ23g==}
+    peerDependencies:
+      fp-ts: ^2.16.5
+    dependencies:
+      fp-ts: 2.16.5
+      lodash.isequal: 4.5.0
+    dev: false
+
   /fp-ts@2.16.5:
     resolution: {integrity: sha512-N8T8PwMSeTKKtkm9lkj/zSTAnPC/aJIIrQhnHxxkL0KLsRCNUPANksJOlMXxcKKCo7H1ORP3No9EMD+fP0tsdA==}
     dev: false
@@ -3800,6 +3812,10 @@ packages:
 
   /lodash.isboolean@3.0.3:
     resolution: {integrity: sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==}
+    dev: false
+
+  /lodash.isequal@4.5.0:
+    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
     dev: false
 
   /lodash.isinteger@4.0.4:
