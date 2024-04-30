@@ -1,5 +1,3 @@
-import { Nav } from "@/common/components/Nav";
-
 export const metadata = {
   title: "RequestStuff",
   description:
