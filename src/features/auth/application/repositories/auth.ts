@@ -1,17 +1,7 @@
 import { Either } from "fp-ts/lib/Either";
-import { authFirebase } from "../../infra/auth-firebase";
 import { Failure } from "fp-ddd";
-
-export abstract class IAuth {
-  abstract signIn({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }): Promise<Either<Failure<string>, string>>;
-  abstract signOut(): Promise<void>;
-}
+import { authFirebase } from "../../infra/auth-firebase";
+import { IAuth } from "./types";
 
 export class AuthRepository {
   private readonly _auth: IAuth;

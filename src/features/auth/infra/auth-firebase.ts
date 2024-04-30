@@ -5,16 +5,19 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { IAuth } from "../application/repositories/auth";
 import firebase_app from "@/lib/firebase/config";
 import { Failure } from "fp-ddd";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { BASE_URL } from "@/common/constants";
+import { IAuth } from "../application/repositories/types";
 
+
+const auth = getAuth(firebase_app);
 class AuthFirebase extends IAuth {
   private readonly _authProvider: Auth;
   constructor(authProvider: Auth) {
     super();
+
     this._authProvider = authProvider;
   }
   async signIn({
@@ -84,4 +87,4 @@ class AuthFirebase extends IAuth {
   }
 }
 
-export const authFirebase = new AuthFirebase(getAuth(firebase_app));
+export const authFirebase = new AuthFirebase(auth);

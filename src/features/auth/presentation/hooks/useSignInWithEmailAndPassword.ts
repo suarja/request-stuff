@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+"use client";
 import { useEffect, useState } from "react";
 import AuthUsecases from "../../application/usecases/auth-usecases";
 import { isLeft } from "fp-ts/lib/Either";
@@ -18,10 +18,10 @@ export default function useSignInWithEmailAndPassword({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (options) {
+      setLoading(true);
       authUsecases
         .signInWithMailAndPassword({
           email: options.email,
@@ -31,9 +31,11 @@ export default function useSignInWithEmailAndPassword({
           if (isLeft(eitherId)) {
             setError(eitherId.left.message);
           }
+          setLoading(false);
           setSuccess("User signed in.");
         })
         .catch((e) => {
+          setLoading(false);
           setError("An error occured while sign in the user.");
         });
     }

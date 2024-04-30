@@ -1,6 +1,6 @@
+import { getUserIdFromSessionCookie } from "@/features/auth/application/services/server-side-user-id";
 import { fileRepositoryImplementation } from "../../infra/file-repository-impl";
 import FileRepository from "../repositories/file-repository";
-import { getUserIdFromSessionCookie } from "@/lib/firebase/auth/server-side-user-id";
 
 export default class FileUsecases {
   private fileRepository: FileRepository;

@@ -21,7 +21,6 @@ import {
   SubFolder,
   TreeFile,
 } from "../presentation/components/Folder";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 export default class FileRepositoryImplementation extends FileRepository {
   private bucket: FirebaseStorage;
 
