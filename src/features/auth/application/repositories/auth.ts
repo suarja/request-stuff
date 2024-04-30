@@ -1,7 +1,15 @@
+import { Either } from "fp-ts/lib/Either";
 import { authFirebase } from "../../infra/auth-firebase";
+import { Failure } from "fp-ddd";
 
-export class IAuth {
-  async signIn() {}
+export abstract class IAuth {
+  abstract signIn({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<Either<Failure<string>, string>>;
   async signOut() {}
 }
 
@@ -12,8 +20,17 @@ export class AuthRepository {
     this._auth = auth;
   }
 
-  async signIn() {
-    this._auth.signIn();
+  async signInWithMailAndPassword({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<Either<Failure<string>, string>> {
+    return this._auth.signIn({
+      email,
+      password,
+    });
   }
   async signOut() {
     this._auth.signOut();
