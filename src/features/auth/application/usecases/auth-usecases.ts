@@ -1,6 +1,6 @@
 import { Failure } from "fp-ddd";
 import { Either } from "fp-ts/lib/Either";
-import { AuthRepository } from "../repositories/auth";
+import { AuthRepository, authRepository } from "../repositories/auth";
 
 export default class AuthUsecases {
   private readonly _authRepository: AuthRepository;
@@ -22,3 +22,7 @@ export default class AuthUsecases {
     });
   }
 }
+
+export const authUsecases = new AuthUsecases({
+  authRepository,
+});

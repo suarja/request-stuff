@@ -1,60 +1,31 @@
 "use client";
-
 import { Button } from "@/common/components/ui/button";
 import { Label } from "@/common/components/ui/label";
 import { Input } from "@/common/components/ui/input";
 import Link from "next/link";
-import signIn from "@/features/auth/application/services/signIn";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { BASE_URL } from "@/common/constants";
+import { useEffect, useState } from "react";
 import LoadingIcon from "@/common/icons/LoadingIcon";
 import ChromeIcon from "@/common/icons/ChromeIcon";
+import { authAdapter } from "../../application/adapters/auth-adapter";
+import { BASE_URL } from "@/common/constants";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { loading, error, success, setOptions } =
+    authAdapter.useSignInWithEmailAndPassword();
+
+  useEffect(() => {
+    if (success) {
+      router.push(`${BASE_URL}/dashboard/requests?`);
+    }
+  }, [success]);
 
   const handleForm = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    setLoading(true);
-
-    // Attempt to sign in with provided email and password
-    const { result, error } = await signIn(email, password);
-
-    if (error) {
-      // Display and log any sign-in errors
-      console.log(error);
-      return;
-    }
-
-    if (!result) {
-      // Display and log any sign-in errors
-      console.log("No result returned from signIn");
-      return;
-    }
-
-    // Sign in successful
-    console.log(result);
-
-    // Typically you would send the token_id to your backend and verify the token_id
-    // and then create a session for the user
-    const response = await fetch(`${BASE_URL}/api/login`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${await result.user.getIdToken()}`,
-      },
-    });
-
-    if (response.ok) {
-      console.log("User is fully authenticated");
-      // Redirect to the admin page
-      // Typically you would want to redirect them to a protected page an add a check to see if they are admin or
-      // create a new page for admin
-      router.push(`${BASE_URL}/dashboard/requests?`);
-    }
+    setOptions({ email, password });
   };
   return (
     <div className="mx-auto max-w-md space-y-6 flex flex-col justify-center h-full">
