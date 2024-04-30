@@ -10,7 +10,7 @@ export abstract class IAuth {
     email: string;
     password: string;
   }): Promise<Either<Failure<string>, string>>;
-  async signOut() {}
+  abstract signOut(): Promise<void>;
 }
 
 export class AuthRepository {
@@ -33,7 +33,7 @@ export class AuthRepository {
     });
   }
   async signOut() {
-    this._auth.signOut();
+    return this._auth.signOut();
   }
 }
 

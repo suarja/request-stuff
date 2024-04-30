@@ -3,6 +3,7 @@ import {
   UserCredential,
   getAuth,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { IAuth } from "../application/repositories/auth";
 import firebase_app from "@/lib/firebase/config";
@@ -70,8 +71,16 @@ class AuthFirebase extends IAuth {
     }
   }
 
-  signOut(): Promise<void> {
-    throw new Error("Method not implemented.");
+  async signOut(): Promise<void> {
+    try {
+      await signOut(this._authProvider);
+
+      const response = await fetch(`${BASE_URL}/api/logout`, {
+        method: "POST",
+      });
+    } catch (error) {
+      console.log("Could not sign out the user");
+    }
   }
 }
 
