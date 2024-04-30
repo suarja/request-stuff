@@ -1,4 +1,4 @@
-import firebase_app from "../config";
+import firebase_app from "../../../../lib/firebase/config";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 
 // Get the authentication instance using the Firebase app

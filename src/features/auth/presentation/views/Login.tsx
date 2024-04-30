@@ -4,7 +4,7 @@ import { Button } from "@/common/components/ui/button";
 import { Label } from "@/common/components/ui/label";
 import { Input } from "@/common/components/ui/input";
 import Link from "next/link";
-import signIn from "@/lib/firebase/auth/signIn";
+import signIn from "@/features/auth/application/services/signIn";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BASE_URL } from "@/common/constants";

@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/common/constants";
-import firebase_app from "../config";
+import firebase_app from "../../../../lib/firebase/config";
 import { getAuth, signOut } from "firebase/auth";
 
 // Get the authentication instance using the Firebase app
