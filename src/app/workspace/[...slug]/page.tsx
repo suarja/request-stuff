@@ -1,4 +1,5 @@
 import { Nav } from "@/common/components/Nav";
+import { authUsecases } from "@/features/auth/application/usecases/auth-usecases";
 import { fileUsecases } from "@/features/file/application/usecases/file-usecases";
 import FolderTree from "@/features/file/presentation/components/Foldertree";
 import { cookies } from "next/headers";
@@ -6,7 +7,9 @@ import { cookies } from "next/headers";
 export default async function Page({ params }: { params: { slug: string[] } }) {
   const session = cookies().get("session")?.value || "";
 
-  const userId = await fileUsecases.getUserIdFromCookies({ session });
+  const userId = await authUsecases.getUserIdFromSessionCookie({
+    sessionCookie: session,
+  });
 
   if (!userId) {
     return <div>Not logged in</div>;
