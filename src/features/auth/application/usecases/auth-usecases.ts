@@ -21,6 +21,10 @@ export default class AuthUsecases {
       password,
     });
   }
+  async signOut() {
+    await this._authRepository.signOut();
+  }
+  
 }
 
 export const authUsecases = new AuthUsecases({

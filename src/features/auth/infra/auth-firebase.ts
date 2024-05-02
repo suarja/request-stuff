@@ -11,7 +11,6 @@ import { Either, left, right } from "fp-ts/lib/Either";
 import { BASE_URL } from "@/common/constants";
 import { IAuth } from "../application/repositories/types";
 
-
 const auth = getAuth(firebase_app);
 class AuthFirebase extends IAuth {
   private readonly _authProvider: Auth;
@@ -78,7 +77,7 @@ class AuthFirebase extends IAuth {
     try {
       await signOut(this._authProvider);
 
-      const response = await fetch(`${BASE_URL}/api/logout`, {
+      await fetch(`${BASE_URL}/api/logout`, {
         method: "POST",
       });
     } catch (error) {
