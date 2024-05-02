@@ -10,6 +10,16 @@ export class AuthRepository {
     this._auth = auth;
   }
 
+  createUserWithEmailAndPassword({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<Either<Failure<string>, string>> {
+    return this._auth.createUserWithEmailAndPassword({ email, password });
+  }
+
   async signInWithMailAndPassword({
     email,
     password,

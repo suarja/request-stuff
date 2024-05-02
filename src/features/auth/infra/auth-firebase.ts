@@ -1,6 +1,7 @@
 import {
   Auth,
   UserCredential,
+  createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
   signOut,
@@ -11,7 +12,6 @@ import { Either, left, right } from "fp-ts/lib/Either";
 import { BASE_URL } from "@/common/constants";
 import { IAuth } from "../application/repositories/types";
 
-const auth = getAuth(firebase_app);
 class AuthFirebase extends IAuth {
   private readonly _authProvider: Auth;
   constructor(authProvider: Auth) {
@@ -19,6 +19,30 @@ class AuthFirebase extends IAuth {
 
     this._authProvider = authProvider;
   }
+  async createUserWithEmailAndPassword({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        this._authProvider,
+        email,
+        password
+      );
+      return right(userCredential.user.uid);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "Could not create user with email and password",
+        })
+      );
+    }
+  }
+
   async signIn({
     email,
     password,
@@ -86,4 +110,5 @@ class AuthFirebase extends IAuth {
   }
 }
 
+const auth = getAuth(firebase_app);
 export const authFirebase = new AuthFirebase(auth);

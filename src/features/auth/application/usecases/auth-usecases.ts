@@ -10,6 +10,16 @@ export default class AuthUsecases {
     this._authRepository = authRepository;
   }
 
+  createUserWithEmailAndPassword({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<Either<Failure<string>, string>> {
+    return this.createUserWithEmailAndPassword({ email, password });
+  }
+
   async signInWithMailAndPassword({
     email,
     password,
