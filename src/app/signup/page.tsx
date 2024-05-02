@@ -1,5 +1,6 @@
 "use client";
-import signUp from "@/features/auth/application/services/signup";
+import { authUsecases } from "@/features/auth/application/usecases/auth-usecases";
+import { isLeft } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -13,16 +14,18 @@ function Page(): JSX.Element {
     event.preventDefault();
 
     // Attempt to sign up with provided email and password
-    const { result, error } = await signUp(email, password);
+    const eitherUserCreated = await authUsecases.createUserWithEmailAndPassword(
+      { email, password }
+    );
 
-    if (error) {
+    if (isLeft(eitherUserCreated)) {
       // Display and log any sign-up errors
-      console.log(error);
+      console.log(eitherUserCreated.left);
       return;
     }
 
     // Sign up successful
-    console.log(result);
+    console.log("user id", eitherUserCreated.right);
 
     // Redirect to the admin page
     router.push("/admin");
