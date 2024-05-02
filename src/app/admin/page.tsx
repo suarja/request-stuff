@@ -1,6 +1,6 @@
 "use client";
 import { Nav } from "@/common/components/Nav";
-import { useAuthMiddleware } from "@/context/useAuthMiddleware";
+import { useAuthMiddleware } from "@/features/auth/application/services/useAuthMiddleware";
 import FileUpload from "../../features/file/presentation/components/FileUpload";
 import FilesTable from "../../features/file/presentation/components/FilesTable";
 import CustomDialog from "@/common/components/CustomDialog";
