@@ -10,7 +10,7 @@ export default class AuthUsecases {
     this._authRepository = authRepository;
   }
 
-  createUserWithEmailAndPassword({
+  async createUserWithEmailAndPassword({
     email,
     password,
   }: {

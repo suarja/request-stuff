@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { ModeToggle } from "./ModeToggle";
 import NavbarLogo from "./NavBarLogo";
 import { Button } from "@/common/components/ui/button";
-import signOutUser from "@/features/auth/application/services/sign-out";
+import { authUsecases } from "@/features/auth/application/usecases/auth-usecases";
 
 export function Nav() {
   const router = useRouter();
@@ -13,8 +13,8 @@ export function Nav() {
         <NavbarLogo />
         <div className="flex gap-2">
           <Button
-            onClick={() => {
-              signOutUser();
+            onClick={async () => {
+              await authUsecases.signOut();
               router.push("/");
             }}
             variant="outline"
