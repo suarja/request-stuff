@@ -2,12 +2,17 @@ import { Entity } from "fp-ddd";
 import { Either, right } from "fp-ts/lib/Either";
 import { Failure } from "fp-ddd";
 
-export interface UserProps {
+export interface UserOptions {
   name: string;
   email: string;
+  currentStorage: number;
+  maxStorage: number;
+  subscription: "free" | "basic" | "mid";
 }
-class User extends Entity<UserProps> {
-  constructor(public readonly values: Either<Failure<UserProps>, UserProps>) {
+export default class User extends Entity<UserOptions> {
+  constructor(
+    public readonly values: Either<Failure<UserOptions>, UserOptions>
+  ) {
     super();
   }
 
@@ -16,6 +21,13 @@ class User extends Entity<UserProps> {
   }
 }
 
-// Usage
-const user = new User(right({ name: "John Doe", email: "john@example.com" }));
-console.log(user.name); // Outputs: John Doe
+// // Usage
+// const user = new User(
+//   right({
+//     name: "John Doe",
+//     email: "john@example.com",
+//     currentStorage: 0,
+//     maxStorage: 1000,
+//     subscription: "basic",
+//   })
+// );

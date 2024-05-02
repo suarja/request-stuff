@@ -32,6 +32,7 @@ export class AuthRepository {
       password,
     });
   }
+  
   async signOut() {
     return this._auth.signOut();
   }
