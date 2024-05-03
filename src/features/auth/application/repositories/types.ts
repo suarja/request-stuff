@@ -18,3 +18,4 @@ export abstract class IAuth {
   }): Promise<Either<Failure<string>, string>>;
   abstract signOut(): Promise<void>;
 }
+

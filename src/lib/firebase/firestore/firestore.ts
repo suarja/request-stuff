@@ -1,3 +1,4 @@
+import IDatabase from "@/common/interfaces/idatabase";
 import firebase_app from "../config";
 import {
   addDoc,
@@ -18,11 +19,16 @@ import {
 } from "firebase/firestore";
 export const FirestoreDB = getFirestore(firebase_app);
 
-export class FirestoreFactory {
+export interface FirestoreDatabaseOptions {
+  db: Firestore;
+}
+
+export class FirestoreDatabase extends IDatabase {
   private db: Firestore;
 
-  constructor({ db }: { db: Firestore }) {
-    this.db = db;
+  constructor(firestoreDatabaseOptions: FirestoreDatabaseOptions) {
+    super();
+    this.db = firestoreDatabaseOptions.db;
   }
 
   // Make a query to the database
@@ -125,6 +131,6 @@ export class FirestoreFactory {
   }
 }
 
-export const firestoreFactory = new FirestoreFactory({
+export const firestoreFactory = new FirestoreDatabase({
   db: FirestoreDB,
 });

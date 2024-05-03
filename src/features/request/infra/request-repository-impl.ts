@@ -1,5 +1,5 @@
 import {
-  FirestoreFactory,
+  FirestoreDatabase,
   firestoreFactory,
 } from "@/lib/firebase/firestore/firestore";
 import RequestRepository from "../application/repositories/request-repository";
@@ -16,14 +16,14 @@ import {
 import { Either, left, right } from "fp-ts/lib/Either";
 
 export default class RequestRepositoryImpl extends RequestRepository {
-  private firestoreRepository: FirestoreFactory;
+  private firestoreRepository: FirestoreDatabase;
   private fileRepository: FileRepository;
 
   constructor({
     firestoreFactory,
     fileRepository,
   }: {
-    firestoreFactory: FirestoreFactory;
+    firestoreFactory: FirestoreDatabase;
     fileRepository: FileRepository;
   }) {
     super();
