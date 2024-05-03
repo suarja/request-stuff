@@ -1,5 +1,5 @@
 import { Entity } from "fp-ddd";
-import { Either, right } from "fp-ts/lib/Either";
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import { Failure } from "fp-ddd";
 import { UserInfra } from "../types/user";
 import { userOptionsSchema } from "../types/user-schema";
@@ -17,7 +17,12 @@ export default class UserEntity extends Entity<UserOptions> {
   }
 
   static create(data: any): UserEntity {
-    return new UserEntity(data);
+    const isValidValues = userOptionsSchema.safeParse(data);
+    if (!isValidValues.success) {
+      return new UserEntity(left(data));
+    }
+
+    return new UserEntity(right(data));
   }
   get name(): string | null {
     return this.getOrCrash().displayName;
