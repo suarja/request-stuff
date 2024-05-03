@@ -1,10 +1,10 @@
 import { Entity } from "fp-ddd";
 import { Either, right } from "fp-ts/lib/Either";
 import { Failure } from "fp-ddd";
+import { UserInfra } from "../types/user";
+import { userOptionsSchema } from "../types/user-schema";
 
-export interface UserOptions {
-  name: string;
-  email: string;
+export interface UserOptions extends UserInfra {
   currentStorage: number;
   maxStorage: number;
   subscription: "free" | "basic" | "mid";
@@ -16,8 +16,16 @@ export default class UserEntity extends Entity<UserOptions> {
     super();
   }
 
-  get name(): string {
-    return this.getOrCrash().name;
+  get name(): string | null {
+    return this.getOrCrash().displayName;
+  }
+
+  validateValues(): boolean {
+    if (this.isValid()) {
+      return userOptionsSchema.safeParse(this.getOrCrash()).success;
+    } else {
+      return false;
+    }
   }
 }
 
