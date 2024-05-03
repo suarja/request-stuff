@@ -1,7 +1,7 @@
 import {
   FirestoreDatabase,
   FirebaseDatabase,
-} from "@/lib/firebase/firestore/firestore";
+} from "@/common/data/firebase/firestore/firestore";
 import RequestRepository from "../application/repositories/request-repository";
 import FileRepository, {
   FileSenderData,

@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import firebase_app from "@/lib/firebase/config";
+import firebase_app from "@/common/data/firebase/config";
 import { Failure } from "fp-ddd";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { BASE_URL } from "@/common/constants";

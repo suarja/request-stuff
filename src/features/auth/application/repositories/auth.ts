@@ -3,7 +3,7 @@ import { Failure } from "fp-ddd";
 import { FirebaseAuth } from "../../infra/auth-firebase";
 import { IAuth, IAuthOptions } from "./types";
 import IDatabase from "@/common/interfaces/idatabase";
-import { FirebaseDatabase } from "@/lib/firebase/firestore/firestore";
+import { FirebaseDatabase } from "@/common/data/firebase/firestore/firestore";
 
 export class AuthRepository {
   private readonly _auth: IAuth;

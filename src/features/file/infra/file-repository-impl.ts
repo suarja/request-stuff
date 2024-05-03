@@ -1,4 +1,4 @@
-import { BucktStorage } from "@/lib/firebase/bucket/bucket";
+import { BucktStorage } from "@/common/data/firebase/bucket/bucket";
 
 import FileRepository, {
   FileFromStorage,
