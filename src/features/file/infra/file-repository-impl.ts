@@ -1,9 +1,5 @@
 import { BucktStorage } from "@/common/data/firebase/bucket/bucket";
 
-import FileRepository, {
-  FileFromStorage,
-  FileSenderData,
-} from "../application/repositories/file-repository";
 import {
   FirebaseStorage,
   FullMetadata,
@@ -21,12 +17,19 @@ import {
   SubFolder,
   TreeFile,
 } from "../presentation/components/Folder";
-export default class FileRepositoryImplementation extends FileRepository {
-  private bucket: FirebaseStorage;
+import IStorage, {
+  FileFromStorage,
+  FileSenderData,
+} from "@/common/interfaces/istorage";
+export interface FirebaseStorageOptions {
+  storage: FirebaseStorage;
+}
+export default class FirebaseStorageService extends IStorage {
+  private storage: FirebaseStorage;
 
-  constructor({ bucket }: { bucket: FirebaseStorage }) {
+  constructor(options: FirebaseStorageOptions) {
     super();
-    this.bucket = bucket;
+    this.storage = options.storage;
   }
   async uploadFile({
     path,
@@ -38,7 +41,7 @@ export default class FileRepositoryImplementation extends FileRepository {
     customMetadata?: FileSenderData;
   }): Promise<string> {
     try {
-      const storageRef = ref(this.bucket, path);
+      const storageRef = ref(this.storage, path);
 
       const result = await uploadBytes(storageRef, value, { customMetadata });
       const url = await getDownloadURL(result.ref);
@@ -55,7 +58,7 @@ export default class FileRepositoryImplementation extends FileRepository {
     userId: string;
   }): Promise<FileFromStorage[]> {
     const path = `users/${userId}/files`;
-    const files = await listAll(ref(this.bucket, path));
+    const files = await listAll(ref(this.storage, path));
     const filesFromStorage: FileFromStorage[] = [];
     for (const file of files.items) {
       const url = await getDownloadURL(file);
@@ -71,7 +74,7 @@ export default class FileRepositoryImplementation extends FileRepository {
     path: string;
     root: string;
   }): Promise<RootFolder> {
-    const storageRef = ref(this.bucket, path);
+    const storageRef = ref(this.storage, path);
     const pathContentInfra = await listAll(storageRef);
 
     const folders: SubFolder[] = pathContentInfra.prefixes.map((folder) => {
@@ -132,19 +135,15 @@ export default class FileRepositoryImplementation extends FileRepository {
 
   async remove({ path }: { path: string }): Promise<"ok" | "not ok"> {
     try {
-      const refPath = ref(this.bucket, path);
+      const refPath = ref(this.storage, path);
       await deleteObject(refPath);
       return "ok";
     } catch (error) {
       return "not ok";
     }
   }
-
-  async clear(): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
 }
 
-export const fileRepositoryImplementation = new FileRepositoryImplementation({
-  bucket: BucktStorage,
+export const FirebaseStorageServiceInstance = new FirebaseStorageService({
+  storage: BucktStorage,
 });

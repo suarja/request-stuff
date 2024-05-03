@@ -1,7 +1,6 @@
-import { ListResult, UploadResult } from "firebase/storage";
-import { RootFolder } from "../../presentation/components/Folder";
+import { RootFolder } from "@/features/file/presentation/components/Folder";
 
-export default abstract class FileRepository {
+export default abstract class IStorage {
   abstract uploadFile({
     path,
     value,
@@ -9,14 +8,13 @@ export default abstract class FileRepository {
   }: {
     path: string;
     value: File;
-    customMetadata?: FileSenderData;
+    customMetadata?: FileSenderData | undefined;
   }): Promise<string>;
   abstract getUserFiles({
     userId,
   }: {
     userId: string;
   }): Promise<FileFromStorage[]>;
-
   abstract getPathContent({
     path,
     root,
@@ -24,11 +22,8 @@ export default abstract class FileRepository {
     path: string;
     root: string;
   }): Promise<RootFolder>;
-
   abstract remove({ path }: { path: string }): Promise<"ok" | "not ok">;
-  abstract clear(): Promise<void>;
 }
-
 export type FileFromStorage = {
   name: string;
   url: string;

@@ -1,4 +1,4 @@
-import { FileSenderData } from "@/features/file/application/repositories/file-repository";
+import { FileSenderData } from "@/common/interfaces/istorage";
 import { Dispatch, SetStateAction } from "react";
 
 // export type FileSenderData = {
@@ -49,4 +49,3 @@ export interface RequestFolder {
 export interface ClientRequestFolder extends RequestFolder {
   setSelectedRequest: Dispatch<SetStateAction<Request | null>>;
 }
-

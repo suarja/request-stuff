@@ -1,9 +1,9 @@
 import { useAuthContext } from "@/features/auth/application/services/AuthContext";
-import { fileRepositoryImplementation } from "../../../infra/file-repository-impl";
+import { FirebaseStorageServiceInstance } from "../../../infra/file-repository-impl";
 import { useEffect, useState } from "react";
-import { FileFromStorage } from "../../repositories/file-repository";
 import { toast } from "sonner";
 import { filesStore } from "@/context/files-context";
+import { FileFromStorage } from "@/common/interfaces/istorage";
 
 export default function useGetUserFiles() {
   const [loading, setLoading] = useState(true);
@@ -21,10 +21,9 @@ export default function useGetUserFiles() {
   useEffect(() => {
     if (user) {
       setLoading(true);
-      fileRepositoryImplementation
-        .getUserFiles({
-          userId: user.uid,
-        })
+      FirebaseStorageServiceInstance.getUserFiles({
+        userId: user.uid,
+      })
         .then((files) => {
           setFilesLocal({ files });
           setLoading(false);

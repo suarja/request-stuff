@@ -1,30 +1,28 @@
 import { IAuth } from "@/features/auth/application/repositories/types";
-import { fileRepositoryImplementation } from "../../infra/file-repository-impl";
-import FileRepository from "../repositories/file-repository";
+import { FirebaseStorageServiceInstance } from "../../infra/file-repository-impl";
 import AuthUsecases, {
   authUsecases,
 } from "@/features/auth/application/usecases/auth-usecases";
+import IStorage from "@/common/interfaces/istorage";
 
+export interface FileUsecasesOptions {
+  storage: IStorage;
+  auth: AuthUsecases;
+}
 export default class FileUsecases {
-  private _fileRepository: FileRepository;
-  private _authUsecases: AuthUsecases;
-  constructor({
-    fileRepository,
-    authUsecases,
-  }: {
-    fileRepository: FileRepository;
-    authUsecases: AuthUsecases;
-  }) {
-    this._fileRepository = fileRepository;
-    this._authUsecases = authUsecases;
+  private _storage: FileUsecasesOptions["storage"];
+  private _authUsecases: FileUsecasesOptions["auth"];
+  constructor(options: FileUsecasesOptions) {
+    this._storage = options.storage;
+    this._authUsecases = options.auth;
   }
 
   async uploadFile(path: string, value: any): Promise<string> {
-    return await this._fileRepository.uploadFile({ path, value });
+    return await this._storage.uploadFile({ path, value });
   }
 
   async getUserFiles({ userId }: { userId: string }) {
-    return await this._fileRepository.getUserFiles({ userId });
+    return await this._storage.getUserFiles({ userId });
   }
 
   async getUserIdFromCookies({ session }: { session: string }) {
@@ -34,14 +32,14 @@ export default class FileUsecases {
   }
 
   async getPathContent({ path, root }: { path: string; root: string }) {
-    return await this._fileRepository.getPathContent({ path, root });
+    return await this._storage.getPathContent({ path, root });
   }
   async removeFile({ path }: { path: string }) {
-    return await this._fileRepository.remove({ path });
+    return await this._storage.remove({ path });
   }
 }
 
 export const fileUsecases = new FileUsecases({
-  fileRepository: fileRepositoryImplementation,
-  authUsecases: authUsecases,
+  storage: FirebaseStorageServiceInstance,
+  auth: authUsecases,
 });

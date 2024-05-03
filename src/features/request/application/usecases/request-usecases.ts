@@ -1,9 +1,9 @@
-import { FileSenderData } from "@/features/file/application/repositories/file-repository";
 import RequestRepository, {
   requestRepository,
 } from "../repositories/request-repository-impl";
 import { RequestBase } from "../../domain/entities/request-types";
 import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import { FileSenderData } from "@/common/interfaces/istorage";
 
 export interface RequestUsecasesOptions {
   requestRepository: RequestRepository;

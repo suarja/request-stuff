@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { requestUsecases } from "../request-usecases";
-import { FileSenderData } from "@/features/file/application/repositories/file-repository";
+import { FileSenderData } from "@/common/interfaces/istorage";
 
 export type UseUploadFileFromRequestProps = {
   file: File;
