@@ -1,6 +1,7 @@
-import { FirestoreDatabase } from "@/lib/firebase/firestore/firestore";
-import { DocumentData } from "firebase/firestore";
-
+export interface DocumentData {
+  /** A mapping between a field and its value. */
+  [field: string]: any;
+}
 export default abstract class IDatabase {
   abstract queryWhere({
     ref,
