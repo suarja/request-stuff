@@ -120,7 +120,7 @@ export class FirestoreDatabase extends IDatabase {
         [field]: arrayUnion(data),
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error while updating array", error);
     }
   }
 
