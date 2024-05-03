@@ -2,33 +2,31 @@ import {
   FirestoreDatabase,
   FirebaseDatabase,
 } from "@/common/data/firebase/firestore/firestore";
-import RequestRepository from "../application/repositories/request-repository";
 import FileRepository, {
   FileSenderData,
 } from "@/features/file/application/repositories/file-repository";
 import { fileRepositoryImplementation } from "@/features/file/infra/file-repository-impl";
-import RequestDto from "./dto's/request-dto";
+import RequestDto from "../../infra/dto's/request-dto";
 import {
   Request,
   RequestBase,
   UserUpload,
-} from "../domain/entities/request-types";
+} from "../../domain/entities/request-types";
 import { Either, left, right } from "fp-ts/lib/Either";
+import IDatabase from "@/common/interfaces/idatabase";
 
-export default class RequestRepositoryImpl extends RequestRepository {
-  private firestoreRepository: FirestoreDatabase;
+export interface RequestRepositoryOptions {
+  db: IDatabase;
+  fileStorage: FileRepository;
+}
+
+export default class RequestRepository {
+  private db: IDatabase;
   private fileRepository: FileRepository;
 
-  constructor({
-    firestoreFactory,
-    fileRepository,
-  }: {
-    firestoreFactory: FirestoreDatabase;
-    fileRepository: FileRepository;
-  }) {
-    super();
-    this.firestoreRepository = firestoreFactory;
-    this.fileRepository = fileRepository;
+  constructor(options: RequestRepositoryOptions) {
+    this.db = options.db;
+    this.fileRepository = options.fileStorage;
   }
   async uploadFileFromRequest({
     requestData,
@@ -72,7 +70,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
       },
     };
     console.log({ path, requestId: requestData.id, requestData });
-    await this.firestoreRepository.updateArrayInDocument({
+    await this.db.updateArrayInDocument({
       collection: path,
       field: "uploads",
       data,
@@ -87,11 +85,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     props: RequestBase;
   }): Promise<Either<Error, void>> {
     try {
-      const id = await this.firestoreRepository.addDocument(
-        props.path,
-        props,
-        props.id
-      );
+      const id = await this.db.addDocument(props.path, props, props.id);
       return right(undefined);
     } catch (error) {
       return left(new Error("Error adding request to public collection"));
@@ -102,10 +96,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
   }: {
     requestId: string;
   }): Promise<RequestBase | null> {
-    const requestInfra = await this.firestoreRepository.getDocument(
-      "requests",
-      requestId
-    );
+    const requestInfra = await this.db.getDocument("requests", requestId);
     if (!requestInfra) return null;
     const requestDto = new RequestDto();
 
@@ -114,7 +105,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
   }
 
   async getPublicRequests({ userId }: { userId: string }): Promise<Request[]> {
-    const requests = await this.firestoreRepository.queryWhere({
+    const requests = await this.db.queryWhere({
       a: "userId",
       b: userId,
       operand: "==",
@@ -128,7 +119,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
   }
   async getRequestsByUser({ userId }: { userId: string }): Promise<Request[]> {
     const path = `users/${userId}/requests`;
-    const requests = await this.firestoreRepository.getCollection(path);
+    const requests = await this.db.getCollection(path);
     const requestDto = new RequestDto();
     const requestsDomain = requests.map((request) =>
       requestDto.toDomain({ data: request })
@@ -146,7 +137,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
     request: Request;
   }): Promise<Either<Error, void>> {
     try {
-      await this.firestoreRepository.addDocument(path, request, request.id);
+      await this.db.addDocument(path, request, request.id);
       return right(undefined);
     } catch (error) {
       return left(new Error("Error adding request to user collection"));
@@ -161,7 +152,7 @@ export default class RequestRepositoryImpl extends RequestRepository {
   }
 }
 
-export const requestRepository = new RequestRepositoryImpl({
-  firestoreFactory: FirebaseDatabase,
-  fileRepository: fileRepositoryImplementation,
+export const requestRepository = new RequestRepository({
+  db: FirebaseDatabase,
+  fileStorage: fileRepositoryImplementation,
 });
