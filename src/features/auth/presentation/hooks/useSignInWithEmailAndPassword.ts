@@ -16,12 +16,14 @@ export default function useSignInWithEmailAndPassword({
   const [options, setOptions] =
     useState<ISignInWithEmailAndPasswordOptions | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     if (options) {
       setLoading(true);
+      setError(false);
+      setSuccess(false);
       authUsecases
         .signInWithMailAndPassword({
           email: options.email,
@@ -29,14 +31,14 @@ export default function useSignInWithEmailAndPassword({
         })
         .then((eitherId) => {
           if (isLeft(eitherId)) {
-            setError(eitherId.left.message);
+            return setError(true);
           }
           setLoading(false);
-          setSuccess("User signed in.");
+          setSuccess(true);
         })
         .catch((e) => {
           setLoading(false);
-          setError("An error occured while sign in the user.");
+          setError(true);
         });
     }
   }, [options]);

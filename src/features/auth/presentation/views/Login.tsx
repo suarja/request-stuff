@@ -60,6 +60,11 @@ export default function Login() {
               required
               type="email"
             />
+            {error && (
+              <span className="text-red-500 text-sm font-thin">
+                invalid combination of email and password
+              </span>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
@@ -69,6 +74,11 @@ export default function Login() {
               required
               type="password"
             />
+            {error && (
+              <span className="text-red-500 text-sm font-thin">
+                invalid combination of email and password
+              </span>
+            )}
           </div>
           <Button disabled={loading} className="w-full" type="submit">
             {loading ? <LoadingIcon /> : "Sign in"}

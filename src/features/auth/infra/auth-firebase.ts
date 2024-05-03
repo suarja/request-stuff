@@ -46,10 +46,8 @@ class AuthFirebase extends IAuth {
         providerId: userCredential.user.providerId,
         metadata: { ...userCredential.user.metadata },
       };
-      console.log("trying create user ");
       return right(user);
     } catch (error) {
-      console.log("Could not create user Infra", error);
       return left(
         Failure.invalidValue({
           invalidValue: error,
@@ -67,7 +65,6 @@ class AuthFirebase extends IAuth {
     password: string;
   }): Promise<Either<Failure<string>, string>> {
     try {
-      console.log("Signin user");
       let result: UserCredential | null | FirebaseError = null, // Variable to store the sign-in result
         error = null; // Variable to store any error that occurs
 
@@ -78,7 +75,6 @@ class AuthFirebase extends IAuth {
           password
         );
       } catch (error) {
-        console.log({ error });
         return left(
           Failure.invalidValue({
             invalidValue: result,
