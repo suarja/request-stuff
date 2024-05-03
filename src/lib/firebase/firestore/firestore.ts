@@ -131,6 +131,6 @@ export class FirestoreDatabase extends IDatabase {
   }
 }
 
-export const firestoreFactory = new FirestoreDatabase({
+export const FirebaseDatabase = new FirestoreDatabase({
   db: FirestoreDB,
 });
