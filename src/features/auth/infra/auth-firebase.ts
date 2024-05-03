@@ -11,13 +11,17 @@ import { Failure } from "fp-ddd";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { BASE_URL } from "@/common/constants";
 import { IAuth } from "../application/repositories/types";
-
+import { UserInfra } from "../domain/types/user";
+export interface AuthUser {}
+export interface AuthFirebaseOptions {
+  authProvider: Auth;
+}
 class AuthFirebase extends IAuth {
   private readonly _authProvider: Auth;
-  constructor(authProvider: Auth) {
+  constructor(options: AuthFirebaseOptions) {
     super();
 
-    this._authProvider = authProvider;
+    this._authProvider = options.authProvider;
   }
   async createUserWithEmailAndPassword({
     email,
@@ -25,14 +29,24 @@ class AuthFirebase extends IAuth {
   }: {
     email: string;
     password: string;
-  }): Promise<Either<Failure<string>, string>> {
+  }): Promise<Either<Failure<string>, UserInfra>> {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         this._authProvider,
         email,
         password
       );
-      return right(userCredential.user.uid);
+      const user: UserInfra = {
+        displayName: userCredential.user.displayName,
+        email: userCredential.user.email,
+        id: userCredential.user.uid,
+        phoneNumber: userCredential.user.phoneNumber,
+        photoURL: userCredential.user.photoURL,
+        providerId: userCredential.user.providerId,
+        metadata: userCredential.user.metadata,
+      };
+
+      return right(user);
     } catch (error) {
       return left(
         Failure.invalidValue({
@@ -111,4 +125,4 @@ class AuthFirebase extends IAuth {
 }
 
 const auth = getAuth(firebase_app);
-export const FirebaseAuth = new AuthFirebase(auth);
+export const FirebaseAuth = new AuthFirebase({ authProvider: auth });
