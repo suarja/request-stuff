@@ -1,5 +1,11 @@
+import IDatabase from "@/common/interfaces/idatabase";
 import { Failure } from "fp-ddd";
 import { Either } from "fp-ts/lib/Either";
+
+export interface IAuthOptions {
+  auth: IAuth;
+  db: IDatabase;
+}
 
 export abstract class IAuth {
   abstract createUserWithEmailAndPassword({
@@ -18,4 +24,3 @@ export abstract class IAuth {
   }): Promise<Either<Failure<string>, string>>;
   abstract signOut(): Promise<void>;
 }
-
