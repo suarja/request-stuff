@@ -1,8 +1,13 @@
+import { Skeleton } from "@/common/components/ui/skeleton";
+
 export default async function Page() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-900 border-t-transparent dark:border-gray-50" />
-      <p className="mt-4 text-gray-500 dark:text-gray-400">Loading...</p>
+      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
     </div>
   );
 }
