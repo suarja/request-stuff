@@ -2,6 +2,7 @@ import { Failure } from "fp-ddd";
 import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import { type AuthRepository, authRepository } from "../repositories/auth";
 import { BASE_URL } from "@/common/constants";
+import UserEntity from "../../domain/entities/user-entity";
 
 export interface AuthUsecasesOptions {
   authRepository: AuthRepository;
@@ -29,7 +30,12 @@ export default class AuthUsecases {
       return left(eitherUserInfra.left);
     }
     const result = await this._authRepository.saveUser({
-      user: eitherUserInfra.right,
+      user: {
+        ...eitherUserInfra.right,
+        currentStorage: 0,
+        maxStorage: 1000,
+        subscription: "basic",
+      },
     });
     return right(result);
   }
@@ -66,6 +72,14 @@ export default class AuthUsecases {
     }
     const data = await response.json();
     return data.userId;
+  }
+
+  async getUser({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, UserEntity>> {
+    return this._authRepository.getUser({ userId });
   }
 }
 
