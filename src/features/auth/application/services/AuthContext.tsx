@@ -8,7 +8,6 @@ import {
 } from "react";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import firebase_app from "@/common/data/firebase/config";
-import LoadingPage from "@/common/components/LoadingPage";
 
 // Initialize Firebase auth instance
 const auth = getAuth(firebase_app);
