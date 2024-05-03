@@ -4,11 +4,15 @@ import RequestRepository, {
 } from "../repositories/request-repository-impl";
 import { RequestBase } from "../../domain/entities/request-types";
 import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+
+export interface RequestUsecasesOptions {
+  requestRepository: RequestRepository;
+}
 export default class RequestUsecases {
   private requestRepository: RequestRepository;
 
-  constructor({ requestRepository }: { requestRepository: RequestRepository }) {
-    this.requestRepository = requestRepository;
+  constructor(options: RequestUsecasesOptions) {
+    this.requestRepository = options.requestRepository;
   }
 
   async createRequest({

@@ -1,5 +1,4 @@
 import {
-  FirestoreDatabase,
   FirebaseDatabase,
 } from "@/common/data/firebase/firestore/firestore";
 import FileRepository, {
@@ -44,6 +43,7 @@ export default class RequestRepository {
       value: file,
       customMetadata: fileSenderData,
     });
+    //! Move this to usecases since it's business logic
     // Update user request entry
     await this.updateRequestInUserCollection({
       requestData,
