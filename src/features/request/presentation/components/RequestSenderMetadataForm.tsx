@@ -34,15 +34,14 @@ export default function SenderMetadataForm({
   file: File;
   requestId: string;
   requestName: string;
-  
 }) {
   const { error, loading, succes, setUploadFileFromRequestProps } =
     useUploadFileFromRequest();
 
   useEffect(() => {
     if (error) {
-      console.error(error);
-      toast.error("An error occurred while uploading the file");
+      console.log(error);
+      toast.error(error);
       setTimeout(() => {
         toast.dismiss();
       }, 5000);

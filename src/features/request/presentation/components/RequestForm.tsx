@@ -117,7 +117,11 @@ export default function CreateRequestForm() {
               <FormItem>
                 <FormLabel htmlFor={field.name}>Max File Size (MB)</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Maximum file size in MB" />
+                  <Input
+                    type="number"
+                    onChange={(event) => field.onChange(+event.target.value)}
+                    placeholder="Maximum file size in MB"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
