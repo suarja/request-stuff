@@ -1,6 +1,7 @@
 import IDatabase from "@/common/interfaces/idatabase";
 import { Failure } from "fp-ddd";
 import { Either } from "fp-ts/lib/Either";
+import { UserInfra as UserInfra } from "../../domain/types/user";
 
 export interface IAuthOptions {
   auth: IAuth;
@@ -14,7 +15,7 @@ export abstract class IAuth {
   }: {
     email: string;
     password: string;
-  }): Promise<Either<Failure<string>, string>>;
+  }): Promise<Either<Failure<string>, UserInfra>>;
   abstract signIn({
     email,
     password,
