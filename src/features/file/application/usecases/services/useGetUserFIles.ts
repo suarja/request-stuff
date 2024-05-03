@@ -1,4 +1,4 @@
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/features/auth/application/services/AuthContext";
 import { fileRepositoryImplementation } from "../../../infra/file-repository-impl";
 import { useEffect, useState } from "react";
 import { FileFromStorage } from "../../repositories/file-repository";

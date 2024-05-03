@@ -1,4 +1,5 @@
 import { Nav } from "@/common/components/Nav";
+import { AuthContextProvider } from "@/features/auth/application/services/AuthContext";
 
 export const metadata = {
   title: "RequestStuff",
@@ -12,9 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start px-4 py-24  ">
-      <Nav />
-      {children}
-    </main>
+    <AuthContextProvider>
+      <main className="flex min-h-screen w-full flex-col gap-12 items-center justify-start px-4 py-24  ">
+        <Nav />
+        {children}
+      </main>
+    </AuthContextProvider>
   );
 }

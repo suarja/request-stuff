@@ -7,7 +7,7 @@ import CustomDialog from "@/common/components/CustomDialog";
 import CreateRequestForm from "@/features/request/presentation/components/RequestForm";
 import useGetPublicRequests from "@/features/request/application/usecases/services/useGetPublicRequests";
 import { Button } from "@/common/components/ui/button";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/features/auth/application/services/AuthContext";
 import { useEffect } from "react";
 
 function Page(): JSX.Element {

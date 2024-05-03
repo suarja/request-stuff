@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from "react";
 import useUploadFile from "../../application/usecases/services/useUploadFile";
 import { toast } from "sonner";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/features/auth/application/services/AuthContext";
 
 type FileUploadProps = {
   path: string;
-} ;
+};
 
 function FileUpload({ props }: { props?: FileUploadProps }) {
   const { setUploadFileProps, loading, error, success } = useUploadFile();

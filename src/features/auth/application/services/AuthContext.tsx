@@ -49,9 +49,5 @@ export function AuthContextProvider({
   }, []);
 
   // Provide the authentication context to child components
-  return (
-    <AuthContext.Provider value={user}>
-      {loading ? <LoadingPage /> : children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }

@@ -1,4 +1,4 @@
-import { AuthContextProvider } from "@/context/AuthContext";
+import { AuthContextProvider } from "@/features/auth/application/services/AuthContext";
 import "./globals.css";
 import { ThemeProvider } from "@/common/style/ThemeProvider";
 import { Toaster } from "@/common/components/ui/sonner";
@@ -25,11 +25,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthContextProvider>
-              {children}
-            
-            <Toaster richColors expand={false} />
-          </AuthContextProvider>
+          {children}
+
+          <Toaster richColors expand={false} />
         </ThemeProvider>
       </body>
     </html>
