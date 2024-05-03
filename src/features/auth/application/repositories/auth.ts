@@ -4,6 +4,7 @@ import { FirebaseAuth } from "../../infra/auth-firebase";
 import { IAuth, IAuthOptions } from "./types";
 import IDatabase from "@/common/interfaces/idatabase";
 import { FirebaseDatabase } from "@/common/data/firebase/firestore/firestore";
+import { UserInfra } from "../../domain/types/user";
 
 export class AuthRepository {
   private readonly _auth: IAuth;
@@ -14,14 +15,18 @@ export class AuthRepository {
     this._db = options.db;
   }
 
-  createUserWithEmailAndPassword({
+  async createUserWithEmailAndPassword({
     email,
     password,
   }: {
     email: string;
     password: string;
-  }): Promise<Either<Failure<string>, string>> {
+  }): Promise<Either<Failure<string>, UserInfra>> {
     return this._auth.createUserWithEmailAndPassword({ email, password });
+  }
+
+  async saveUser() {
+   
   }
 
   async signInWithMailAndPassword({
