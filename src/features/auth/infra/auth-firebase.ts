@@ -111,4 +111,4 @@ class AuthFirebase extends IAuth {
 }
 
 const auth = getAuth(firebase_app);
-export const authFirebase = new AuthFirebase(auth);
+export const FirebaseAuth = new AuthFirebase(auth);
