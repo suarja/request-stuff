@@ -5,7 +5,7 @@ import { IAuth, IAuthOptions } from "./types";
 import IDatabase from "@/common/interfaces/idatabase";
 import { FirebaseDatabase } from "@/common/data/firebase/firestore/firestore";
 import { UserInfra } from "../../domain/types/user";
-import UserEntity from "../../domain/entities/user-entity";
+import UserEntity, { UserOptions } from "../../domain/entities/user-entity";
 import UserDto from "../../infra/dto's/user-dto";
 
 export class AuthRepository {
@@ -27,7 +27,7 @@ export class AuthRepository {
     return this._auth.createUserWithEmailAndPassword({ email, password });
   }
 
-  async saveUser({ user }: { user: UserInfra }) {
+  async saveUser({ user }: { user: UserOptions }) {
     return this._db.addDocument("users", user, user.id);
   }
 
