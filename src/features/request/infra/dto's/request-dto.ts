@@ -1,7 +1,8 @@
-import { DocumentData } from "firebase/firestore";
+import { DocumentData } from "@/common/interfaces/idatabase";
 import { Request } from "../../domain/entities/request-types";
+import { DTO } from "@/common/interfaces/dto";
 export default class RequestDto implements DTO<Request, DocumentData> {
-  fromDomain({ data }: { data: Request }): void {
+  fromDomain({ data }: { data: Request }): DocumentData {
     throw new Error("Method not implemented.");
   }
   toDomain({ data }: { data: DocumentData }): Request {
@@ -19,9 +20,4 @@ export default class RequestDto implements DTO<Request, DocumentData> {
       numberOfUploads: data.numberOfUploads ?? 0,
     };
   }
-}
-
-export abstract class DTO<T, I = void, O = void> {
-  abstract fromDomain({ data }: { data: T }): O;
-  abstract toDomain({ data }: { data: I }): T;
 }
