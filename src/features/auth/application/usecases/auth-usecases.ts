@@ -1,5 +1,5 @@
 import { Failure } from "fp-ddd";
-import { Either } from "fp-ts/lib/Either";
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import { type AuthRepository, authRepository } from "../repositories/auth";
 import { BASE_URL } from "@/common/constants";
 
@@ -20,7 +20,18 @@ export default class AuthUsecases {
     email: string;
     password: string;
   }): Promise<Either<Failure<string>, string>> {
-    return this.createUserWithEmailAndPassword({ email, password });
+    const eitherUserInfra =
+      await this._authRepository.createUserWithEmailAndPassword({
+        email,
+        password,
+      });
+    if (isLeft(eitherUserInfra)) {
+      return left(eitherUserInfra.left);
+    }
+    const result = await this._authRepository.saveUser({
+      user: eitherUserInfra.right,
+    });
+    return right(result);
   }
 
   async signInWithMailAndPassword({

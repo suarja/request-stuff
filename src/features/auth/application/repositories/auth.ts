@@ -25,8 +25,8 @@ export class AuthRepository {
     return this._auth.createUserWithEmailAndPassword({ email, password });
   }
 
-  async saveUser() {
-   
+  async saveUser({ user }: { user: UserInfra }) {
+    return this._db.addDocument("users", user, user.id);
   }
 
   async signInWithMailAndPassword({

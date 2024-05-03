@@ -20,7 +20,7 @@ function Page(): JSX.Element {
 
     if (isLeft(eitherUserCreated)) {
       // Display and log any sign-up errors
-      console.log(eitherUserCreated.left);
+      console.log("Could not create user", eitherUserCreated.left);
       return;
     }
 

@@ -8,10 +8,11 @@ import {
 } from "firebase/auth";
 import firebase_app from "@/common/data/firebase/config";
 import { Failure } from "fp-ddd";
-import { Either, left, right } from "fp-ts/lib/Either";
+import { Either, left, right, tryCatch } from "fp-ts/lib/Either";
 import { BASE_URL } from "@/common/constants";
 import { IAuth } from "../application/repositories/types";
 import { UserInfra } from "../domain/types/user";
+import { FirebaseError } from "firebase/app";
 export interface AuthUser {}
 export interface AuthFirebaseOptions {
   authProvider: Auth;
@@ -43,11 +44,12 @@ class AuthFirebase extends IAuth {
         phoneNumber: userCredential.user.phoneNumber,
         photoURL: userCredential.user.photoURL,
         providerId: userCredential.user.providerId,
-        metadata: userCredential.user.metadata,
+        metadata: { ...userCredential.user.metadata },
       };
-
+      console.log("trying create user ");
       return right(user);
     } catch (error) {
+      console.log("Could not create user Infra", error);
       return left(
         Failure.invalidValue({
           invalidValue: error,
@@ -65,16 +67,29 @@ class AuthFirebase extends IAuth {
     password: string;
   }): Promise<Either<Failure<string>, string>> {
     try {
-      let result: UserCredential | null = null, // Variable to store the sign-in result
+      console.log("Signin user");
+      let result: UserCredential | null | FirebaseError = null, // Variable to store the sign-in result
         error = null; // Variable to store any error that occurs
 
-      result = await signInWithEmailAndPassword(
-        this._authProvider,
-        email,
-        password
-      );
+      try {
+        result = await signInWithEmailAndPassword(
+          this._authProvider,
+          email,
+          password
+        );
+      } catch (error) {
+        console.log({ error });
+        return left(
+          Failure.invalidValue({
+            invalidValue: result,
+            message: "Could not log in the user",
+          })
+        );
+      }
+
       if (!result) {
         // Display and log any sign-in errors
+        result = error;
         console.log("No result returned from signIn");
         return left(
           Failure.invalidValue({
@@ -102,6 +117,7 @@ class AuthFirebase extends IAuth {
 
       return right(idToken);
     } catch (error) {
+      console.log({ error });
       return left(
         Failure.invalidValue({
           invalidValue: error,
