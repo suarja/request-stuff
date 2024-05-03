@@ -1,6 +1,6 @@
 import {
   FirestoreDatabase,
-  firestoreFactory,
+  FirebaseDatabase,
 } from "@/lib/firebase/firestore/firestore";
 import RequestRepository from "../application/repositories/request-repository";
 import FileRepository, {
@@ -162,6 +162,6 @@ export default class RequestRepositoryImpl extends RequestRepository {
 }
 
 export const requestRepository = new RequestRepositoryImpl({
-  firestoreFactory: firestoreFactory,
+  firestoreFactory: FirebaseDatabase,
   fileRepository: fileRepositoryImplementation,
 });
