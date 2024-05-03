@@ -1,4 +1,3 @@
-import { IAuth } from "@/features/auth/application/repositories/types";
 import { FirebaseStorageServiceInstance } from "../../infra/file-repository-impl";
 import AuthUsecases, {
   authUsecases,
