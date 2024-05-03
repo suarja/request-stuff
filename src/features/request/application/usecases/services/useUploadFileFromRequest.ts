@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { requestUsecases } from "../request-usecases";
 import { FileSenderData } from "@/common/interfaces/istorage";
+import { isLeft } from "fp-ts/lib/Either";
 
 export type UseUploadFileFromRequestProps = {
   file: File;
@@ -24,9 +25,9 @@ export default function useUploadFileFromRequest() {
           file: uploadFileFromRequestProps.file,
           fileSenderData: uploadFileFromRequestProps.senderData,
         })
-        .then((fileUrl) => {
-          if (!fileUrl) {
-            setError("Error uploading file");
+        .then((eitherFileUrl) => {
+          if (isLeft(eitherFileUrl)) {
+            setError(eitherFileUrl.left.message);
             setLoading(false);
             return;
           }
@@ -34,7 +35,7 @@ export default function useUploadFileFromRequest() {
           setLoading(false);
         })
         .catch((error) => {
-          setError("Error uploading file");
+          setError("Error uploading file in hook");
           setLoading(false);
         });
     }
