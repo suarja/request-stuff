@@ -1,13 +1,16 @@
 import { Failure } from "fp-ddd";
 import { Either } from "fp-ts/lib/Either";
-import { AuthRepository, authRepository } from "../repositories/auth";
+import { type AuthRepository, authRepository } from "../repositories/auth";
 import { BASE_URL } from "@/common/constants";
 
+export interface AuthUsecasesOptions {
+  authRepository: AuthRepository;
+}
 export default class AuthUsecases {
   private readonly _authRepository: AuthRepository;
 
-  constructor({ authRepository }: { authRepository: AuthRepository }) {
-    this._authRepository = authRepository;
+  constructor(options: AuthUsecasesOptions) {
+    this._authRepository = options.authRepository;
   }
 
   async createUserWithEmailAndPassword({
