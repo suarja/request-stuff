@@ -9,7 +9,7 @@ export interface UserOptions {
   maxStorage: number;
   subscription: "free" | "basic" | "mid";
 }
-export default class User extends Entity<UserOptions> {
+export default class UserEntity extends Entity<UserOptions> {
   constructor(
     public readonly values: Either<Failure<UserOptions>, UserOptions>
   ) {
