@@ -7,7 +7,7 @@ import {
   RequestBase,
   UserUpload,
 } from "../../domain/entities/request-types";
-import { Either, left, right } from "fp-ts/lib/Either";
+import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import IDatabase from "@/common/interfaces/idatabase";
 import IStorage, { FileSenderData } from "@/common/interfaces/istorage";
 
@@ -98,7 +98,10 @@ export default class RequestRepository {
     const requestDto = new RequestDto();
 
     const request = requestDto.toDomain({ data: requestInfra });
-    return request;
+    if (isLeft(request)) {
+      return null;
+    }
+    return request.right;
   }
 
   async getPublicRequests({ userId }: { userId: string }): Promise<Request[]> {
@@ -109,19 +112,29 @@ export default class RequestRepository {
       ref: "requests",
     });
     const requestDto = new RequestDto();
-    const requestsDomain = requests.map((request) =>
-      requestDto.toDomain({ data: request })
-    );
-    return requestsDomain;
+    const parsedrequests: Request[] = [];
+    for (const req of requests) {
+      const eihterRequest = requestDto.toDomain({ data: req });
+      if (isRight(eihterRequest)) {
+        parsedrequests.push(eihterRequest.right);
+      }
+    }
+
+    return parsedrequests;
   }
   async getRequestsByUser({ userId }: { userId: string }): Promise<Request[]> {
     const path = `users/${userId}/requests`;
     const requests = await this._db.getCollection(path);
     const requestDto = new RequestDto();
-    const requestsDomain = requests.map((request) =>
-      requestDto.toDomain({ data: request })
-    );
-    return requestsDomain;
+   const parsedrequests: Request[] = [];
+   for (const req of requests) {
+     const eihterRequest = requestDto.toDomain({ data: req });
+     if (isRight(eihterRequest)) {
+       parsedrequests.push(eihterRequest.right);
+     }
+   }
+
+   return parsedrequests;
   }
 
   async addRequestToUser({
