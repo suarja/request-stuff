@@ -65,12 +65,16 @@ export default class RequestUsecases {
     fileSenderData: FileSenderData;
   }) {
     try {
+      //* Check request time and space limits
+
       const requestPayload = await this.requestRepository.getRequest({
         requestId,
       });
       if (!requestPayload) {
         throw new Error("Request not found");
       }
+
+      //* Once we have data of the request, we need to find out if the user has enough ressources (subscription plan, storage available)
 
       const fileUrl = await this.requestRepository.uploadFileFromRequest({
         requestData: requestPayload,

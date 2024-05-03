@@ -10,12 +10,15 @@ export interface UserOptions extends UserInfra {
   subscription: "free" | "basic" | "mid";
 }
 export default class UserEntity extends Entity<UserOptions> {
-  constructor(
-    public readonly values: Either<Failure<UserOptions>, UserOptions>
-  ) {
+  public values: Either<Failure<UserOptions>, UserOptions>;
+  private constructor(values: Either<Failure<UserOptions>, UserOptions>) {
     super();
+    this.values = values;
   }
 
+  static create(data: any): UserEntity {
+    return new UserEntity(data);
+  }
   get name(): string | null {
     return this.getOrCrash().displayName;
   }

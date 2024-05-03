@@ -1,10 +1,12 @@
-import { Either } from "fp-ts/lib/Either";
+import { Either, left, right } from "fp-ts/lib/Either";
 import { Failure } from "fp-ddd";
 import { FirebaseAuth } from "../../infra/auth-firebase";
 import { IAuth, IAuthOptions } from "./types";
 import IDatabase from "@/common/interfaces/idatabase";
 import { FirebaseDatabase } from "@/common/data/firebase/firestore/firestore";
 import { UserInfra } from "../../domain/types/user";
+import UserEntity from "../../domain/entities/user-entity";
+import UserDto from "../../infra/dto's/user-dto";
 
 export class AuthRepository {
   private readonly _auth: IAuth;
@@ -27,6 +29,24 @@ export class AuthRepository {
 
   async saveUser({ user }: { user: UserInfra }) {
     return this._db.addDocument("users", user, user.id);
+  }
+
+  async getUser({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, UserEntity>> {
+    const eitherUser = await this._db.getDocument("users", userId);
+    if (!eitherUser) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: eitherUser,
+          message: "Could not retrieve user from DB",
+        })
+      );
+    }
+    const userDto = new UserDto();
+    return userDto.toDomain({ data: eitherUser });
   }
 
   async signInWithMailAndPassword({
