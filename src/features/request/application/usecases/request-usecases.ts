@@ -155,6 +155,18 @@ export default class RequestUsecases {
       );
     }
   }
+
+  // async deleteRequest({ requestId }: { requestId: string }) {
+  //   return this._requestRepository.deleteRequest({ requestId });
+  // }
+
+  async updatePublicRequest({
+    request,
+  }: {
+    request: RequestBase;
+  }): Promise<void> {
+    return this._requestRepository.updatePublicRequest({ request });
+  }
 }
 
 export const requestUsecases = new RequestUsecases({

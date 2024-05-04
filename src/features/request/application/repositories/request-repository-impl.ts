@@ -126,15 +126,15 @@ export default class RequestRepository {
     const path = `users/${userId}/requests`;
     const requests = await this._db.getCollection(path);
     const requestDto = new RequestDto();
-   const parsedrequests: Request[] = [];
-   for (const req of requests) {
-     const eihterRequest = requestDto.toDomain({ data: req });
-     if (isRight(eihterRequest)) {
-       parsedrequests.push(eihterRequest.right);
-     }
-   }
+    const parsedrequests: Request[] = [];
+    for (const req of requests) {
+      const eihterRequest = requestDto.toDomain({ data: req });
+      if (isRight(eihterRequest)) {
+        parsedrequests.push(eihterRequest.right);
+      }
+    }
 
-   return parsedrequests;
+    return parsedrequests;
   }
 
   async addRequestToUser({
@@ -154,8 +154,13 @@ export default class RequestRepository {
     }
   }
 
-  updateRequest(): Promise<void> {
-    throw new Error("Method not implemented.");
+  async updatePublicRequest({
+    request,
+  }: {
+    request: RequestBase;
+  }): Promise<void> {
+    const path = `users/${request.userId}/requests`;
+    await this._db.updateDocument(path, request.id, request);
   }
   deleteRequest(): Promise<void> {
     throw new Error("Method not implemented.");

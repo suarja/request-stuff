@@ -16,6 +16,7 @@ export interface RequestBase {
   name: string;
   description?: string;
   maxFiles?: number;
+  numberOfUploads: number;
   path: string;
   url: string;
 }
