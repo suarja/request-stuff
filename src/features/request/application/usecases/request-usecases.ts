@@ -71,6 +71,7 @@ export default class RequestUsecases {
     fileSenderData: FileSenderData;
   }): Promise<Either<Failure<string>, string>> {
     try {
+      console.log("uploading...")
       const requestPayload = await this._requestRepository.getRequest({
         requestId,
       });
@@ -83,13 +84,21 @@ export default class RequestUsecases {
         );
       }
 
-      //! Check if  request date limit is later than runtime and file size is less than request max file size
+      //! Check if  request date limit is later than runtime and file size is less than request max file size and the number of uploads is less than max files after the current file is uploaded
       const fileSizeInMb = file.size / 1024 ** 2;
       if (fileSizeInMb > requestPayload?.maxFileSize!) {
         return left(
           Failure.invalidValue({
             invalidValue: requestPayload,
             message: `File is too large. It should be less than ${requestPayload.maxFileSize}`,
+          })
+        );
+      }
+      if (requestPayload.numberOfUploads + 1 > requestPayload.maxFiles!) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: requestPayload,
+            message: `Max number of files reached. ${requestPayload.maxFiles}`,
           })
         );
       }
@@ -143,6 +152,15 @@ export default class RequestUsecases {
       await this._auth.updateUser({
         userId: requestPayload.userId,
         user: updatedUser,
+      });
+
+      //! Update public request after uploading file
+      const updatedRequest = {
+        ...requestPayload,
+        numberOfUploads: requestPayload.numberOfUploads + 1,
+      };
+      await this._requestRepository.updatePublicRequest({
+        request: updatedRequest,
       });
 
       return right(fileUrl);

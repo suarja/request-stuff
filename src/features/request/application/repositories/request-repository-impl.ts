@@ -159,7 +159,7 @@ export default class RequestRepository {
   }: {
     request: RequestBase;
   }): Promise<void> {
-    const path = `users/${request.userId}/requests`;
+    const path = `requests`;
     await this._db.updateDocument(path, request.id, request);
   }
   deleteRequest(): Promise<void> {
