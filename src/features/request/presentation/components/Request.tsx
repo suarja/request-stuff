@@ -1,5 +1,3 @@
-import { FileIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import {
   ClientRequestFolder,
   type Request,
