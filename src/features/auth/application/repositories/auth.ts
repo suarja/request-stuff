@@ -48,6 +48,17 @@ export class AuthRepository {
     const userDto = new UserDto();
     return userDto.toDomain({ data: eitherUser });
   }
+  async updateUser({
+    userId,
+    user,
+  }: {
+    userId: string;
+    user: UserOptions;
+  }): Promise<Either<Failure<string>, void>> {
+    await this._db.updateDocument("users", userId, user);
+
+    return right(undefined);
+  }
 
   async signInWithMailAndPassword({
     email,
