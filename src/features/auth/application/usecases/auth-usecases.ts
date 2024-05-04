@@ -81,6 +81,16 @@ export default class AuthUsecases {
   }): Promise<Either<Failure<string>, UserEntity>> {
     return this._authRepository.getUser({ userId });
   }
+
+  async updateUser({
+    userId,
+    user,
+  }: {
+    userId: string;
+    user: UserEntity;
+  }): Promise<Either<Failure<string>, void>> {
+    return this._authRepository.updateUser({ userId, user: user.getOrCrash() });
+  }
 }
 
 export const authUsecases = new AuthUsecases({
