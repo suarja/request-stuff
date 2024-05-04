@@ -31,7 +31,7 @@ export default function useCreateRequest() {
           if (isRight(eitherErrorOrUndefined)) {
             setRequestId(props.id);
             toast.success(
-              `Request created successfully with id: ${eitherErrorOrUndefined}`
+              `Request created successfully: ${requestCreationProps.name}`
             );
             router.refresh();
           } else {
