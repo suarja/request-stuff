@@ -1,10 +1,7 @@
 import {
   ClientRequestFolder,
   Request,
-  UserUpload,
 } from "@/features/request/domain/entities/request-types";
-import { AvatarFallback, Avatar } from "@/common/components/ui/avatar";
-import Link from "next/link";
 import CloseIcon from "@/common/icons/CloseIcon";
 import React from "react";
 import { CopyToClipBoard } from "../components/CopyToClipboard";
