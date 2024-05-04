@@ -54,7 +54,7 @@ export default function RequestPage({
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Deadline
           </p>
-          <p>{request.dateLimit}</p>
+          <p>{new Date(request.dateLimit!).toLocaleDateString()}</p>
         </div>
       </div>
       <div className="space-y-4">
