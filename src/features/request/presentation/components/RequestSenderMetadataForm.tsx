@@ -68,7 +68,6 @@ export default function SenderMetadataForm({
   });
 
   const handleSubmit = (values: SenderMetadata) => {
-    console.log("Uploading file:", file.name);
     const data: UseUploadFileFromRequestProps = {
       file,
       requestId,
