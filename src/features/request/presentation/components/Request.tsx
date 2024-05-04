@@ -7,6 +7,7 @@ import {
 import DeleteIcon from "@/common/icons/DeleteIcon";
 import { formatDate } from "@/common/utils/date-format";
 import { CopyToClipBoardComponent } from "../views/RequestPage";
+import LinkIcon from "@/common/icons/LinkIcon";
 
 export function Request({
   request,
@@ -21,7 +22,7 @@ export function Request({
       <div className="sm:flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 ">
         <div className="flex items-center space-x-2 ">
           <span className="pl-2">
-            <FileIcon className="w-5 h-5  text-blue-500 group-hover:text-blue-600 dark:text-blue-400 dark:group-hover:text-blue-500" />
+            <LinkIcon className="w-5 h-5  text-blue-500 group-hover:text-blue-600 dark:text-blue-400 dark:group-hover:text-blue-500" />
           </span>
           <button
             onClick={() => setSelectedRequest(request)}
