@@ -18,7 +18,7 @@ export default function RequestPage({
   setSelectedRequest: ClientRequestFolder["setSelectedRequest"];
 }) {
   return (
-    <div className="grid gap-6 md:gap-8 bg-secondary rounded-lg shadow-md dark:bg-gray-950 overflow-hidden px-8 py-4 pb-8 transition-opacity duration-500">
+    <div className="flex flex-col w-full gap-6 md:gap-8  sm:max-w-5xl bg-secondary rounded-lg shadow-md dark:bg-gray-950 overflow-hidden px-8 py-4 pb-8 transition-opacity duration-500">
       <div
         onClick={() => setSelectedRequest(null)}
         className="flex justify-end cursor-pointer "

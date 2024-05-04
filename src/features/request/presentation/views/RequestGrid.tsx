@@ -18,7 +18,7 @@ export default function RequestGrid({
       <section
         className={cn(
           "h-full w-full  gap-4 ",
-          "grid grid-cols-1  ",
+          "flex flex-col items-center ",
          
         )}
       >
