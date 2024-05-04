@@ -16,7 +16,7 @@ export default function RootLayout({
     <main className="flex min-h-screen w-full flex-col gap-12 items-center py-12 px-4 md:py-24  ">
       <div className="flex flex-col gap-8">
         <nav className="flex h-full w-full justify-start  ">
-          <NavbarLogo />
+
         </nav>
         {children}
       </div>
