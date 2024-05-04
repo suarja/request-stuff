@@ -140,7 +140,7 @@ export default function SenderMetadataForm({
           />
 
           <div className="flex justify-end">
-            <Button className="mt-8" type="submit">
+            <Button disabled={loading} className="mt-8" type="submit">
               Submit
             </Button>
           </div>
