@@ -22,6 +22,7 @@ import { toast } from "sonner";
 const senderSchema = object({
   name: string().min(1, "Name is required"),
   email: string().email().optional(),
+  message: string().optional(),
 });
 
 type SenderMetadata = z.infer<typeof senderSchema>;
@@ -62,6 +63,7 @@ export default function SenderMetadataForm({
     defaultValues: {
       name: "",
       email: "",
+      message: "",
     },
   });
 
@@ -74,6 +76,8 @@ export default function SenderMetadataForm({
         fileUrl: "",
         senderName: form.getValues("name"),
         senderEmail: form.getValues("email"),
+        message: form.getValues("message"),
+        uploadDate: new Date().toLocaleDateString(),
       },
     };
 
@@ -118,6 +122,23 @@ export default function SenderMetadataForm({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor={field.name}>Message (Optional)</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Enter a message (optional)" />
+                </FormControl>
+                <FormDescription>
+                  This message will be associated with your file upload.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="flex justify-end">
             <Button className="mt-8" type="submit">
               Submit

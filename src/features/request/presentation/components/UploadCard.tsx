@@ -16,21 +16,23 @@ export function UploadCard({ upload }: { upload: UserUpload }) {
         <p className="font-medium">
           {upload.fileSenderData?.senderName || "Anonymous"}
         </p>
-        {upload.fileSenderData?.senderEmail && (
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {upload.fileSenderData.senderEmail}
-          </p>
-        )}
-        {upload.fileSenderData?.uploadDate && (
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {upload.fileSenderData.uploadDate}
-          </p>
-        )}
-        {upload.fileSenderData?.message && (
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {upload.fileSenderData.message}
-          </p>
-        )}
+        <div className="grid sm:grid-cols-2 gap-y-1">
+          {upload.fileSenderData?.senderEmail && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {upload.fileSenderData.senderEmail}
+            </p>
+          )}
+          {upload.fileSenderData?.uploadDate && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Uploaded: {upload.fileSenderData.uploadDate}
+            </p>
+          )}
+          {upload.fileSenderData?.message && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {upload.fileSenderData.message}
+            </p>
+          )}
+        </div>
       </div>
       <Link href={upload.fileUrl}>
         <DownloadIcon className="h-4 w-4" />
