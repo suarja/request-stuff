@@ -8,7 +8,6 @@ import AuthUsecases, {
   authUsecases,
 } from "@/features/auth/application/usecases/auth-usecases";
 import { Failure } from "fp-ddd";
-import { convertKbToMb } from "@/common/utils/from-kb-to-mb";
 
 export interface RequestUsecasesOptions {
   requestRepository: RequestRepository;
@@ -137,6 +136,14 @@ export default class RequestUsecases {
       });
 
       //! Update user after uploading file
+      const updatedUser = {
+        ...user,
+        currentStorage: user.currentStorage + fileSizeInMb,
+      };
+      await this._auth.updateUser({
+        userId: requestPayload.userId,
+        user: updatedUser,
+      });
 
       return right(fileUrl);
     } catch (error) {

@@ -2,7 +2,7 @@ import { Failure } from "fp-ddd";
 import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import { type AuthRepository, authRepository } from "../repositories/auth";
 import { BASE_URL } from "@/common/constants";
-import UserEntity from "../../domain/entities/user-entity";
+import UserEntity, { UserOptions } from "../../domain/entities/user-entity";
 
 export interface AuthUsecasesOptions {
   authRepository: AuthRepository;
@@ -87,9 +87,9 @@ export default class AuthUsecases {
     user,
   }: {
     userId: string;
-    user: UserEntity;
+    user: UserOptions;
   }): Promise<Either<Failure<string>, void>> {
-    return this._authRepository.updateUser({ userId, user: user.getOrCrash() });
+    return this._authRepository.updateUser({ userId, user });
   }
 }
 

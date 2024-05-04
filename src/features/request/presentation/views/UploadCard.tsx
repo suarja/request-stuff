@@ -61,8 +61,8 @@ const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
             <dd className="">
               <span className="font-medium">
                 {new Date(
-                  searchParams?.dateLimit as string
-                ).toLocaleDateString()}
+                  (searchParams?.dateLimit as string) ?? new Date()
+                ).toDateString()}
               </span>
             </dd>
           </dl>
