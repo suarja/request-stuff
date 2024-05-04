@@ -18,6 +18,8 @@ export default function useUploadFileFromRequest() {
 
   useEffect(() => {
     if (uploadFileFromRequestProps) {
+      setSuccess(null);
+      setError(null);
       setLoading(true);
       requestUsecases
         .uploadFileFromRequest({
@@ -37,6 +39,9 @@ export default function useUploadFileFromRequest() {
         .catch((error) => {
           setError("Error uploading file in hook");
           setLoading(false);
+        })
+        .finally(() => {
+          setUploadFileFromRequestProps(null);
         });
     }
   }, [uploadFileFromRequestProps]);
