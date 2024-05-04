@@ -71,7 +71,7 @@ export default function CustomDialog({
           {displayButton && (
             <button
               className={cn(
-                `className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 focus:outline-none`
+                `text-gray-500 text-sm bg-green-900 p-2 rounded-xl  hover:text-gray-900 dark:text-gray-50 dark:hover:bg-green-600  focus:outline-none`
               )}
               data-testid={testId}
             >

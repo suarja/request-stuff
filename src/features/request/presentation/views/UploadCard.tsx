@@ -20,7 +20,7 @@ const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
   };
   return (
     <Card className="w-full max-w-xl shadow-lg rounded-lg overflow-hidden bg-secondary">
-      <CardHeader className="bg-tertiaryalt p-4 text-white">
+      <CardHeader className="bg-tertiaryalt p-4 pt-6 text-white">
         <div className="space-y-1.5">
           <div className="flex justify-between">
             <h2 className="text-lg font-medium tracking-tight">
@@ -67,8 +67,8 @@ const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
             </dd>
           </dl>
         </div>
-        <form className="space-y-6 py-4">
-          <div className="space-y-2">
+        <form className="space-y-6 pt-4 flex flex-col justify-between">
+          <div className="space-y-2 flex gap-4">
             <Label className="text-sm" htmlFor="files">
               Select the files to upload
             </Label>
@@ -81,20 +81,23 @@ const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
               className="block cursor-pointer w-full text-sm file:border file:border-gray-800 file:px-4 file:py-1 file:rounded-lg file:text-sm file:font-semibold file:bg-primary file:hover:file:bg-blue-600"
             />
           </div>
-          {fileSelected && (
-            <CustomDialog
-              title="Tell us about you"
-              buttonText="Upload FIle"
-              buttonVariant="default"
-              testId="sender-metadata-dialog"
-            >
-              <SenderMetadataForm
-                file={fileSelected}
-                requestId={searchParams.requestId as string}
-                requestName={searchParams.requestName as string}
-              />
-            </CustomDialog>
-          )}
+          <div className="flex justify-center">
+            {" "}
+            {fileSelected && (
+              <CustomDialog
+                title="Tell us about you"
+                buttonText="Upload File"
+                buttonVariant="default"
+                testId="sender-metadata-dialog"
+              >
+                <SenderMetadataForm
+                  file={fileSelected}
+                  requestId={searchParams.requestId as string}
+                  requestName={searchParams.requestName as string}
+                />
+              </CustomDialog>
+            )}
+          </div>
         </form>
       </CardContent>
     </Card>
