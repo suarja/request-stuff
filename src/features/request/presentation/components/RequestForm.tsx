@@ -63,8 +63,9 @@ export default function CreateRequestForm() {
   async function onSubmit(values: Request) {
     const { url, id } = constructUrlWithQueryParams(pathName, form);
 
-    const request = {
+    const request: Request = {
       ...values,
+      numberOfUploads: 0,
       id,
       url,
     };
