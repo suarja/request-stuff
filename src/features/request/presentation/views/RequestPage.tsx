@@ -5,10 +5,9 @@ import {
 } from "@/features/request/domain/entities/request-types";
 import { AvatarFallback, Avatar } from "@/common/components/ui/avatar";
 import Link from "next/link";
-import CopyToClipBoardIcon from "../../../../common/icons/CopyToClipboard";
-import { toast } from "sonner";
 import CloseIcon from "@/common/icons/CloseIcon";
 import React from "react";
+import { CopyToClipBoard } from "../components/CopyToClipboard";
 
 export default function RequestPage({
   request,
@@ -36,7 +35,7 @@ export default function RequestPage({
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Request url
           </p>
-          <CopyToClipBoardComponent url={request.url} />
+          <CopyToClipBoard url={request.url} />
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -71,27 +70,6 @@ export default function RequestPage({
         )}
       </div>
     </div>
-  );
-}
-
-export function CopyToClipBoardComponent({
-  url,
-  props,
-}: {
-  url: string;
-  props?: React.ComponentProps<"button">;
-}) {
-  return (
-    <button
-      {...props}
-      className="  font-bold py-2 rounded"
-      onClick={() => {
-        navigator.clipboard.writeText(url);
-        toast.success("Copied to clipboard");
-      }}
-    >
-      <CopyToClipBoardIcon />
-    </button>
   );
 }
 
