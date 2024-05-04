@@ -20,9 +20,7 @@ export function RequestFolder(props: ClientRequestFolder) {
           <span className="font-medium text-gray-900 dark:text-gray-50">
             {title}
           </span>
-          <CustomDialog title="Add File" buttonVariant="outline">
-            <CreateRequestForm />
-          </CustomDialog>
+       
         </div>
         <div className="flex items-center space-x-2">
           <span className="text-gray-500 text-sm dark:text-gray-400">
