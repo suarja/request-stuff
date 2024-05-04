@@ -59,13 +59,16 @@ export default function RequestPage({
       </div>
       <div className="space-y-4">
         <h2 className="text-xl font-bold">File Uploads</h2>
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
-          No files uploaded yet.
-        </div>
 
-        {request.uploads.map((upload, index) => (
-          <UploadCard key={index} upload={upload} />
-        ))}
+        {request.uploads.length > 0 ? (
+          request.uploads.map((upload, index) => (
+            <UploadCard key={index} upload={upload} />
+          ))
+        ) : (
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
+            No files uploaded yet.
+          </div>
+        )}
       </div>
     </div>
   );
