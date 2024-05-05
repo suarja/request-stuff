@@ -61,6 +61,7 @@ export default class RequestRepository {
   }): Promise<void> {
     const path = `users/${requestData.userId}/requests`;
     const data: UserUpload = {
+      fileName: fileSenderData.fileName,
       fileUrl: fileSenderData.fileUrl,
       fileSenderData: {
         ...fileSenderData,

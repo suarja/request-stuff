@@ -22,6 +22,7 @@ export interface RequestBase {
 }
 
 export type UserUpload = {
+  fileName: string;
   fileUrl: string;
   fileSenderData?: FileSenderData;
 };

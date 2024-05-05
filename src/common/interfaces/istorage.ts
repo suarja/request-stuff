@@ -33,7 +33,7 @@ export type FileFromStorage = {
 export type FileSenderData = {
   senderName: string;
   senderEmail?: string;
-
+  fileName: string;
   message?: string;
   uploadDate?: string;
   fileUrl: string;

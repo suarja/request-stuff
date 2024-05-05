@@ -73,6 +73,7 @@ export default function SenderMetadataForm({
       requestId,
       senderData: {
         fileUrl: "",
+        fileName: file.name,
         senderName: form.getValues("name"),
         senderEmail: form.getValues("email"),
         message: form.getValues("message"),
