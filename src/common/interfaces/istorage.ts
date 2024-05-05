@@ -30,7 +30,7 @@ export default abstract class IStorage {
     path,
   }: {
     path: string;
-  }): Promise<Either<Failure<String>, void>>;
+  }): Promise<Either<Failure<string>, void>>;
 }
 
 export type FileFromStorage = {

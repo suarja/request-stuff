@@ -168,7 +168,7 @@ export default class FirebaseStorageService extends IStorage {
     path,
   }: {
     path: string;
-  }): Promise<Either<Failure<String>, void>> {
+  }): Promise<Either<Failure<string>, void>> {
     try {
       const refPath = ref(this.storage, path);
       listAll(refPath).then((res) => {
