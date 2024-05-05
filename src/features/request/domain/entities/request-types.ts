@@ -26,6 +26,7 @@ export type Upload = {
   fileName: string;
   senderIp?: string;
   senderHash?: string;
+  date?: string;
 };
 
 export type UserUpload = {
