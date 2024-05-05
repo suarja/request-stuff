@@ -83,12 +83,17 @@ export default class RequestUsecases {
           })
         );
       }
-      const fileUrl = await this._requestRepository.uploadFileFromRequest({
-        requestData: requestPayload,
-        file,
-        fileSenderData,
-      });
-      return right(fileUrl);
+      const eitherFileUrl =
+        await this._requestRepository.uploadFileFromRequestServerCall({
+          requestData: requestPayload,
+          file,
+          fileSenderData,
+        });
+      if (isLeft(eitherFileUrl)) {
+        return eitherFileUrl;
+      }
+
+      return right(eitherFileUrl.right);
     } catch (error) {
       return left(
         Failure.invalidValue({
