@@ -1,10 +1,8 @@
-export type ErrorMessage =
-  | "File not found"
-  | "Error uploading file"
-  | "Error saving file"
-  | "Error sending file"
-  | "Error sending email"
-  | "Error saving request"
-  | "Error saving request data"
-  | "Error saving file data"
-  | "Error saving file sender";
+export type ErrorMessage<T extends string = ""> =
+  | `File not found ${T}`
+  | `Max number of files reached. ${T}`
+  | `Request date limit exceeded. ${T}`
+  | "File already exists"
+  | "Could not add file to request beacuse could not get user"
+  | `Space available insuficient ${T}`
+  | "An unknown error happend";
