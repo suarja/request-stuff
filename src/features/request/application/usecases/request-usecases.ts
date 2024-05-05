@@ -61,6 +61,44 @@ export default class RequestUsecases {
     return this._requestRepository.getRequestsByUser({ userId });
   }
 
+  async uploadFileFromRequestServerCall({
+    requestId,
+    file,
+    fileSenderData,
+  }: {
+    requestId: string;
+    file: File;
+    fileSenderData: FileSenderData;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      console.log("uploading...");
+      const requestPayload = await this._requestRepository.getPublicRequest({
+        requestId,
+      });
+      if (!requestPayload) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: requestPayload,
+            message: "Could not get request",
+          })
+        );
+      }
+      const fileUrl = await this._requestRepository.uploadFileFromRequest({
+        requestData: requestPayload,
+        file,
+        fileSenderData,
+      });
+      return right(fileUrl);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "An unknown error happend",
+        })
+      );
+    }
+  }
+
   async uploadFileFromRequest({
     requestId,
     file,

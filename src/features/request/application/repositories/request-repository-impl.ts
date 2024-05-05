@@ -65,6 +65,45 @@ export default class RequestRepository {
     return fileUrl;
   }
 
+  async uploadFileFromRequestServerCall({
+    requestData,
+    file,
+    fileSenderData,
+  }: {
+    requestData: RequestBase;
+    file: File;
+    fileSenderData: FileSenderData;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      //! Call backend to send all the data and manage the file upload
+      const form = new FormData();
+      form.append("file", file);
+      form.append("requestData", JSON.stringify(requestData));
+      form.append("fileSenderData", JSON.stringify(fileSenderData));
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: form,
+      });
+      const data = await response.json();
+      if (!data.fileUrl) {
+        return left(
+          Failure.invalidValue({
+            message: data.message,
+            invalidValue: data,
+          })
+        );
+      }
+      return right(data.fileUrl);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          message: "Error uploading file",
+          invalidValue: error,
+        })
+      );
+    }
+  }
+
   async updateRequestInUserCollection({
     requestData,
     fileSenderData,
@@ -252,7 +291,7 @@ export default class RequestRepository {
     if (isLeft(eitherDeletedPublic)) {
       return left(eitherDeletedPublic.left);
     }
-    
+
     //! Delete the request from the user collection
     const eitherDeletedUser = await this.deleteRequestFromUserCollection({
       userId,
