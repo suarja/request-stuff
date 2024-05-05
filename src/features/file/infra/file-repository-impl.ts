@@ -21,6 +21,8 @@ import IStorage, {
   FileFromStorage,
   FileSenderData,
 } from "@/common/interfaces/istorage";
+import { Failure } from "fp-ddd";
+import { Either, left, right } from "fp-ts/lib/Either";
 export interface FirebaseStorageOptions {
   storage: FirebaseStorage;
 }
@@ -140,6 +142,51 @@ export default class FirebaseStorageService extends IStorage {
       return "ok";
     } catch (error) {
       return "not ok";
+    }
+  }
+
+  /**
+   * Deletes a folder and its contents recursively.
+   *
+   * @param path - The path of the folder to delete. The path should follow the format `folderName/`.
+   * @returns A promise that resolves to `void` if the folder is successfully deleted, or an `Either` object containing a `Failure` if an error occurs.
+   *
+   * @example
+   * ```typescript
+   * const result = await FirebaseStorageServiceInstance.deleteFolder({ path: "folderName/" });
+   * if (isLeft(result)) {
+   *  console.error(result.value);
+   * }
+   * ```
+   *
+   * @remarks
+   * This method uses Firebase Storage to delete a folder and its contents recursively. It first lists all the items and subfolders in the given path, and then deletes each item and recursively calls itself to delete subfolders.
+   *
+   * For more information, see the following Stack Overflow answer: [How to delete a folder and its contents using Firebase Storage in JavaScript?](https://stackoverflow.com/a/56844189)
+   */
+  async deleteFolder({
+    path,
+  }: {
+    path: string;
+  }): Promise<Either<Failure<String>, void>> {
+    try {
+      const refPath = ref(this.storage, path);
+      listAll(refPath).then((res) => {
+        res.items.forEach((itemRef) => {
+          deleteObject(itemRef);
+        });
+        res.prefixes.forEach((folderRef) => {
+          this.deleteFolder({ path: folderRef.fullPath });
+        });
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "Could not delete folder",
+        })
+      );
     }
   }
 }

@@ -1,4 +1,6 @@
 import { RootFolder } from "@/features/file/presentation/components/Folder";
+import { Failure } from "fp-ddd";
+import { Either } from "fp-ts/lib/Either";
 
 export default abstract class IStorage {
   abstract uploadFile({
@@ -23,7 +25,14 @@ export default abstract class IStorage {
     root: string;
   }): Promise<RootFolder>;
   abstract removeFile({ path }: { path: string }): Promise<"ok" | "not ok">;
+
+  abstract deleteFolder({
+    path,
+  }: {
+    path: string;
+  }): Promise<Either<Failure<String>, void>>;
 }
+
 export type FileFromStorage = {
   name: string;
   url: string;
