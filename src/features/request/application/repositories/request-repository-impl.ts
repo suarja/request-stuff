@@ -11,7 +11,6 @@ import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import IDatabase from "@/common/interfaces/idatabase";
 import IStorage, { FileSenderData } from "@/common/interfaces/istorage";
 import { Failure } from "fp-ddd";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 export interface RequestRepositoryOptions {
   db: IDatabase;

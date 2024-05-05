@@ -1,13 +1,6 @@
 import { FileSenderData } from "@/common/interfaces/istorage";
 import { Dispatch, SetStateAction } from "react";
 
-// export type FileSenderData = {
-//   senderName?: string;
-//   senderEmail?: string;
-//   message?: string;
-//   uploadDate?: string;
-// };
-
 export interface RequestBase {
   id: string;
   userId: string;
