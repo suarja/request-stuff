@@ -7,6 +7,7 @@ import { FileSenderData } from "@/common/interfaces/istorage";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
 import {
   RequestBase,
+  Upload,
   UserUpload,
 } from "@/features/request/domain/entities/request-types";
 import { isLeft } from "fp-ts/lib/Either";
@@ -16,6 +17,7 @@ import { NextRequest, NextResponse } from "next/server";
 customInitApp();
 
 export async function POST(request: NextRequest, response: NextResponse) {
+  const ip = request.headers.get("x-forwarded-for");
   const form = await request.formData();
   const file = form.get("file");
   const fileSenderData: FileSenderData = JSON.parse(
@@ -88,6 +90,22 @@ export async function POST(request: NextRequest, response: NextResponse) {
     );
   }
 
+//   // Check ip address is not the same as the sender
+//   if (
+//     requestData.uploads.some((upload) => {
+//       if (ip === upload.senderIp) true;
+//     })
+//   ) {
+//     const message: ErrorMessage<""> = "File already exists";
+//     return NextResponse.json(
+//       {
+//         message,
+//         error: true,
+//       },
+//       { status: 200 }
+//     );
+//   }
+
   //~ check user has enough ressources (subscription plan, storage available)
   const userId = requestData.userId;
   const userInfra = await firebaseAdmin.getDocument("users", userId);
@@ -145,20 +163,18 @@ export async function POST(request: NextRequest, response: NextResponse) {
   }
 
   // 2. Update public request collection
+  const upload: Upload = {
+    fileName: (file as File).name,
+    date: new Date().toISOString(),
+    senderHash: fileSenderData.senderName,
+    senderIp: ip ?? "unknown",
+  };
   await firebaseAdmin.updateArray({
     collection: "requests",
     id: requestData.id,
     field: "uploads",
     data: {
-      uploads: [
-        {
-          fileName: (file as File).name,
-          fileUrl: fileSenderData.fileUrl,
-          fileSenderData: {
-            ...fileSenderData,
-          },
-        },
-      ],
+      uploads: [upload],
     },
     updateRest: true,
     rest: {
