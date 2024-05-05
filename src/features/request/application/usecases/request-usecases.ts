@@ -190,9 +190,15 @@ export default class RequestUsecases {
     }
   }
 
-  // async deleteRequest({ requestId }: { requestId: string }) {
-  //   return this._requestRepository.deleteRequest({ requestId });
-  // }
+  async deleteRequest({
+    requestId,
+    userId,
+  }: {
+    requestId: string;
+    userId: string;
+  }) {
+    return this._requestRepository.deleteRequest({ requestId, userId });
+  }
 
   async updatePublicRequest({
     request,
