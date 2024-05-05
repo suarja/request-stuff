@@ -12,6 +12,7 @@ import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import IDatabase from "@/common/interfaces/idatabase";
 import IStorage, { FileSenderData } from "@/common/interfaces/istorage";
 import { Failure } from "fp-ddd";
+import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 export interface RequestRepositoryOptions {
   db: IDatabase;
@@ -195,9 +196,18 @@ export default class RequestRepository {
     requestId,
   }: {
     requestId: string;
-  }): Promise<void> {
-    const path = `requests`;
-    await this._db.deleteDocument(path, requestId);
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await this._db.deleteDocument("requests", requestId);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          message: "Request not found nor deleted in public collection",
+          invalidValue: requestId,
+        })
+      );
+    }
   }
 
   async deleteRequestFromUserCollection({
@@ -206,9 +216,19 @@ export default class RequestRepository {
   }: {
     userId: string;
     requestId: string;
-  }): Promise<void> {
-    const path = `users/${userId}/requests`;
-    await this._db.deleteDocument(path, requestId);
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const path = `users/${userId}/requests`;
+      await this._db.deleteDocument(path, requestId);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          message: "Request not found nor deleted in user collection",
+          invalidValue: requestId,
+        })
+      );
+    }
   }
 
   async deleteRequest({
@@ -228,7 +248,19 @@ export default class RequestRepository {
     }
 
     //! Delete the request from the public collection
+    const eitherDeletedPublic = await this.deletePublicRequest({ requestId });
+    if (isLeft(eitherDeletedPublic)) {
+      return left(eitherDeletedPublic.left);
+    }
+    
     //! Delete the request from the user collection
+    const eitherDeletedUser = await this.deleteRequestFromUserCollection({
+      userId,
+      requestId,
+    });
+    if (isLeft(eitherDeletedUser)) {
+      return left(eitherDeletedUser.left);
+    }
 
     return right(undefined);
   }
