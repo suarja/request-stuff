@@ -22,7 +22,7 @@ export default abstract class IStorage {
     path: string;
     root: string;
   }): Promise<RootFolder>;
-  abstract remove({ path }: { path: string }): Promise<"ok" | "not ok">;
+  abstract removeFile({ path }: { path: string }): Promise<"ok" | "not ok">;
 }
 export type FileFromStorage = {
   name: string;

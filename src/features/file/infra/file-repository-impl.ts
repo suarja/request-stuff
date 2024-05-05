@@ -133,7 +133,7 @@ export default class FirebaseStorageService extends IStorage {
     return { url, metadata };
   }
 
-  async remove({ path }: { path: string }): Promise<"ok" | "not ok"> {
+  async removeFile({ path }: { path: string }): Promise<"ok" | "not ok"> {
     try {
       const refPath = ref(this.storage, path);
       await deleteObject(refPath);

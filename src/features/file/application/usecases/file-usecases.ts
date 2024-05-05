@@ -34,7 +34,7 @@ export default class FileUsecases {
     return await this._storage.getPathContent({ path, root });
   }
   async removeFile({ path }: { path: string }) {
-    return await this._storage.remove({ path });
+    return await this._storage.removeFile({ path });
   }
 }
 
