@@ -1,4 +1,3 @@
-import { PlusIcon } from "@radix-ui/react-icons";
 import { RequestFolder } from "./RequestFolder";
 import { ClientRequestFolder } from "../../domain/entities/request-types";
 import CustomDialog from "@/common/components/CustomDialog";
