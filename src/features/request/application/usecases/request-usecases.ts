@@ -71,7 +71,6 @@ export default class RequestUsecases {
     fileSenderData: FileSenderData;
   }): Promise<Either<Failure<string>, string>> {
     try {
-      console.log("uploading...");
       const requestPayload = await this._requestRepository.getPublicRequest({
         requestId,
       });

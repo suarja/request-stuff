@@ -49,6 +49,7 @@ export default class RequestRepository {
         fileName: file.name,
         //! This is not the best way to handle this, but it's a quick fix for now
         senderHash: fileSenderData.senderName,
+        date: new Date().toISOString(),
       },
       requestId: requestData.id,
     });
