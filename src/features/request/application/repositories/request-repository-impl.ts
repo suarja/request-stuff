@@ -190,7 +190,14 @@ export default class RequestRepository {
       data: upload,
       id: requestId,
     });
-
+  }
+  async deletePublicRequest({
+    requestId,
+  }: {
+    requestId: string;
+  }): Promise<void> {
+    const path = `requests`;
+    await this._db.deleteDocument(path, requestId);
   }
 
   async deleteRequest({
