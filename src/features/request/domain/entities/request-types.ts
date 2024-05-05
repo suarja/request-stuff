@@ -19,7 +19,14 @@ export interface RequestBase {
   numberOfUploads: number;
   path: string;
   url: string;
+  uploads: Upload[];
 }
+
+export type Upload = {
+  fileName: string;
+  senderIp?: string;
+  senderHash?: string;
+};
 
 export type UserUpload = {
   fileName: string;

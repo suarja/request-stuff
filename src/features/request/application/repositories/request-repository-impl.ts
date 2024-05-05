@@ -5,6 +5,7 @@ import RequestDto from "../../infra/dto's/request-dto";
 import {
   Request,
   RequestBase,
+  Upload,
   UserUpload,
 } from "../../domain/entities/request-types";
 import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
@@ -40,8 +41,18 @@ export default class RequestRepository {
       value: file,
       customMetadata: fileSenderData,
     });
-    //! Move this to usecases since it's business logic
-    // Update user request entry
+
+    //* Update request entry
+    await this.updatePublicRequestUploads({
+      upload: {
+        fileName: file.name,
+        //! This is not the best way to handle this, but it's a quick fix for now
+        senderHash: fileSenderData.senderName,
+      },
+      requestId: requestData.id,
+    });
+
+    //* Update user request entry
     await this.updateRequestInUserCollection({
       requestData,
       fileSenderData: {
@@ -77,7 +88,7 @@ export default class RequestRepository {
     });
     return;
   }
-  async addRequestToPublic({
+  async addPublicRequest({
     props,
   }: {
     props: RequestBase;
@@ -163,6 +174,23 @@ export default class RequestRepository {
     const path = `requests`;
     await this._db.updateDocument(path, request.id, request);
   }
+
+  async updatePublicRequestUploads({
+    upload,
+    requestId,
+  }: {
+    upload: Upload;
+    requestId: string;
+  }): Promise<void> {
+    const path = `requests`;
+    await this._db.updateArrayInDocument({
+      collection: path,
+      field: "uploads",
+      data: upload,
+      id: requestId,
+    });
+  }
+
   deleteRequest(): Promise<void> {
     throw new Error("Method not implemented.");
   }

@@ -66,6 +66,7 @@ export default function CreateRequestForm() {
     const request: Request = {
       ...values,
       numberOfUploads: 0,
+      uploads: [],
       id,
       url,
     };

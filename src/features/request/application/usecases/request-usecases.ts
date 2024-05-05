@@ -29,7 +29,7 @@ export default class RequestUsecases {
   }): Promise<Either<Error, void>> {
     const pathForUserCollection = `users/${props.userId}/requests`;
     const batch = await Promise.allSettled([
-      this._requestRepository.addRequestToPublic({ props }),
+      this._requestRepository.addPublicRequest({ props }),
       this._requestRepository.addRequestToUser({
         path: pathForUserCollection,
         userId: props.userId,
@@ -84,7 +84,7 @@ export default class RequestUsecases {
         );
       }
 
-      //! Check if  request date limit is later than runtime and file size is less than request max file size and the number of uploads is less than max files after the current file is uploaded
+      //~ Check if request options
       const fileSizeInMb = file.size / 1024 ** 2;
       if (fileSizeInMb > requestPayload?.maxFileSize!) {
         return left(
@@ -114,7 +114,7 @@ export default class RequestUsecases {
         );
       }
 
-      //* Once we have data of the request, we need to find out if the user has enough ressources (subscription plan, storage available)
+      //~ check user has enough ressources (subscription plan, storage available)
       const eitherUser = await this._auth.getUser({
         userId: requestPayload.userId,
       });
@@ -138,13 +138,14 @@ export default class RequestUsecases {
           })
         );
       }
+      //* Upload file
       const fileUrl = await this._requestRepository.uploadFileFromRequest({
         requestData: requestPayload,
         file,
         fileSenderData,
       });
 
-      //! Update user after uploading file
+      //* Update user after uploading file
       const updatedUser = {
         ...user,
         currentStorage: user.currentStorage + fileSizeInMb,
@@ -154,7 +155,7 @@ export default class RequestUsecases {
         user: updatedUser,
       });
 
-      //! Update public request after uploading file
+      //* Update public request after uploading file
       const updatedRequest = {
         ...requestPayload,
         numberOfUploads: requestPayload.numberOfUploads + 1,

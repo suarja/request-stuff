@@ -50,7 +50,7 @@ export default abstract class IDatabase {
     id: string;
     field: string;
     data: any;
-    incrementNumber: string;
+    incrementNumber?: string;
   }): Promise<void>;
   abstract deleteDocument(collection: string, id: string): Promise<void>;
 }

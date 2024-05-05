@@ -111,9 +111,16 @@ export class FirestoreDatabase extends IDatabase {
     id: string;
     field: string;
     data: any;
-    incrementNumber: string;
+    incrementNumber?: string;
   }) {
     try {
+      if (!incrementNumber) {
+        const docRef = doc(this.db, collection, id);
+        await updateDoc(docRef, {
+          [field]: arrayUnion(data),
+        });
+        return;
+      }
       const docRef = doc(this.db, collection, id);
       await updateDoc(docRef, {
         [incrementNumber]: increment(1),
