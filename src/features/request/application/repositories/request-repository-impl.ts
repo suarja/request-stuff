@@ -1,5 +1,4 @@
 import { FirebaseDatabase } from "@/common/data/firebase/firestore/firestore";
-
 import { FirebaseStorageServiceInstance } from "@/features/file/infra/file-repository-impl";
 import RequestDto from "../../infra/dto's/request-dto";
 import {
@@ -85,7 +84,8 @@ export default class RequestRepository {
         body: form,
       });
       const data = await response.json();
-      if (!data.fileUrl) {
+
+      if (data.error === true) {
         return left(
           Failure.invalidValue({
             message: data.message,
