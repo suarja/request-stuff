@@ -22,7 +22,7 @@ export default function useUploadFileFromRequest() {
       setError(null);
       setLoading(true);
       requestUsecases
-        .uploadFileFromRequest({
+        .uploadFileFromRequestServerCall({
           requestId: uploadFileFromRequestProps.requestId,
           file: uploadFileFromRequestProps.file,
           fileSenderData: uploadFileFromRequestProps.senderData,
