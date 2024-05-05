@@ -38,10 +38,13 @@ export class FirebaseAdmin {
       .bucket(process.env.BUCKET_NAME as string)
       .file(path);
     const buff = Buffer.from(await file.arrayBuffer());
-    fileRef.setMetadata({
+
+    await fileRef.save(buff, {
       contentType: file.type,
+      metadata: {
+        cacheControl: "public, max-age=31536000",
+      },
     });
-    await fileRef.save(buff);
     // Return the download URL
     const url = await getDownloadURL(fileRef);
     console.log({ url });
@@ -49,9 +52,11 @@ export class FirebaseAdmin {
   }
 
   // Get a download URL from a file in Firebase Storage
-  async getDownloadURL(path: string) {
-    return getDownloadURL(this.storage.bucket().file(path));
-  }
+  // async getDownloadURL(path: string) {
+  //   return getDownloadURL(
+  //     this.storage.bucket(process.env.BUCKET_NAME as string).file(path)
+  //   );
+  // }
 
   // Save a document in Firestore
   async saveDocument(collection: string, data: any) {
