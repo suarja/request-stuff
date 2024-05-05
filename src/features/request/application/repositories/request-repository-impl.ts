@@ -11,6 +11,7 @@ import {
 import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import IDatabase from "@/common/interfaces/idatabase";
 import IStorage, { FileSenderData } from "@/common/interfaces/istorage";
+import { Failure } from "fp-ddd";
 
 export interface RequestRepositoryOptions {
   db: IDatabase;
@@ -189,10 +190,29 @@ export default class RequestRepository {
       data: upload,
       id: requestId,
     });
+
   }
 
-  deleteRequest(): Promise<void> {
-    throw new Error("Method not implemented.");
+  async deleteRequest({
+    userId,
+    requestId,
+  }: {
+    userId: string;
+    requestId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    //! Recursively delete all files in the request storage
+
+    const eitherDeleted = await this._storage.deleteFolder({
+      path: `users/${userId}/requests/${requestId}`,
+    });
+    if (isLeft(eitherDeleted)) {
+      return left(eitherDeleted.left);
+    }
+
+    //! Delete the request from the public collection
+    //! Delete the request from the user collection
+
+    return right(undefined);
   }
 }
 
