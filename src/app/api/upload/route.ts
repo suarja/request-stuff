@@ -9,12 +9,8 @@ import {
   RequestBase,
   UserUpload,
 } from "@/features/request/domain/entities/request-types";
-import { auth } from "firebase-admin";
-import { User } from "firebase/auth";
 import { isLeft } from "fp-ts/lib/Either";
-import { cookies, headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { number } from "zod";
 
 // Init the Firebase SDK every time the server is called
 customInitApp();

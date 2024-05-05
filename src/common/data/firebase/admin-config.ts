@@ -25,6 +25,7 @@ export class FirebaseAdmin {
   private storage: Storage;
 
   constructor() {
+    customInitApp();
     this.firestore = getFirestore();
     this.storage = getStorage();
   }
