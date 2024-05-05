@@ -51,7 +51,7 @@ export default class RequestUsecases {
   }
 
   async getRequest({ requestId }: { requestId: string }) {
-    return this._requestRepository.getRequest({ requestId });
+    return this._requestRepository.getPublicRequest({ requestId });
   }
 
   async getPublicRequests({ userId }: { userId: string }) {
@@ -71,8 +71,8 @@ export default class RequestUsecases {
     fileSenderData: FileSenderData;
   }): Promise<Either<Failure<string>, string>> {
     try {
-      console.log("uploading...")
-      const requestPayload = await this._requestRepository.getRequest({
+      console.log("uploading...");
+      const requestPayload = await this._requestRepository.getPublicRequest({
         requestId,
       });
       if (!requestPayload) {

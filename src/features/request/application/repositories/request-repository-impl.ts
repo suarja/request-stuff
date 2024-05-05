@@ -89,7 +89,7 @@ export default class RequestRepository {
       return left(new Error("Error adding request to public collection"));
     }
   }
-  async getRequest({
+  async getPublicRequest({
     requestId,
   }: {
     requestId: string;
