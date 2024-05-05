@@ -200,6 +200,17 @@ export default class RequestRepository {
     await this._db.deleteDocument(path, requestId);
   }
 
+  async deleteRequestFromUserCollection({
+    userId,
+    requestId,
+  }: {
+    userId: string;
+    requestId: string;
+  }): Promise<void> {
+    const path = `users/${userId}/requests`;
+    await this._db.deleteDocument(path, requestId);
+  }
+
   async deleteRequest({
     userId,
     requestId,
