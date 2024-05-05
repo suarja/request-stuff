@@ -11,7 +11,6 @@ export function CopyToClipBoard({
   return (
     <button
       {...props}
-      className="  font-bold py-2 rounded"
       onClick={() => {
         navigator.clipboard.writeText(url);
         toast.success("Copied to clipboard");
