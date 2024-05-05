@@ -74,11 +74,26 @@ export async function POST(request: NextRequest, response: NextResponse) {
   }
 
   // Check if file already exists
-  const fileExists = requestData.uploads.some(
-    (upload) =>
+  console.log("file exists already step");
+  console.log(
+    JSON.stringify(requestData.uploads),
+    fileSenderData.senderName,
+    (file as File).name
+  );
+  const fileExists = requestData.uploads.some((upload) => {
+    console.log(
+      upload.fileName,
+      upload.senderHash,
+      (file as File).name,
+      fileSenderData.senderName
+    );
+    if (
       upload.fileName === (file as File).name &&
       upload.senderHash === fileSenderData.senderName
-  );
+    ) {
+      return true;
+    }
+  });
   if (fileExists) {
     const message: ErrorMessage<""> = "File already exists";
     return NextResponse.json(
@@ -90,21 +105,21 @@ export async function POST(request: NextRequest, response: NextResponse) {
     );
   }
 
-//   // Check ip address is not the same as the sender
-//   if (
-//     requestData.uploads.some((upload) => {
-//       if (ip === upload.senderIp) true;
-//     })
-//   ) {
-//     const message: ErrorMessage<""> = "File already exists";
-//     return NextResponse.json(
-//       {
-//         message,
-//         error: true,
-//       },
-//       { status: 200 }
-//     );
-//   }
+  //   // Check ip address is not the same as the sender
+  //   if (
+  //     requestData.uploads.some((upload) => {
+  //       if (ip === upload.senderIp) true;
+  //     })
+  //   ) {
+  //     const message: ErrorMessage<""> = "File already exists";
+  //     return NextResponse.json(
+  //       {
+  //         message,
+  //         error: true,
+  //       },
+  //       { status: 200 }
+  //     );
+  //   }
 
   //~ check user has enough ressources (subscription plan, storage available)
   const userId = requestData.userId;
@@ -174,7 +189,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     id: requestData.id,
     field: "uploads",
     data: {
-      uploads: [upload],
+      ...upload,
     },
     updateRest: true,
     rest: {
@@ -185,17 +200,18 @@ export async function POST(request: NextRequest, response: NextResponse) {
   // 3. Update request in user collection
   const userUpload: UserUpload = {
     fileName: (file as File).name,
-    fileUrl: fileSenderData.fileUrl,
+    fileUrl,
     fileSenderData: {
       ...fileSenderData,
+      fileUrl,
     },
   };
   await firebaseAdmin.updateArray({
-    collection: "users",
-    id: user.id,
+    collection: `users/${user.id}/requests`,
+    id: requestData.id,
     field: "uploads",
     data: {
-      uploads: [userUpload],
+      ...userUpload,
     },
     updateRest: true,
     rest: {
@@ -204,6 +220,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   });
 
   // 4. Update user
+  //*ok
   await firebaseAdmin.updateDocument("users", user.id, {
     currentStorage: user.currentStorage + fileSizeInMb,
   });

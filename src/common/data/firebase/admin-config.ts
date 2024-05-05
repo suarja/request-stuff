@@ -98,13 +98,13 @@ export class FirebaseAdmin {
     updateRest?: boolean;
     rest?: any;
   }) {
-    if (updateRest) {
+    if (updateRest === true) {
       return await this.firestore
         .collection(collection)
         .doc(id)
         .update({
-          [field]: FieldValue.arrayUnion(data),
           ...rest,
+          [field]: FieldValue.arrayUnion(data),
         });
     }
     return await this.firestore
