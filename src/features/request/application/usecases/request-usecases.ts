@@ -114,6 +114,21 @@ export default class RequestUsecases {
         );
       }
 
+      // Check if file already exists
+      const fileExists = requestPayload.uploads.some(
+        (upload) =>
+          upload.fileName === file.name &&
+          upload.senderHash === fileSenderData.senderName
+      );
+      if (fileExists) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: fileExists,
+            message: "File already exists",
+          })
+        );
+      }
+
       //~ check user has enough ressources (subscription plan, storage available)
       const eitherUser = await this._auth.getUser({
         userId: requestPayload.userId,
