@@ -41,7 +41,6 @@ export default class PublicRequestEntity extends Entity<PublicRequest> {
     senderName: string;
     ip: string;
   }): Upload {
-    const senderNameHashed = senderName + fileName;
     const upload: Upload = {
       fileName,
       senderHash: this.senderNameHash({ fileName, senderName }),
