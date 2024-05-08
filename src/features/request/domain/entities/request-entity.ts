@@ -1,5 +1,5 @@
 import { Entity, Failure } from "fp-ddd";
-import { PublicRequest } from "./request-types";
+import { PublicRequest, Upload } from "./request-types";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { publicRequestSchema } from "./request-schema";
 
@@ -29,5 +29,23 @@ export default class PublicRequestEntity extends Entity<PublicRequest> {
         message: isValid.error.errors[0].message,
       })
     );
+  }
+
+  createUpload({
+    fileName,
+    senderName,
+    ip,
+  }: {
+    fileName: string;
+    senderName: string;
+    ip: string;
+  }): Upload {
+    const senderNameHashed = senderName + fileName;
+    const upload: Upload = {
+      fileName,
+      senderHash: senderNameHashed,
+      senderIp: ip,
+    };
+    return upload;
   }
 }
