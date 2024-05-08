@@ -5,7 +5,7 @@ export interface BaseRequest {
   id: string;
   userId: string;
   maxFileSize?: number;
-  dateLimit?: number;
+  dateLimit?: number | string;
   name: string;
   description?: string;
   maxFiles?: number;
