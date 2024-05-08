@@ -3,14 +3,14 @@ import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/application/services/AuthContext";
 import path from "path";
 import { requestUsecases } from "../request-usecases";
-import { Request } from "@/features/request/domain/entities/request-types";
+import { PrivateRequest } from "@/features/request/domain/entities/request-types";
 import { isRight } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
 
 export default function useCreateRequest() {
   const [loading, setLoading] = useState(false);
   const [requestCreationProps, setRequestCreationProps] =
-    useState<Request | null>(null);
+    useState<PrivateRequest | null>(null);
   const [requestId, setRequestId] = useState<string | null>(null);
   const user = useAuthContext();
   const router = useRouter();

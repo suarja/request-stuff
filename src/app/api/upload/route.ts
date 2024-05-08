@@ -6,7 +6,7 @@ import { ErrorMessage } from "@/common/interfaces/error";
 import { FileSenderData } from "@/common/interfaces/istorage";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
 import {
-  RequestBase,
+  PublicRequest,
   Upload,
   UserUpload,
 } from "@/features/request/domain/entities/request-types";
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   const fileSenderData: FileSenderData = JSON.parse(
     form.get("fileSenderData") as string
   );
-  const requestData: RequestBase = JSON.parse(
+  const requestData: PublicRequest = JSON.parse(
     form.get("requestData") as string
   );
 

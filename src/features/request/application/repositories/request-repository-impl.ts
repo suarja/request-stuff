@@ -2,8 +2,8 @@ import { FirebaseDatabase } from "@/common/data/firebase/firestore/firestore";
 import { FirebaseStorageServiceInstance } from "@/features/file/infra/file-repository-impl";
 import RequestDto from "../../infra/dto's/request-dto";
 import {
-  Request,
-  RequestBase,
+  PrivateRequest,
+  PublicRequest,
   Upload,
   UserUpload,
 } from "../../domain/entities/request-types";
@@ -30,7 +30,7 @@ export default class RequestRepository {
     file,
     fileSenderData,
   }: {
-    requestData: RequestBase;
+    requestData: PublicRequest;
     file: File;
     fileSenderData: FileSenderData;
   }): Promise<string> {
@@ -69,7 +69,7 @@ export default class RequestRepository {
     file,
     fileSenderData,
   }: {
-    requestData: RequestBase;
+    requestData: PublicRequest;
     file: File;
     fileSenderData: FileSenderData;
   }): Promise<Either<Failure<string>, string>> {
@@ -108,7 +108,7 @@ export default class RequestRepository {
     requestData,
     fileSenderData,
   }: {
-    requestData: RequestBase;
+    requestData: PublicRequest;
     fileSenderData: FileSenderData;
   }): Promise<void> {
     const path = `users/${requestData.userId}/requests`;
@@ -132,7 +132,7 @@ export default class RequestRepository {
   async addPublicRequest({
     props,
   }: {
-    props: RequestBase;
+    props: PublicRequest;
   }): Promise<Either<Error, void>> {
     try {
       const id = await this._db.addDocument(props.path, props, props.id);
@@ -145,7 +145,7 @@ export default class RequestRepository {
     requestId,
   }: {
     requestId: string;
-  }): Promise<RequestBase | null> {
+  }): Promise<PublicRequest | null> {
     const requestInfra = await this._db.getDocument("requests", requestId);
     if (!requestInfra) return null;
     const requestDto = new RequestDto();
@@ -157,7 +157,11 @@ export default class RequestRepository {
     return request.right;
   }
 
-  async getPublicRequests({ userId }: { userId: string }): Promise<Request[]> {
+  async getPublicRequests({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<PrivateRequest[]> {
     const requests = await this._db.queryWhere({
       a: "userId",
       b: userId,
@@ -165,7 +169,7 @@ export default class RequestRepository {
       ref: "requests",
     });
     const requestDto = new RequestDto();
-    const parsedrequests: Request[] = [];
+    const parsedrequests: PrivateRequest[] = [];
     for (const req of requests) {
       const eihterRequest = requestDto.toDomain({ data: req });
       if (isRight(eihterRequest)) {
@@ -175,11 +179,15 @@ export default class RequestRepository {
 
     return parsedrequests;
   }
-  async getRequestsByUser({ userId }: { userId: string }): Promise<Request[]> {
+  async getRequestsByUser({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<PrivateRequest[]> {
     const path = `users/${userId}/requests`;
     const requests = await this._db.getCollection(path);
     const requestDto = new RequestDto();
-    const parsedrequests: Request[] = [];
+    const parsedrequests: PrivateRequest[] = [];
     for (const req of requests) {
       const eihterRequest = requestDto.toDomain({ data: req });
       if (isRight(eihterRequest)) {
@@ -197,7 +205,7 @@ export default class RequestRepository {
   }: {
     path: string;
     userId: string;
-    request: Request;
+    request: PrivateRequest;
   }): Promise<Either<Error, void>> {
     try {
       await this._db.addDocument(path, request, request.id);
@@ -210,7 +218,7 @@ export default class RequestRepository {
   async updatePublicRequest({
     request,
   }: {
-    request: RequestBase;
+    request: PublicRequest;
   }): Promise<void> {
     const path = `requests`;
     await this._db.updateDocument(path, request.id, request);

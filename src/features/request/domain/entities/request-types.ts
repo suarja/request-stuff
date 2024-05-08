@@ -1,7 +1,7 @@
 import { FileSenderData } from "@/common/interfaces/istorage";
 import { Dispatch, SetStateAction } from "react";
 
-export interface RequestBase {
+export interface BaseRequest {
   id: string;
   userId: string;
   maxFileSize?: number;
@@ -12,7 +12,13 @@ export interface RequestBase {
   numberOfUploads: number;
   path: string;
   url: string;
+}
+
+export interface PublicRequest extends BaseRequest {
   uploads: Upload[];
+}
+export interface PrivateRequest extends BaseRequest {
+  uploads: UserUpload[];
 }
 
 export type Upload = {
@@ -28,13 +34,8 @@ export type UserUpload = {
   fileSenderData?: FileSenderData;
 };
 
-export interface Request extends RequestBase {
-  uploads: UserUpload[];
-  numberOfUploads: number;
-}
-
 export interface RequestTree {
-  requests: Request[];
+  requests: PrivateRequest[];
 }
 
 export type RequestSubFolder = {
@@ -44,11 +45,11 @@ export type RequestSubFolder = {
 export interface RequestFolder {
   title: string;
   path: string;
-  requests: Request[];
+  requests: PrivateRequest[];
   subFolders?: RequestSubFolder[];
   params: string;
 }
 
 export interface ClientRequestFolder extends RequestFolder {
-  setSelectedRequest: Dispatch<SetStateAction<Request | null>>;
+  setSelectedRequest: Dispatch<SetStateAction<PrivateRequest | null>>;
 }

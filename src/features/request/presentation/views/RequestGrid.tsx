@@ -1,13 +1,15 @@
 "use client";
 
 import RequestFolderTree from "../components/RequestFolderTree";
-import { Request } from "../../domain/entities/request-types";
+import { PrivateRequest } from "../../domain/entities/request-types";
 import { useState } from "react";
 import RequestPage from "./RequestPage";
 import { cn } from "@/lib/utils";
 
 export function useSelectRequest() {
-  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+  const [selectedRequest, setSelectedRequest] = useState<PrivateRequest | null>(
+    null
+  );
   return { selectedRequest, setSelectedRequest };
 }
 
@@ -15,11 +17,11 @@ export default function RequestGrid({
   requests,
   params,
 }: {
-  requests: Request[];
+  requests: PrivateRequest[];
   params: string;
 }) {
   const { selectedRequest, setSelectedRequest } = useSelectRequest();
-  
+
   return (
     <>
       <section

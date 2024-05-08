@@ -1,13 +1,17 @@
 import { DocumentData } from "@/common/interfaces/idatabase";
-import { Request } from "../../domain/entities/request-types";
+import { PrivateRequest } from "../../domain/entities/request-types";
 import { DTO } from "@/common/interfaces/dto";
 import { Failure } from "fp-ddd";
 import { Either, left, right } from "fp-ts/lib/Either";
-export default class RequestDto implements DTO<Request, DocumentData> {
-  fromDomain({ data }: { data: Request }): DocumentData {
+export default class RequestDto implements DTO<PrivateRequest, DocumentData> {
+  fromDomain({ data }: { data: PrivateRequest }): DocumentData {
     throw new Error("Method not implemented.");
   }
-  toDomain({ data }: { data: DocumentData }): Either<Failure<string>, Request> {
+  toDomain({
+    data,
+  }: {
+    data: DocumentData;
+  }): Either<Failure<string>, PrivateRequest> {
     try {
       return right({
         userId: data.userId,

@@ -14,7 +14,7 @@ import { Textarea } from "@/common/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { RequestSchema } from "../../domain/entities/request-schema";
-import { Request } from "../../domain/entities/request-types";
+import { PrivateRequest } from "../../domain/entities/request-types";
 import useCreateRequest from "../../application/usecases/services/useCreateRequest";
 import { usePathname } from "next/navigation";
 import useHandleFolderState from "@/features/file/application/usecases/services/useHandleFolderState";
@@ -23,7 +23,7 @@ export default function CreateRequestForm() {
   const { setRequestCreationProps } = useCreateRequest();
   const pathName = usePathname();
 
-  const form = useForm<Request>({
+  const form = useForm<PrivateRequest>({
     resolver: zodResolver(RequestSchema),
     defaultValues: {
       name: "",
@@ -37,7 +37,7 @@ export default function CreateRequestForm() {
 
   function constructUrlWithQueryParams(
     pathName: string,
-    form: UseFormReturn<Request, any, undefined>
+    form: UseFormReturn<PrivateRequest, any, undefined>
   ): {
     url: string;
     id: string;
@@ -60,10 +60,10 @@ export default function CreateRequestForm() {
       id,
     };
   }
-  async function onSubmit(values: Request) {
+  async function onSubmit(values: PrivateRequest) {
     const { url, id } = constructUrlWithQueryParams(pathName, form);
 
-    const request: Request = {
+    const request: PrivateRequest = {
       ...values,
       numberOfUploads: 0,
       uploads: [],

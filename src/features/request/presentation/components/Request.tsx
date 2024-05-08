@@ -1,6 +1,6 @@
 import {
   ClientRequestFolder,
-  type Request,
+  type PrivateRequest,
 } from "../../domain/entities/request-types";
 import DeleteIcon from "@/common/icons/DeleteIcon";
 import { formatDate } from "@/common/utils/date-format";
@@ -12,7 +12,7 @@ export function Request({
   request,
   setSelectedRequest,
 }: {
-  request: Request;
+  request: PrivateRequest;
   setSelectedRequest: ClientRequestFolder["setSelectedRequest"];
 }) {
   const { loading, success, error, setDeleteRequestOptions } =

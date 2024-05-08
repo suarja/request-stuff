@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { requestUsecases } from "../request-usecases";
-import { RequestBase } from "@/features/request/domain/entities/request-types";
+import { PublicRequest } from "@/features/request/domain/entities/request-types";
 
 export default function useGetPublicRequests() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
-  const [requests, setRequests] = useState<RequestBase[] | null>(null);
+  const [requests, setRequests] = useState<PublicRequest[] | null>(null);
 
   useEffect(() => {
     if (userId) {

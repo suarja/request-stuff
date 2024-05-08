@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { requestUsecases } from "../request-usecases";
-import { Request } from "@/features/request/domain/entities/request-types";
+import { PrivateRequest } from "@/features/request/domain/entities/request-types";
 
 export default function useDeleteRequest() {
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ export default function useDeleteRequest() {
   const [error, setError] = useState<string | null>(null);
 
   const [deleteRequestOptions, setDeleteRequestOptions] =
-    useState<Request | null>(null);
+    useState<PrivateRequest | null>(null);
   const user = useAuthContext();
   const router = useRouter();
 

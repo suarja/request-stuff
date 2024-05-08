@@ -1,6 +1,6 @@
 "use client";
 import { ClientRequestFolder } from "../../domain/entities/request-types";
-import { Request } from "./Request";
+import { PrivateRequest } from "./Request";
 
 export function RequestFolder(props: ClientRequestFolder) {
   const { requests, setSelectedRequest } = props;

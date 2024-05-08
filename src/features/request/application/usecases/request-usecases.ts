@@ -1,7 +1,7 @@
 import RequestRepository, {
   requestRepository,
 } from "../repositories/request-repository-impl";
-import { RequestBase } from "../../domain/entities/request-types";
+import { PublicRequest } from "../../domain/entities/request-types";
 import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import { FileSenderData } from "@/common/interfaces/istorage";
 import AuthUsecases, {
@@ -25,7 +25,7 @@ export default class RequestUsecases {
   async createRequest({
     props,
   }: {
-    props: RequestBase;
+    props: PublicRequest;
   }): Promise<Either<Error, void>> {
     const pathForUserCollection = `users/${props.userId}/requests`;
     const batch = await Promise.allSettled([
@@ -245,7 +245,7 @@ export default class RequestUsecases {
   async updatePublicRequest({
     request,
   }: {
-    request: RequestBase;
+    request: PublicRequest;
   }): Promise<void> {
     return this._requestRepository.updatePublicRequest({ request });
   }
