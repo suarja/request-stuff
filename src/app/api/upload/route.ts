@@ -5,6 +5,7 @@ import {
 import { ErrorMessage } from "@/common/interfaces/error";
 import { FileSenderData } from "@/common/interfaces/istorage";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
+import { getPropsUploadFileServer } from "@/features/request/application/usecases/services/get-props-upload-file-server";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import {
   PublicRequest,
@@ -19,19 +20,10 @@ customInitApp();
 
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
-    const ip = request.headers.get("x-forwarded-for");
-    const form = await request.formData();
-    const file = form.get("file");
-    const fileSenderData: FileSenderData = JSON.parse(
-      form.get("fileSenderData") as string
-    );
-    const requestData: PublicRequest = JSON.parse(
-      form.get("requestData") as string
-    );
-    const publicRequest = PublicRequestEntity.create(requestData);
-
-    //~ Check if request options
-    if (!requestData || fileSenderData === undefined || !file) {
+    const { error, file, requestData, fileSenderData, ip } =
+      await getPropsUploadFileServer(request);
+    
+    if (!requestData || fileSenderData === undefined || !file || error) {
       const message: ErrorMessage<""> = "Bad request. ";
       return NextResponse.json(
         {
@@ -41,6 +33,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
         { status: 200 }
       );
     }
+    const publicRequest = PublicRequestEntity.create(requestData);
 
     const canUploadFile = publicRequest.canUploadFile({
       file: file as File,
