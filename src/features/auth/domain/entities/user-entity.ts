@@ -1,5 +1,5 @@
 import { Entity } from "fp-ddd";
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import { Either, left, right } from "fp-ts/lib/Either";
 import { Failure } from "fp-ddd";
 import { UserInfra } from "../types/user";
 import { userOptionsSchema } from "../types/user-schema";
@@ -11,28 +11,29 @@ export interface UserOptions extends UserInfra {
 }
 export default class UserEntity extends Entity<UserOptions> {
   public values: Either<Failure<UserOptions>, UserOptions>;
-  private constructor(values: Either<Failure<UserOptions>, UserOptions>) {
+  private constructor(props: UserOptions) {
     super();
-    this.values = values;
+    this.values = this.validate(props);
   }
 
-  static create(data: any): UserEntity {
-    const isValidValues = userOptionsSchema.safeParse(data);
-    if (!isValidValues.success) {
-      return new UserEntity(left(data));
-    }
-
-    return new UserEntity(right(data));
+  static create(options: UserOptions): UserEntity {
+    return new UserEntity(options);
   }
   get name(): string | null {
     return this.getOrCrash().displayName;
   }
 
-  validateValues(): boolean {
-    if (this.isValid()) {
-      return userOptionsSchema.safeParse(this.getOrCrash()).success;
+  validate(options: UserOptions): Either<Failure<UserOptions>, UserOptions> {
+    const isValid = userOptionsSchema.safeParse(options);
+    if (isValid.success) {
+      return right(options);
     } else {
-      return false;
+      return left(
+        new Failure({
+          invalidValue: options,
+          message: isValid.error.errors[0].message,
+        })
+      );
     }
   }
 }

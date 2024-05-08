@@ -11,7 +11,6 @@ import {
   Upload,
   UserUpload,
 } from "@/features/request/domain/entities/request-types";
-import { error } from "console";
 import { isLeft } from "fp-ts/lib/Either";
 import { NextRequest, NextResponse } from "next/server";
 
