@@ -13,4 +13,6 @@ export type ErrorMessage<T extends string = ""> =
   | "An unknown error happend"
   | "File uploaded successfully."
   | "Request is not valid"
-  | "No error";
+  | "No error"
+  | "User is not valid"
+  | "File size is greater than user's storage capacity";
