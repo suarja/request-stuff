@@ -5,11 +5,13 @@ import {
 import { ErrorMessage } from "@/common/interfaces/error";
 import { FileSenderData } from "@/common/interfaces/istorage";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
+import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import {
   PublicRequest,
   Upload,
   UserUpload,
 } from "@/features/request/domain/entities/request-types";
+import { error } from "console";
 import { isLeft } from "fp-ts/lib/Either";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -26,6 +28,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   const requestData: PublicRequest = JSON.parse(
     form.get("requestData") as string
   );
+  const publicRequest = PublicRequestEntity.create(requestData);
 
   //~ Check if request options
   if (!requestData || fileSenderData === undefined || !file) {
@@ -38,88 +41,103 @@ export async function POST(request: NextRequest, response: NextResponse) {
       { status: 200 }
     );
   }
-  const fileSizeInMb = (file as File).size / 1024 ** 2;
 
-  if (fileSizeInMb > requestData.maxFileSize!) {
-    const message: ErrorMessage<""> = `File is too big. `;
-    return NextResponse.json(
-      {
-        message,
-        error: true,
-      },
-      { status: 200 }
-    );
-  }
-  if (requestData.numberOfUploads! + 1 > requestData.maxFiles!) {
-    const message: ErrorMessage<""> = `Max number of files reached. `;
-    return NextResponse.json(
-      {
-        message,
-        error: true,
-      },
-      { status: 200 }
-    );
-  }
-  const dateLimitFormatted = new Date(requestData?.dateLimit!).getTime();
-  const currentDate = new Date().getTime();
-  if (currentDate > dateLimitFormatted) {
-    const message: ErrorMessage<""> = `Request date limit exceeded. `;
-    return NextResponse.json(
-      {
-        message,
-        error: true,
-      },
-      { status: 200 }
-    );
-  }
-
-  // Check if file already exists
-  console.log("file exists already step");
-  console.log(
-    JSON.stringify(requestData.uploads),
-    fileSenderData.senderName,
-    (file as File).name
-  );
-  const fileExists = requestData.uploads.some((upload) => {
-    console.log(
-      upload.fileName,
-      upload.senderHash,
-      (file as File).name,
-      fileSenderData.senderName
-    );
-    if (
-      upload.fileName === (file as File).name &&
-      upload.senderHash === fileSenderData.senderName
-    ) {
-      return true;
-    }
+  const canUploadFile = publicRequest.canUploadFile({
+    file: file as File,
+    senderName: fileSenderData.senderName,
   });
-  if (fileExists) {
-    const message: ErrorMessage<""> = "File already exists";
+  if (!canUploadFile.canUpload) {
     return NextResponse.json(
       {
-        message,
+        message: canUploadFile.message,
         error: true,
+        additionalInfo: canUploadFile.additionalInfo,
       },
       { status: 200 }
     );
   }
+  // const fileSizeInMb = (file as File).size / 1024 ** 2;
 
-  //   // Check ip address is not the same as the sender
+  // if (fileSizeInMb > requestData.maxFileSize!) {
+  //   const message: ErrorMessage<""> = `File is too big. `;
+  //   return NextResponse.json(
+  //     {
+  //       message,
+  //       error: true,
+  //     },
+  //     { status: 200 }
+  //   );
+  // }
+  // if (requestData.numberOfUploads! + 1 > requestData.maxFiles!) {
+  //   const message: ErrorMessage<""> = `Max number of files reached. `;
+  //   return NextResponse.json(
+  //     {
+  //       message,
+  //       error: true,
+  //     },
+  //     { status: 200 }
+  //   );
+  // }
+  // const dateLimitFormatted = new Date(requestData?.dateLimit!).getTime();
+  // const currentDate = new Date().getTime();
+  // if (currentDate > dateLimitFormatted) {
+  //   const message: ErrorMessage<""> = `Request date limit exceeded. `;
+  //   return NextResponse.json(
+  //     {
+  //       message,
+  //       error: true,
+  //     },
+  //     { status: 200 }
+  //   );
+  // }
+
+  // // Check if file already exists
+  // console.log("file exists already step");
+  // console.log(
+  //   JSON.stringify(requestData.uploads),
+  //   fileSenderData.senderName,
+  //   (file as File).name
+  // );
+  // const fileExists = requestData.uploads.some((upload) => {
+  //   console.log(
+  //     upload.fileName,
+  //     upload.senderHash,
+  //     (file as File).name,
+  //     fileSenderData.senderName
+  //   );
   //   if (
-  //     requestData.uploads.some((upload) => {
-  //       if (ip === upload.senderIp) true;
-  //     })
+  //     upload.fileName === (file as File).name &&
+  //     upload.senderHash === fileSenderData.senderName
   //   ) {
-  //     const message: ErrorMessage<""> = "File already exists";
-  //     return NextResponse.json(
-  //       {
-  //         message,
-  //         error: true,
-  //       },
-  //       { status: 200 }
-  //     );
+  //     return true;
   //   }
+  // });
+  // if (fileExists) {
+  //   const message: ErrorMessage<""> = "File already exists";
+  //   return NextResponse.json(
+  //     {
+  //       message,
+  //       error: true,
+  //     },
+  //     { status: 200 }
+  //   );
+  // }
+
+  // //   // Check ip address is not the same as the sender
+  // //   if (
+  // //     requestData.uploads.some((upload) => {
+  // //       if (ip === upload.senderIp) true;
+  // //     })
+  // //   ) {
+  // //     const message: ErrorMessage<""> = "File already exists";
+  // //     return NextResponse.json(
+  // //       {
+  // //         message,
+  // //         error: true,
+  // //       },
+  // //       { status: 200 }
+  // //     );
+  // //   }
 
   //~ check user has enough ressources (subscription plan, storage available)
   const userId = requestData.userId;
@@ -149,6 +167,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     );
   }
   const user = eitherUser.right.getOrCrash();
+  const fileSizeInMb = (file as File).size / 1024 ** 2;
   if (user.currentStorage + fileSizeInMb > user.maxStorage) {
     const message: ErrorMessage<""> = `Space available insuficient `;
     return NextResponse.json(
