@@ -83,13 +83,15 @@ export async function POST(request: NextRequest, response: NextResponse) {
       { status: 200 }
     );
   }
-  const user = eitherUser.right.getOrCrash();
-  const fileSizeInMb = (file as File).size / 1024 ** 2;
-  if (user.currentStorage + fileSizeInMb > user.maxStorage) {
-    const message: ErrorMessage<""> = `Space available insuficient `;
+  const user = eitherUser.right;
+  const userCanUpload = user.canUploadFile({
+    file: file as File,
+  });
+
+  if (!userCanUpload.canUpload) {
     return NextResponse.json(
       {
-        message,
+        message: userCanUpload.message,
         error: true,
       },
       { status: 200 }
@@ -100,7 +102,9 @@ export async function POST(request: NextRequest, response: NextResponse) {
   // 1. Upload file to storage
   const fileUrl = await firebaseAdmin.uploadFile(
     file as File,
-    `users/${user.id}/requests/${requestData.id}/files/${(file as File).name}`
+    `users/${user.getOrCrash().id}/requests/${
+      publicRequest.getOrCrash().id
+    }/files/${(file as File).name}`
   );
   if (!fileUrl) {
     const message: ErrorMessage<""> = "An unknown error happend";
@@ -142,7 +146,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     },
   };
   await firebaseAdmin.updateArray({
-    collection: `users/${user.id}/requests`,
+    collection: `users/${user.getOrCrash().id}/requests`,
     id: requestData.id,
     field: "uploads",
     data: {
@@ -155,9 +159,9 @@ export async function POST(request: NextRequest, response: NextResponse) {
   });
 
   // 4. Update user
-  //*ok
-  await firebaseAdmin.updateDocument("users", user.id, {
-    currentStorage: user.currentStorage + fileSizeInMb,
+  const fileSizeInMb = (file as File).size / 1024 ** 2;
+  await firebaseAdmin.updateDocument("users", user.getOrCrash().id, {
+    currentStorage: user.getOrCrash().currentStorage + fileSizeInMb,
   });
 
   const message: ErrorMessage<""> = "File uploaded successfully.";
