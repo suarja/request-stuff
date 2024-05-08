@@ -12,13 +12,11 @@ export const RequestSchema = z.object({
   dateLimit: z.string().optional(),
 });
 
-
-
 export const baseRequestSchema = z.object({
   id: z.string(),
   userId: z.string(),
   maxFileSize: z.number().optional(),
-  dateLimit: z.number().optional(),
+  dateLimit: z.union([z.number(), z.string()]).optional(),
   name: z.string(),
   description: z.string().optional(),
   maxFiles: z.number().optional(),
