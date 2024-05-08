@@ -115,12 +115,11 @@ export async function POST(request: NextRequest, response: NextResponse) {
   }
 
   // 2. Update public request collection
-  const upload: Upload = {
+  const upload: Upload = publicRequest.createUpload({
     fileName: (file as File).name,
-    date: new Date().toISOString(),
-    senderHash: fileSenderData.senderName,
-    senderIp: ip ?? "unknown",
-  };
+    senderName: fileSenderData.senderName,
+    ip: ip ?? "",
+  });
   await firebaseAdmin.updateArray({
     collection: "requests",
     id: requestData.id,
