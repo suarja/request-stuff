@@ -1,14 +1,12 @@
 import {
   customInitApp,
-  firebaseAdmin,
 } from "@/common/data/firebase/admin-config";
+import { firebaseAdmin } from "@/common/data/firebase/admin-database";
 import { ErrorMessage } from "@/common/interfaces/error";
-import { FileSenderData } from "@/common/interfaces/istorage";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
 import { getPropsUploadFileServer } from "@/features/request/application/usecases/services/get-props-upload-file-server";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import {
-  PublicRequest,
   Upload,
   UserUpload,
 } from "@/features/request/domain/entities/request-types";
