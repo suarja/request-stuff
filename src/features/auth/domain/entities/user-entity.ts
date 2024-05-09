@@ -78,4 +78,10 @@ export default class UserEntity extends Entity<UserOptions> {
       },
     };
   }
+
+  updateCurrentStorage(file: File): number {
+    const fileSizeInMb = file.size / 1024 / 1024;
+    const user = this.getOrCrash();
+    return user.currentStorage + fileSizeInMb;
+  }
 }
