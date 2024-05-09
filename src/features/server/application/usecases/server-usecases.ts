@@ -3,6 +3,8 @@ import ServerRepository from "../repositories/server-repository";
 import { isLeft } from "fp-ts/lib/Either";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
 import UserEntity from "@/features/auth/domain/entities/user-entity";
+import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
+import { Upload } from "@/features/request/domain/entities/request-types";
 
 export interface ServerUsecasesOptions {
   serverRepository: ServerRepository;
@@ -83,6 +85,43 @@ export default class ServerUsecases {
       error: false,
       message: "",
       url: eitherUrl.right,
+    };
+  }
+
+  async addUploadToPublicRequest({
+    request,
+    ip,
+    senderName,
+    fileName,
+  }: {
+    ip: string;
+    senderName: string;
+    fileName: string;
+    request: PublicRequestEntity;
+  }): Promise<{
+    error: boolean;
+    message: string;
+  }> {
+    const upload: Upload = request.createUpload({
+      fileName,
+      ip,
+      senderName,
+    });
+    const eitherVoid = await this._serverRepository.addUploadToPublicRequest({
+      request: request.getOrCrash(),
+      upload,
+    });
+
+    if (isLeft(eitherVoid)) {
+      return {
+        error: true,
+        message: eitherVoid.left.message,
+      };
+    }
+
+    return {
+      error: false,
+      message: "",
     };
   }
 }
