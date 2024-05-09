@@ -167,4 +167,32 @@ export default class ServerUsecases {
       message: "",
     };
   }
+
+  async updateUserCurrentStorage({
+    user,
+    file,
+  }: {
+    user: UserEntity;
+    file: File;
+  }): Promise<{
+    error: boolean;
+    message: string;
+  }> {
+    const eitherVoid = await this._serverRepository.updateUserCurrentStorage({
+      user: user.getOrCrash(),
+      newCurrentStorage: user.updateCurrentStorage(file),
+    });
+
+    if (isLeft(eitherVoid)) {
+      return {
+        error: true,
+        message: eitherVoid.left.message,
+      };
+    }
+
+    return {
+      error: false,
+      message: "",
+    };
+  }
 }
