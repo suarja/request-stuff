@@ -1,16 +1,18 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage, getDownloadURL, Storage } from "firebase-admin/storage";
 import { FieldValue } from "firebase-admin/firestore";
+import { inject, injectable } from "tsyringe";
 
 export interface FirebaseAdminDatabaseOptions {
   firestore: FirebaseFirestore.Firestore;
   storage: Storage;
 }
 
+@injectable()
 export class FirebaseAdminDatabase {
   private _options: FirebaseAdminDatabaseOptions;
 
-  constructor(options: FirebaseAdminDatabaseOptions) {
+  constructor(@inject("options") options: FirebaseAdminDatabaseOptions) {
     this._options = options;
   }
 
