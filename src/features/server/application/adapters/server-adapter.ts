@@ -3,6 +3,7 @@ import ServerUsecases from "../usecases/server-usecases";
 import UserEntity from "@/features/auth/domain/entities/user-entity";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import { Upload } from "@/features/request/domain/entities/request-types";
+import { FileSenderData } from "@/common/interfaces/istorage";
 
 @injectable()
 export default class ServerAdapter {
@@ -84,6 +85,40 @@ export default class ServerAdapter {
       ip,
       senderName,
       fileName,
+    });
+    if (result.error) {
+      return {
+        returnOptions: {
+          error: true,
+          message: result.message,
+          status: 200,
+        },
+      };
+    }
+    return {
+      returnOptions: { error: false, message: "", status: 200 },
+    };
+  }
+
+  async addUploadToUserRequest({
+    senderData,
+    fileName,
+    request,
+    fileUrl,
+  }: {
+    request: PublicRequestEntity;
+    senderData: FileSenderData;
+    fileName: string;
+    fileUrl: string;
+  }): Promise<{
+    returnOptions: { error: boolean; message: string; status: number };
+  }> {
+    const result = await this._usecases.addUploadToUserRequest({
+      request,
+      senderData,
+      fileName,
+      fileUrl,
+      userId: request.getOrCrash().userId,
     });
     if (result.error) {
       return {
