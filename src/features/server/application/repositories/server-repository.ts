@@ -9,7 +9,6 @@ import { DocumentData } from "firebase/firestore";
 import { Failure } from "fp-ddd";
 import { Either } from "fp-ts/lib/Either";
 import { inject, injectable } from "tsyringe";
-import { number } from "zod";
 
 export interface ServerRepositoryOptions {
   readonly database: IServerDatabase;

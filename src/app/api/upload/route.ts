@@ -3,18 +3,13 @@ import { customInitApp } from "@/common/data/firebase/admin-config";
 import { ErrorMessage } from "@/common/interfaces/error";
 import { getPropsUploadFileServer } from "@/features/request/application/usecases/services/get-props-upload-file-server";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
-import {
-  Upload,
-  UserUpload,
-} from "@/features/request/domain/entities/request-types";
-import { isLeft } from "fp-ts/lib/Either";
 import { NextRequest, NextResponse } from "next/server";
 import { serverAdapter, serverDatabase } from "./dependency-injection";
 
 // Init the Firebase SDK every time the server is called
 customInitApp();
 
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest) {
   try {
     const { error, file, requestData, fileSenderData, ip } =
       await getPropsUploadFileServer(request);
