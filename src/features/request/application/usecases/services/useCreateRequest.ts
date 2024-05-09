@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/application/services/AuthContext";
 import path from "path";
-import { requestUsecases } from "../client/request-usecases";
+import { requestUsecases } from "../request-usecases";
 import { PrivateRequest } from "@/features/request/domain/entities/request-types";
 import { isRight } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
