@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { requestUsecases } from "../request-usecases";
+import { requestUsecases } from "../client/request-usecases";
 import { FileSenderData } from "@/common/interfaces/istorage";
 import { isLeft } from "fp-ts/lib/Either";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { requestUsecases } from "../request-usecases";
+import { requestUsecases } from "../client/request-usecases";
 import { PrivateRequest } from "@/features/request/domain/entities/request-types";
 
 export default function useGetRequestsByUser() {

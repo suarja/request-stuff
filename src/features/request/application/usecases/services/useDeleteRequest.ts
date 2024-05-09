@@ -3,7 +3,7 @@ import { isRight } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { requestUsecases } from "../request-usecases";
+import { requestUsecases } from "../client/request-usecases";
 import { PrivateRequest } from "@/features/request/domain/entities/request-types";
 
 export default function useDeleteRequest() {
