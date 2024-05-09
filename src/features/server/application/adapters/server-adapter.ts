@@ -30,4 +30,37 @@ export default class ServerAdapter {
       user: result.user,
     };
   }
+
+  async uploadFile({
+    userId,
+    file,
+    requestId,
+  }: {
+    userId: string;
+    file: File;
+    requestId: string;
+  }): Promise<{
+    returnOptions: { error: boolean; message: string; status: number };
+    url: string | null;
+  }> {
+    const result = await this._usecases.uploadFile({
+      userId,
+      file,
+      requestId,
+    });
+    if (result.error) {
+      return {
+        returnOptions: {
+          error: true,
+          message: result.message,
+          status: 200,
+        },
+        url: null,
+      };
+    }
+    return {
+      returnOptions: { error: false, message: "", status: 200 },
+      url: result.url,
+    };
+  }
 }

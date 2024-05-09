@@ -70,21 +70,14 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     //* Upload file
     // 1. Upload file to storage
-    const fileUrl = await serverDatabase.uploadFile(
-      file as File,
-      `users/${user.getOrCrash().id}/requests/${
-        publicRequest.getOrCrash().id
-      }/files/${(file as File).name}`
-    );
-    if (isLeft(fileUrl)) {
-      const message: ErrorMessage<""> = "An unknown error happend";
-      return NextResponse.json(
-        {
-          message,
-          error: true,
-        },
-        { status: 200 }
-      );
+    const { url, returnOptions: urlReturnOptions } =
+      await serverAdapter.uploadFile({
+        userId: requestData.userId,
+        file: file as File,
+        requestId: requestData.id,
+      });
+    if (!url) {
+      return NextResponse.json(urlReturnOptions);
     }
 
     // 2. Update public request collection
@@ -109,10 +102,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
     // 3. Update request in user collection
     const userUpload: UserUpload = {
       fileName: (file as File).name,
-      fileUrl: fileUrl.right,
+      fileUrl: url,
       fileSenderData: {
         ...fileSenderData,
-        fileUrl: fileUrl.right,
+        fileUrl: url,
       },
     };
     await serverDatabase.updateArray({
@@ -139,7 +132,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
       {
         message,
         error: false,
-        fileUrl,
+        fileUrl: url,
       },
       { status: 200 }
     );
