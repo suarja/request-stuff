@@ -1,5 +1,6 @@
 import { PATHS } from "@/common/constants";
 import IServerDatabase from "@/common/interfaces/Iserver-database";
+import { UserOptions } from "@/features/auth/domain/entities/user-entity";
 import {
   PublicRequest,
   Upload,
@@ -91,6 +92,18 @@ export default class ServerRepository {
       rest: {
         numberOfUploads: request.numberOfUploads + 1,
       },
+    });
+  }
+
+  async updateUserCurrentStorage({
+    user,
+    newCurrentStorage,
+  }: {
+    user: UserOptions;
+    newCurrentStorage: number;
+  }): Promise<Either<Failure<string>, void>> {
+    return await this._options.database.updateDocument(PATHS.USERS(), user.id, {
+      currentStorage: newCurrentStorage,
     });
   }
 }
