@@ -12,6 +12,8 @@ export const PATHS = {
     userId: string;
     requestId: string;
   }) => `users/${userId}/requests/${requestId}`,
+  USERS_REQUESTS: ({ userId }: { userId: string }) =>
+    `users/${userId}/requests`,
   PUBLIC_REQUEST: ({ requestId }: { requestId: string }) =>
     `requests/${requestId}`,
   USER_REQUEST_FILE: ({
