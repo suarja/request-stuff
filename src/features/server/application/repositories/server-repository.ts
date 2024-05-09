@@ -3,6 +3,7 @@ import IServerDatabase from "@/common/interfaces/Iserver-database";
 import {
   PublicRequest,
   Upload,
+  UserUpload,
 } from "@/features/request/domain/entities/request-types";
 import { DocumentData } from "firebase/firestore";
 import { Failure } from "fp-ddd";
@@ -57,6 +58,31 @@ export default class ServerRepository {
   }): Promise<Either<Failure<string>, void>> {
     return this._options.database.updateArray({
       collection: "requests",
+      id: request.id,
+      field: "uploads",
+      data: {
+        ...upload,
+      },
+      updateRest: true,
+      rest: {
+        numberOfUploads: request.numberOfUploads + 1,
+      },
+    });
+  }
+  async addUploadToUserRequest({
+    userId,
+    request,
+    upload,
+  }: {
+    userId: string;
+    request: PublicRequest;
+    upload: UserUpload;
+  }): Promise<Either<Failure<string>, void>> {
+    const path = PATHS.USERS_REQUESTS({
+      userId,
+    });
+    return this._options.database.updateArray({
+      collection: path,
       id: request.id,
       field: "uploads",
       data: {
