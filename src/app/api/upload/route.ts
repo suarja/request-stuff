@@ -94,26 +94,17 @@ export async function POST(request: NextRequest, response: NextResponse) {
     }
 
     // 3. Update request in user collection
-    const userUpload: UserUpload = {
-      fileName: (file as File).name,
-      fileUrl: url,
-      fileSenderData: {
-        ...fileSenderData,
+    const { returnOptions: addUploadToUserRequestReturnOptions } =
+      await serverAdapter.addUploadToUserRequest({
+        fileName: (file as File).name,
+        request: publicRequest,
         fileUrl: url,
-      },
-    };
-    await serverDatabase.updateArray({
-      collection: `users/${user.getOrCrash().id}/requests`,
-      id: requestData.id,
-      field: "uploads",
-      data: {
-        ...userUpload,
-      },
-      updateRest: true,
-      rest: {
-        numberOfUploads: requestData.numberOfUploads + 1,
-      },
-    });
+        senderData: fileSenderData,
+      });
+
+    if (addUploadToUserRequestReturnOptions.error) {
+      return NextResponse.json(addUploadToUserRequestReturnOptions);
+    }
 
     // 4. Update user
     const fileSizeInMb = (file as File).size / 1024 ** 2;
