@@ -14,4 +14,13 @@ export const PATHS = {
   }) => `users/${userId}/requests/${requestId}`,
   PUBLIC_REQUEST: ({ requestId }: { requestId: string }) =>
     `requests/${requestId}`,
+  USER_REQUEST_FILE: ({
+    userId,
+    requestId,
+    fileName,
+  }: {
+    userId: string;
+    requestId: string;
+    fileName: string;
+  }) => `users/${userId}/requests/${requestId}/${fileName}`,
 };
