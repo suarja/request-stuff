@@ -2,33 +2,25 @@ import { Failure } from "fp-ddd";
 import { DocumentData } from "./idatabase";
 import { Either } from "fp-ts/lib/Either";
 
-export default class IServerDatabase {
-  uploadFile(
+export default abstract class IServerDatabase {
+  abstract uploadFile(
     file: File,
     path: string
-  ): Promise<Either<Failure<string>, string>> {
-    throw new Error("Method not implemented.");
-  }
-  saveDocument(
+  ): Promise<Either<Failure<string>, string>>;
+  abstract saveDocument(
     collection: string,
     data: any
-  ): Promise<Either<Failure<string>, void>> {
-    throw new Error("Method not implemented.");
-  }
-  getDocument(
+  ): Promise<Either<Failure<string>, void>>;
+  abstract getDocument(
     collection: string,
     id: string
-  ): Promise<Either<Failure<string>, DocumentData>> {
-    throw new Error("Method not implemented.");
-  }
-  updateDocument(
+  ): Promise<Either<Failure<string>, DocumentData>>;
+  abstract updateDocument(
     collection: string,
     id: string,
     data: any
-  ): Promise<Either<Failure<string>, void>> {
-    throw new Error("Method not implemented.");
-  }
-  updateArray({
+  ): Promise<Either<Failure<string>, void>>;
+  abstract updateArray({
     collection,
     id,
     field,
@@ -42,7 +34,5 @@ export default class IServerDatabase {
     data: any;
     updateRest?: boolean | undefined;
     rest?: any;
-  }): Promise<Either<Failure<string>, void>> {
-    throw new Error("Method not implemented.");
-  }
+  }): Promise<Either<Failure<string>, void>>;
 }

@@ -62,7 +62,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     //~ check user has enough ressources (subscription plan, storage available)
     const userId = requestData.userId;
     const userInfra = await serverDatabase.getDocument("users", userId);
-    if (!userInfra) {
+    if (isLeft(userInfra)) {
       const message: ErrorMessage<""> = "User not found";
       return NextResponse.json(
         {
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     }
 
     const userDto = new UserDto();
-    const eitherUser = userDto.toDomain({ data: userInfra });
+    const eitherUser = userDto.toDomain({ data: userInfra.right });
     if (isLeft(eitherUser)) {
       const message: ErrorMessage<""> =
         "Could not add file to request beacuse could not get user";
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
         publicRequest.getOrCrash().id
       }/files/${(file as File).name}`
     );
-    if (!fileUrl) {
+    if (isLeft(fileUrl)) {
       const message: ErrorMessage<""> = "An unknown error happend";
       return NextResponse.json(
         {
@@ -142,10 +142,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
     // 3. Update request in user collection
     const userUpload: UserUpload = {
       fileName: (file as File).name,
-      fileUrl,
+      fileUrl: fileUrl.right,
       fileSenderData: {
         ...fileSenderData,
-        fileUrl,
+        fileUrl: fileUrl.right,
       },
     };
     await serverDatabase.updateArray({
