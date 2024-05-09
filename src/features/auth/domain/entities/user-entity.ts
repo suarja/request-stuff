@@ -4,6 +4,8 @@ import { Failure } from "fp-ddd";
 import { UserInfra } from "../types/user";
 import { userOptionsSchema } from "../types/user-schema";
 import { ErrorMessage } from "@/common/interfaces/error";
+import { FileSenderData } from "@/common/interfaces/istorage";
+import { UserUpload } from "@/features/request/domain/entities/request-types";
 
 export interface UserOptions extends UserInfra {
   currentStorage: number;
@@ -58,15 +60,22 @@ export default class UserEntity extends Entity<UserOptions> {
     }
     return { canUpload: true, message: "No error" };
   }
-}
 
-// // Usage
-// const user = new User(
-//   right({
-//     name: "John Doe",
-//     email: "john@example.com",
-//     currentStorage: 0,
-//     maxStorage: 1000,
-//     subscription: "basic",
-//   })
-// );
+  static createUpload({
+    fileName,
+    fileUrl,
+    senderData,
+  }: {
+    fileName: string;
+    fileUrl: string;
+    senderData: FileSenderData;
+  }): UserUpload {
+    return {
+      fileName,
+      fileUrl,
+      fileSenderData: {
+        ...senderData,
+      },
+    };
+  }
+}
