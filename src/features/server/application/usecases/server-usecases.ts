@@ -51,4 +51,38 @@ export default class ServerUsecases {
       user,
     };
   }
+
+  async uploadFile({
+    file,
+    userId,
+    requestId,
+  }: {
+    file: File;
+    userId: string;
+    requestId: string;
+  }): Promise<{
+    error: boolean;
+    message: string;
+    url: string | null;
+  }> {
+    const eitherUrl = await this._serverRepository.uploadFile({
+      file,
+      userId,
+      requestId,
+    });
+
+    if (isLeft(eitherUrl)) {
+      return {
+        error: true,
+        message: eitherUrl.left.message,
+        url: null,
+      };
+    }
+
+    return {
+      error: false,
+      message: "",
+      url: eitherUrl.right,
+    };
+  }
 }
