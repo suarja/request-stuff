@@ -1,8 +1,6 @@
 import "reflect-metadata";
-
 import { customInitApp } from "@/common/data/firebase/admin-config";
 import { ErrorMessage } from "@/common/interfaces/error";
-import UserDto from "@/features/auth/infra/dto's/user-dto";
 import { getPropsUploadFileServer } from "@/features/request/application/usecases/services/get-props-upload-file-server";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import {
@@ -11,21 +9,10 @@ import {
 } from "@/features/request/domain/entities/request-types";
 import { isLeft } from "fp-ts/lib/Either";
 import { NextRequest, NextResponse } from "next/server";
-import { container } from "tsyringe";
-import { getFirestore } from "firebase-admin/firestore";
-import { getStorage } from "firebase-admin/storage";
-import { FirebaseAdminDatabase } from "@/common/data/firebase/admin-database";
+import { serverAdapter, serverDatabase } from "./dependency-injection";
 
 // Init the Firebase SDK every time the server is called
 customInitApp();
-const firestore = getFirestore();
-const storage = getStorage();
-const options = {
-  storage,
-  firestore,
-};
-container.register("options", { useValue: options });
-const serverDatabase = container.resolve(FirebaseAdminDatabase);
 
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
@@ -60,33 +47,13 @@ export async function POST(request: NextRequest, response: NextResponse) {
     }
 
     //~ check user has enough ressources (subscription plan, storage available)
-    const userId = requestData.userId;
-    const userInfra = await serverDatabase.getDocument("users", userId);
-    if (isLeft(userInfra)) {
-      const message: ErrorMessage<""> = "User not found";
-      return NextResponse.json(
-        {
-          message,
-          error: true,
-        },
-        { status: 200 }
-      );
+    const { user, returnOptions } = await serverAdapter.getUser({
+      userId: requestData.userId,
+    });
+    console.log({ returnOptions });
+    if (!user) {
+      return NextResponse.json(returnOptions);
     }
-
-    const userDto = new UserDto();
-    const eitherUser = userDto.toDomain({ data: userInfra.right });
-    if (isLeft(eitherUser)) {
-      const message: ErrorMessage<""> =
-        "Could not add file to request beacuse could not get user";
-      return NextResponse.json(
-        {
-          message,
-          error: true,
-        },
-        { status: 200 }
-      );
-    }
-    const user = eitherUser.right;
     const userCanUpload = user.canUploadFile({
       file: file as File,
     });

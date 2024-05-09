@@ -16,9 +16,12 @@ export interface FirebaseAdminDatabaseOptions {
 export class FirebaseAdminDatabase extends IServerDatabase {
   private _options: FirebaseAdminDatabaseOptions;
 
-  constructor(@inject("options") options: FirebaseAdminDatabaseOptions) {
+  constructor(
+    @inject("firebaseDatabaseAdminOptions")
+    firebaseDatabaseAdminOptions: FirebaseAdminDatabaseOptions
+  ) {
     super();
-    this._options = options;
+    this._options = firebaseDatabaseAdminOptions;
   }
 
   async uploadFile(
