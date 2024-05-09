@@ -81,23 +81,17 @@ export async function POST(request: NextRequest, response: NextResponse) {
     }
 
     // 2. Update public request collection
-    const upload: Upload = publicRequest.createUpload({
-      fileName: (file as File).name,
-      senderName: fileSenderData.senderName,
-      ip: ip ?? "",
-    });
-    await serverDatabase.updateArray({
-      collection: "requests",
-      id: requestData.id,
-      field: "uploads",
-      data: {
-        ...upload,
-      },
-      updateRest: true,
-      rest: {
-        numberOfUploads: requestData.numberOfUploads + 1,
-      },
-    });
+    const { returnOptions: addUploadToPublicRequestReturnOptions } =
+      await serverAdapter.addUploadToPublicRequest({
+        request: publicRequest,
+        ip: ip ?? "",
+        senderName: fileSenderData.senderName,
+        fileName: (file as File).name,
+      });
+
+    if (addUploadToPublicRequestReturnOptions.error) {
+      return NextResponse.json(addUploadToPublicRequestReturnOptions);
+    }
 
     // 3. Update request in user collection
     const userUpload: UserUpload = {
