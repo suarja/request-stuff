@@ -5,6 +5,7 @@ import UserDto from "@/features/auth/infra/dto's/user-dto";
 import UserEntity from "@/features/auth/domain/entities/user-entity";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import { Upload } from "@/features/request/domain/entities/request-types";
+import { FileSenderData } from "@/common/interfaces/istorage";
 
 export interface ServerUsecasesOptions {
   serverRepository: ServerRepository;
@@ -110,6 +111,48 @@ export default class ServerUsecases {
     const eitherVoid = await this._serverRepository.addUploadToPublicRequest({
       request: request.getOrCrash(),
       upload,
+    });
+
+    if (isLeft(eitherVoid)) {
+      return {
+        error: true,
+        message: eitherVoid.left.message,
+      };
+    }
+
+    return {
+      error: false,
+      message: "",
+    };
+  }
+
+  async addUploadToUserRequest({
+    userId,
+    request,
+    fileName,
+    fileUrl,
+    senderData,
+  }: {
+    userId: string;
+    fileName: string;
+    request: PublicRequestEntity;
+    fileUrl: string;
+    senderData: FileSenderData;
+  }): Promise<{
+    error: boolean;
+    message: string;
+  }> {
+    const eitherVoid = await this._serverRepository.addUploadToUserRequest({
+      userId,
+      request: request.getOrCrash(),
+      upload: UserEntity.createUpload({
+        fileName,
+        fileUrl,
+        senderData: {
+          ...senderData,
+          fileUrl,
+        },
+      }),
     });
 
     if (isLeft(eitherVoid)) {
