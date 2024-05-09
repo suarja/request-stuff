@@ -4,7 +4,7 @@ import { ErrorMessage } from "@/common/interfaces/error";
 import { getPropsUploadFileServer } from "@/features/request/application/usecases/services/get-props-upload-file-server";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import { NextRequest, NextResponse } from "next/server";
-import { serverAdapter, serverDatabase } from "./dependency-injection";
+import { serverAdapter } from "./dependency-injection";
 
 // Init the Firebase SDK every time the server is called
 customInitApp();
@@ -102,17 +102,21 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. Update user
-    const fileSizeInMb = (file as File).size / 1024 ** 2;
-    await serverDatabase.updateDocument("users", user.getOrCrash().id, {
-      currentStorage: user.getOrCrash().currentStorage + fileSizeInMb,
-    });
+    const { returnOptions: updateUserCurrentStorageReturnOptions } =
+      await serverAdapter.updateUserCurrentStorage({
+        file: file as File,
+        user,
+      });
 
-    const message: ErrorMessage<""> = "File uploaded successfully.";
+    if (updateUserCurrentStorageReturnOptions.error) {
+      return NextResponse.json(updateUserCurrentStorageReturnOptions);
+    }
+
     return NextResponse.json(
       {
-        message,
+        message: "File uploaded successfully",
         error: false,
-        fileUrl: url,
+        url,
       },
       { status: 200 }
     );
