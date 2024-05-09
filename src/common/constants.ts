@@ -5,6 +5,7 @@ export const BASE_URL =
 
 export const PATHS = {
   USER: ({ userId }: { userId: string }) => `users/${userId}`,
+  USERS: () => `users`,
   USER_REQUEST: ({
     userId,
     requestId,
