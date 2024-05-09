@@ -133,4 +133,31 @@ export default class ServerAdapter {
       returnOptions: { error: false, message: "", status: 200 },
     };
   }
+
+  async updateUserCurrentStorage({
+    user,
+    file,
+  }: {
+    user: UserEntity;
+    file: File;
+  }): Promise<{
+    returnOptions: { error: boolean; message: string; status: number };
+  }> {
+    const result = await this._usecases.updateUserCurrentStorage({
+      user,
+      file,
+    });
+    if (result.error) {
+      return {
+        returnOptions: {
+          error: true,
+          message: result.message,
+          status: 200,
+        },
+      };
+    }
+    return {
+      returnOptions: { error: false, message: "", status: 200 },
+    };
+  }
 }
