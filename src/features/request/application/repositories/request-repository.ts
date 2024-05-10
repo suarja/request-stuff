@@ -25,7 +25,8 @@ export default class RequestRepository {
     this._db = options.db;
     this._storage = options.storage;
   }
-
+  
+  //* Remove this method
   async uploadFileFromRequest({
     requestData,
     file,
@@ -104,6 +105,7 @@ export default class RequestRepository {
       );
     }
   }
+  //! Add To Backend Service
   async updateRequestInUserCollection({
     requestData,
     fileSenderData,
@@ -129,6 +131,7 @@ export default class RequestRepository {
     });
     return;
   }
+  //! Add To Backend Service
   async addPublicRequest({
     props,
   }: {
@@ -180,6 +183,7 @@ export default class RequestRepository {
 
     return parsedrequests;
   }
+  //! Add To Backend Service
   async getRequestsByUser({
     userId,
   }: {
@@ -208,7 +212,7 @@ export default class RequestRepository {
 
     return right(parsedrequests);
   }
-
+  //! Add To Backend Service
   async addRequestToUser({
     path,
     userId,
@@ -225,6 +229,7 @@ export default class RequestRepository {
       return left(new Error("Error adding request to user collection"));
     }
   }
+  //! Add To Backend Service
   async updatePublicRequest({
     request,
   }: {
@@ -233,7 +238,7 @@ export default class RequestRepository {
     const path = `requests`;
     await this._db.updateDocument(path, request.id, request);
   }
-
+  //! Add To Backend Service
   async updatePublicRequestUploads({
     upload,
     requestId,
@@ -249,6 +254,8 @@ export default class RequestRepository {
       id: requestId,
     });
   }
+
+  //! Add To Backend Service
   async deletePublicRequest({
     requestId,
   }: {
@@ -266,7 +273,7 @@ export default class RequestRepository {
       );
     }
   }
-
+  //! Add To Backend Service
   async deleteRequestFromUserCollection({
     userId,
     requestId,
@@ -287,7 +294,7 @@ export default class RequestRepository {
       );
     }
   }
-
+  //! Add To Backend Service
   async deleteRequest({
     userId,
     requestId,

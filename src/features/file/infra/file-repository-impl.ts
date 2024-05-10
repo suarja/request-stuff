@@ -33,6 +33,7 @@ export default class FirebaseStorageService extends IStorage {
     super();
     this.storage = options.storage;
   }
+  //! Add To Backend Service
   async uploadFile({
     path,
     value,
@@ -134,7 +135,7 @@ export default class FirebaseStorageService extends IStorage {
 
     return { url, metadata };
   }
-
+  //! Add To Backend Service
   async removeFile({ path }: { path: string }): Promise<"ok" | "not ok"> {
     try {
       const refPath = ref(this.storage, path);
@@ -144,7 +145,7 @@ export default class FirebaseStorageService extends IStorage {
       return "not ok";
     }
   }
-
+  //! Add To Backend Service
   /**
    * Deletes a folder and its contents recursively.
    *
