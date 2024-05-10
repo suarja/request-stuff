@@ -26,7 +26,6 @@ export default class RequestRepository {
     this._storage = options.storage;
   }
 
-  //! Add either to the return type
   async uploadFileFromRequest({
     requestData,
     file,
@@ -105,7 +104,6 @@ export default class RequestRepository {
       );
     }
   }
-  //! Add either to the return type
   async updateRequestInUserCollection({
     requestData,
     fileSenderData,
@@ -143,7 +141,6 @@ export default class RequestRepository {
       return left(new Error("Error adding request to public collection"));
     }
   }
-  //! Add either to the return type
   async getPublicRequest({
     requestId,
   }: {
@@ -159,7 +156,6 @@ export default class RequestRepository {
     }
     return request.right;
   }
-  //! Add either to the return type
   async getPublicRequests({
     userId,
   }: {
@@ -184,7 +180,6 @@ export default class RequestRepository {
 
     return parsedrequests;
   }
-  //! Add either to the return type
   async getRequestsByUser({
     userId,
   }: {
@@ -230,7 +225,6 @@ export default class RequestRepository {
       return left(new Error("Error adding request to user collection"));
     }
   }
-  //! Add either to the return type
   async updatePublicRequest({
     request,
   }: {
@@ -240,7 +234,6 @@ export default class RequestRepository {
     await this._db.updateDocument(path, request.id, request);
   }
 
-  //! Add either to the return type
   async updatePublicRequestUploads({
     upload,
     requestId,
