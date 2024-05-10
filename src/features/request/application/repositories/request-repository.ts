@@ -25,6 +25,8 @@ export default class RequestRepository {
     this._db = options.db;
     this._storage = options.storage;
   }
+
+  //! Add either to the return type
   async uploadFileFromRequest({
     requestData,
     file,
@@ -103,7 +105,7 @@ export default class RequestRepository {
       );
     }
   }
-
+  //! Add either to the return type
   async updateRequestInUserCollection({
     requestData,
     fileSenderData,
@@ -141,6 +143,7 @@ export default class RequestRepository {
       return left(new Error("Error adding request to public collection"));
     }
   }
+  //! Add either to the return type
   async getPublicRequest({
     requestId,
   }: {
@@ -156,18 +159,20 @@ export default class RequestRepository {
     }
     return request.right;
   }
-
+  //! Add either to the return type
   async getPublicRequests({
     userId,
   }: {
     userId: string;
   }): Promise<PrivateRequest[]> {
-    const requests = await this._db.queryWhere({
+    const rawRequests = await this._db.queryWhere({
       a: "userId",
       b: userId,
       operand: "==",
       ref: "requests",
     });
+    if (isLeft(rawRequests)) return [];
+    const requests = rawRequests.right;
     const requestDto = new RequestDto();
     const parsedrequests: PrivateRequest[] = [];
     for (const req of requests) {
@@ -179,13 +184,24 @@ export default class RequestRepository {
 
     return parsedrequests;
   }
+  //! Add either to the return type
   async getRequestsByUser({
     userId,
   }: {
     userId: string;
-  }): Promise<PrivateRequest[]> {
+  }): Promise<Either<Failure<string>, PrivateRequest[]>> {
     const path = `users/${userId}/requests`;
-    const requests = await this._db.getCollection(path);
+    const rawRequests = await this._db.getCollection(path);
+    if (isLeft(rawRequests)) {
+      console.log({ requestInRepo: rawRequests.left, path });
+      return left(
+        Failure.invalidValue({
+          message: rawRequests.left.message,
+          invalidValue: userId,
+        })
+      );
+    }
+    const requests = rawRequests.right;
     const requestDto = new RequestDto();
     const parsedrequests: PrivateRequest[] = [];
     for (const req of requests) {
@@ -195,7 +211,7 @@ export default class RequestRepository {
       }
     }
 
-    return parsedrequests;
+    return right(parsedrequests);
   }
 
   async addRequestToUser({
@@ -214,7 +230,7 @@ export default class RequestRepository {
       return left(new Error("Error adding request to user collection"));
     }
   }
-
+  //! Add either to the return type
   async updatePublicRequest({
     request,
   }: {
@@ -224,6 +240,7 @@ export default class RequestRepository {
     await this._db.updateDocument(path, request.id, request);
   }
 
+  //! Add either to the return type
   async updatePublicRequestUploads({
     upload,
     requestId,
