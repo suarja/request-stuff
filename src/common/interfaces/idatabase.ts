@@ -1,3 +1,6 @@
+import { Failure } from "fp-ddd";
+import { Either } from "fp-ts/lib/Either";
+
 export interface DocumentData {
   /** A mapping between a field and its value. */
   [field: string]: any;
@@ -23,22 +26,28 @@ export default abstract class IDatabase {
       | "in"
       | "array-contains-any"
       | "not-in";
-  }): Promise<DocumentData[]>;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
+
   abstract getDocument(
     collection: string,
     id?: string | undefined
-  ): Promise<DocumentData | null>;
-  abstract getCollection(collection: string): Promise<DocumentData[]>;
+  ): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract getCollection(
+    collection: string
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
+
   abstract addDocument(
     collection: string,
     data: any,
     id?: string | undefined
-  ): Promise<string>;
+  ): Promise<Either<Failure<string>, string>>;
+
   abstract updateDocument(
     collection: string,
     id: string,
     data: any
-  ): Promise<void>;
+  ): Promise<Either<Failure<string>, void>>;
   abstract updateArrayInDocument({
     collection,
     id,
@@ -51,6 +60,6 @@ export default abstract class IDatabase {
     field: string;
     data: any;
     incrementNumber?: string;
-  }): Promise<void>;
-  abstract deleteDocument(collection: string, id: string): Promise<void>;
+  }): Promise<Either<Failure<string>, void>>;
+  abstract deleteDocument(collection: string, id: string): Promise<Either<Failure<string>, void>>;
 }
