@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { requestUsecases } from "../request-usecases";
 import { PrivateRequest } from "@/features/request/domain/entities/request-types";
+import { isLeft } from "fp-ts/lib/Either";
 
 export default function useGetRequestsByUser() {
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,12 @@ export default function useGetRequestsByUser() {
       requestUsecases
         .getRequestsByUser({ userId })
         .then((data) => {
-          setRequests(data);
+          if (isLeft(data)) {
+            setError(data.left.message);
+            setLoading(false);
+            return;
+          }
+          setRequests(data.right);
           setLoading(false);
         })
         .catch((error) => {
