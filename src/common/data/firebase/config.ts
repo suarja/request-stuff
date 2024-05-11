@@ -15,7 +15,8 @@ const firebaseConfig = {
 };
 
 export function shouldConnectFirestoreEmulator(): boolean {
-  return process.env.NODE_ENV === "development";
+  // return process.env.NODE_ENV === "development";
+  return false;
 }
 
 export function getFirestoreEmulatorHost() {
@@ -27,7 +28,7 @@ export function getFirestoreEmulatorPort() {
 // Initialize Firebase
 let firebase_app =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-  
+
 export const FirestoreDB = getFirestore(firebase_app);
 if (shouldConnectFirestoreEmulator()) {
   connectFirestoreEmulator(
