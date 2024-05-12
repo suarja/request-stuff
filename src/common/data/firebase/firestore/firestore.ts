@@ -1,5 +1,5 @@
 import IDatabase, { DocumentData } from "@/common/interfaces/idatabase";
-import firebase_app, { FirestoreDB } from "../config";
+import { FirestoreDB } from "../config";
 import {
   addDoc,
   deleteDoc,
