@@ -68,6 +68,7 @@ export default class PublicRequestEntity extends Entity<PublicRequest> {
 
     //~Check if this is valid
     if (!this.isValid()) {
+      console.log(this.values);
       return { canUpload: false, message: "Request is not valid" };
     }
 

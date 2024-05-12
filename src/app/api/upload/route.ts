@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
       senderName: fileSenderData.senderName,
     });
     if (!canUploadFile.canUpload) {
+      console.log({ canUploadFile });
       return NextResponse.json(
         {
           message: canUploadFile.message,

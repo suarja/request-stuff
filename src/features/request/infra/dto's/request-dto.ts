@@ -13,6 +13,7 @@ export default class RequestDto implements DTO<PrivateRequest, DocumentData> {
     data: DocumentData;
   }): Either<Failure<string>, PrivateRequest> {
     try {
+      console.log({ data });
       return right({
         userId: data.userId,
         maxFileSize: data.maxFileSize,

@@ -16,7 +16,6 @@ import {
   where,
   arrayUnion,
   increment,
-  connectFirestoreEmulator,
 } from "firebase/firestore";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { Failure } from "fp-ddd";
