@@ -74,17 +74,17 @@ export default class RequestUsecases {
       const requestPayload = await this._requestRepository.getPublicRequest({
         requestId,
       });
-      if (!requestPayload) {
+      if (isLeft(requestPayload)) {
         return left(
           Failure.invalidValue({
             invalidValue: requestPayload,
-            message: "Could not get request",
+            message: requestPayload.left.message,
           })
         );
       }
       const eitherFileUrl =
         await this._requestRepository.uploadFileFromRequestServerCall({
-          requestData: requestPayload,
+          requestData: requestPayload.right,
           file,
           fileSenderData,
         });
@@ -118,7 +118,7 @@ export default class RequestUsecases {
       const requestPayload = await this._requestRepository.getPublicRequest({
         requestId,
       });
-      if (!requestPayload) {
+      if (isLeft(requestPayload)) {
         return left(
           Failure.invalidValue({
             invalidValue: requestPayload,
@@ -129,36 +129,37 @@ export default class RequestUsecases {
 
       //~ Check if request options
       const fileSizeInMb = file.size / 1024 ** 2;
-      if (fileSizeInMb > requestPayload?.maxFileSize!) {
+      const request = requestPayload.right
+      if (fileSizeInMb > request?.maxFileSize!) {
         return left(
           Failure.invalidValue({
-            invalidValue: requestPayload,
-            message: `File is too large. It should be less than ${requestPayload.maxFileSize}`,
+            invalidValue: request,
+            message: `File is too large. It should be less than ${request.maxFileSize}`,
           })
         );
       }
-      if (requestPayload.numberOfUploads + 1 > requestPayload.maxFiles!) {
+      if (request.numberOfUploads + 1 > request.maxFiles!) {
         return left(
           Failure.invalidValue({
-            invalidValue: requestPayload,
-            message: `Max number of files reached. ${requestPayload.maxFiles}`,
+            invalidValue: request,
+            message: `Max number of files reached. ${request.maxFiles}`,
           })
         );
       }
-      const dateLimitFormatted = new Date(requestPayload?.dateLimit!).getTime();
+      const dateLimitFormatted = new Date(request?.dateLimit!).getTime();
       if (Date.now() > dateLimitFormatted) {
         return left(
           Failure.invalidValue({
-            invalidValue: requestPayload.dateLimit,
+            invalidValue: request.dateLimit,
             message: `Request date limit exceeded. ${new Date(
-              requestPayload.dateLimit!
+              request.dateLimit!
             ).toLocaleDateString()}`,
           })
         );
       }
 
       // Check if file already exists
-      const fileExists = requestPayload.uploads.some(
+      const fileExists = request.uploads.some(
         (upload) =>
           upload.fileName === file.name &&
           upload.senderHash === fileSenderData.senderName
@@ -174,7 +175,7 @@ export default class RequestUsecases {
 
       //~ check user has enough ressources (subscription plan, storage available)
       const eitherUser = await this._auth.getUser({
-        userId: requestPayload.userId,
+        userId: request.userId,
       });
 
       if (isLeft(eitherUser)) {
@@ -198,7 +199,7 @@ export default class RequestUsecases {
       }
       //* Upload file
       const fileUrl = await this._requestRepository.uploadFileFromRequest({
-        requestData: requestPayload,
+        requestData: request,
         file,
         fileSenderData,
       });
@@ -209,14 +210,14 @@ export default class RequestUsecases {
         currentStorage: user.currentStorage + fileSizeInMb,
       };
       await this._auth.updateUser({
-        userId: requestPayload.userId,
+        userId: request.userId,
         user: updatedUser,
       });
 
       //* Update public request after uploading file
       const updatedRequest = {
-        ...requestPayload,
-        numberOfUploads: requestPayload.numberOfUploads + 1,
+        ...request,
+        numberOfUploads: request.numberOfUploads + 1,
       };
       await this._requestRepository.updatePublicRequest({
         request: updatedRequest,

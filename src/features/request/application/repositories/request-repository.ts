@@ -11,6 +11,7 @@ import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import IDatabase from "@/common/interfaces/idatabase";
 import IStorage, { FileSenderData } from "@/common/interfaces/istorage";
 import { Failure } from "fp-ddd";
+import test from "node:test";
 
 export interface RequestRepositoryOptions {
   db: IDatabase;
@@ -25,7 +26,7 @@ export default class RequestRepository {
     this._db = options.db;
     this._storage = options.storage;
   }
-  
+
   //* Remove this method
   async uploadFileFromRequest({
     requestData,
@@ -148,16 +149,30 @@ export default class RequestRepository {
     requestId,
   }: {
     requestId: string;
-  }): Promise<PublicRequest | null> {
+  }): Promise<Either<Failure<string>, PublicRequest>> {
     const requestInfra = await this._db.getDocument("requests", requestId);
-    if (!requestInfra) return null;
+    console.log({ requestInfra, test: "test" });
+    if (isLeft(requestInfra)) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: requestInfra,
+          message: "Could not get the request",
+        })
+      );
+    }
     const requestDto = new RequestDto();
 
-    const request = requestDto.toDomain({ data: requestInfra });
+    const request = requestDto.toDomain({ data: requestInfra.right });
+
     if (isLeft(request)) {
-      return null;
+      return left(
+        Failure.invalidValue({
+          invalidValue: request,
+          message: "Could not get the request. Invalid request.",
+        })
+      );
     }
-    return request.right;
+    return right(request.right);
   }
   async getPublicRequests({
     userId,
