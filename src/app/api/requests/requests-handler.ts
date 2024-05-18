@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serverAdapter } from "../upload/dependency-injection";
 import { isLeft } from "fp-ts/lib/Either";
+import { cookies } from "next/headers";
 
 export async function requestHandler(
   request: NextRequest
 ): Promise<NextResponse> {
   // Rate limiting
-  //! Check if the request is from a valid user (authentication)
+  
+  const cookie = cookies().get("session")?.value || "";
   const eitherUserAuthentication = await serverAdapter.userAuthentication({
     headers: () => request.headers,
+    cookie,
   });
   if (isLeft(eitherUserAuthentication)) {
     // console.log("Error: ", eitherUserAuthentication.left.body);
