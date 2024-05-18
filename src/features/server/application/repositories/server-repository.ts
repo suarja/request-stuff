@@ -106,4 +106,21 @@ export default class ServerRepository {
       currentStorage: newCurrentStorage,
     });
   }
+
+  async useDeleteFile({
+    userId,
+    requestId,
+    fileName,
+  }: {
+    userId: string;
+    requestId: string;
+    fileName: string;
+  }): Promise<Either<Failure<string>, void>> {
+    const path = PATHS.USER_DELETE_FILE({
+      userId,
+      requestId,
+      fileName,
+    });
+    return this._options.database.deleteFile(path);
+  }
 }
