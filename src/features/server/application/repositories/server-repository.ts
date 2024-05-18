@@ -9,6 +9,7 @@ import {
 import { DocumentData } from "firebase/firestore";
 import { Failure } from "fp-ddd";
 import { Either, isLeft } from "fp-ts/lib/Either";
+import { collect } from "fp-ts/lib/ReadonlyRecord";
 import { inject, injectable } from "tsyringe";
 
 export interface ServerRepositoryOptions {
@@ -33,8 +34,6 @@ export default class ServerRepository {
       sessionCookie,
     });
   }
-
- 
 
   async getUser({
     userId,
@@ -134,5 +133,26 @@ export default class ServerRepository {
       fileName,
     });
     return this._options.database.deleteFile(path);
+  }
+
+  async createPublicRequest({
+    request,
+  }: {
+    request: PublicRequest;
+  }): Promise<Either<Failure<string>, void>> {
+    return this._options.database.saveDocument(
+      PATHS.PUBLIC_REQUESTS(),
+      request
+    );
+  }
+  async addRequestToUser({
+    request,
+  }: {
+    request: PublicRequest;
+  }): Promise<Either<Failure<string>, void>> {
+    return this._options.database.saveDocument(
+      PATHS.USERS_REQUESTS({ userId: request.userId }),
+      request
+    );
   }
 }
