@@ -9,7 +9,8 @@ import { container } from "tsyringe";
 import { getStorage } from "firebase-admin/storage";
 import { getFirestore } from "firebase-admin/firestore";
 import { auth } from "firebase-admin";
-
+import { customInitApp } from "@/common/data/firebase/admin-config";
+customInitApp();
 const options: FirebaseAdminDatabaseOptions = {
   storage: getStorage(),
   firestore: getFirestore(),
