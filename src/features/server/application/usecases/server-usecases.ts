@@ -224,14 +224,45 @@ export default class ServerUsecases {
     };
   }
 
-  async addPublicRequest({ request }: { request: PublicRequest }): Promise<{
+  async registerRequest({ request }: { request: PublicRequest }): Promise<{
     error: boolean;
     message: string;
   }> {
-   
+    const batch = await Promise.allSettled([
+      this._serverRepository.createPublicRequest({
+        request,
+      }),
+      this._serverRepository.addRequestToUser({
+        request: {
+          ...request,
+
+          numberOfUploads: 0,
+          uploads: [],
+        },
+      }),
+    ]);
+
+    let errorMessages = "";
+    const errors = batch.some((promise, idx) => {
+      if (promise.status === "rejected") {
+        errorMessages += `Promise ${idx}: ${promise.reason.message}\n`;
+        return true;
+      }
+      if (isLeft(promise.value)) {
+        errorMessages += `Left ${idx}: ${promise.value.left.message}\n`;
+        return true;
+      }
+    });
+
+    if (errors) {
+      return {
+        error: true,
+        message: errorMessages,
+      };
+    }
     return {
       error: false,
-      message: "",
+      message: "Request registered",
     };
   }
 }
