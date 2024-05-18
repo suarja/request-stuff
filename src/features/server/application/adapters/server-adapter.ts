@@ -9,6 +9,7 @@ import {
 import { FileSenderData } from "@/common/interfaces/istorage";
 import { NextResponse } from "next/server";
 import { Either, left } from "fp-ts/lib/Either";
+import { error } from "node:console";
 
 @injectable()
 export default class ServerAdapter {
@@ -176,12 +177,12 @@ export default class ServerAdapter {
   }: {
     request: PublicRequest;
   }): Promise<NextResponse> {
-    const result = await this._usecases.addPublicRequest({
+    const result = await this._usecases.registerRequest({
       request,
     });
     if (result.error) {
-      return NextResponse.json({ message: result.message }, { status: 200 });
+      return NextResponse.json(result, { status: 200 });
     }
-    return NextResponse.json({ message: "Hello World" }, { status: 200 });
+    return NextResponse.json(result, { status: 200 });
   }
 }
