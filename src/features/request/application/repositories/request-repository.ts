@@ -12,6 +12,7 @@ import IDatabase from "@/common/interfaces/idatabase";
 import IStorage, { FileSenderData } from "@/common/interfaces/istorage";
 import { Failure } from "fp-ddd";
 import test from "node:test";
+import { SERVER_ENDPOINTS } from "@/common/constants";
 
 export interface RequestRepositoryOptions {
   db: IDatabase;
@@ -135,16 +136,41 @@ export default class RequestRepository {
   }
   //! Add To Backend Service
   //~ request related
-  async addPublicRequest({
+  async createRequest({
     props,
   }: {
     props: PublicRequest;
-  }): Promise<Either<Error, void>> {
+  }): Promise<Either<Failure<string>, void>> {
     try {
-      const id = await this._db.addDocument(props.path, props, props.id);
+      const response = await fetch(SERVER_ENDPOINTS.ADD_PUBLIC_REQUEST, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          target: "addPublicRequest",
+          payload: {
+            request: props,
+          },
+        }),
+      });
+      const data = await response.json();
+      if (data.error === true) {
+        return left(
+          Failure.invalidValue({
+            message: data.message,
+            invalidValue: data,
+          })
+        );
+      }
       return right(undefined);
     } catch (error) {
-      return left(new Error("Error adding request to public collection"));
+      return left(
+        Failure.invalidValue({
+          message: "Error adding request",
+          invalidValue: error,
+        })
+      );
     }
   }
   async getPublicRequest({

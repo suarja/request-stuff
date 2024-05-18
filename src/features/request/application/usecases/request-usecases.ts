@@ -26,26 +26,12 @@ export default class RequestUsecases {
     props,
   }: {
     props: PublicRequest;
-  }): Promise<Either<Error, void>> {
-    const pathForUserCollection = `users/${props.userId}/requests`;
-    const batch = await Promise.allSettled([
-      this._requestRepository.addPublicRequest({ props }),
-      this._requestRepository.addRequestToUser({
-        path: pathForUserCollection,
-        userId: props.userId,
-        request: { ...props, numberOfUploads: 0, uploads: [] },
-      }),
-    ]);
-
-    //! This is not handling the case of a request being added to the public collection but not to the user collection or viceversa.
-    const isAnyError = batch.some((asyncResult) => {
-      if (asyncResult.status === "rejected") {
-        return true;
-      }
-      return isLeft(asyncResult.value);
+  }): Promise<Either<Failure<string>, void>> {
+    const eitherRequestCreated = await this._requestRepository.createRequest({
+      props,
     });
-    if (isAnyError) {
-      return left(new Error("Error while batching request creations promises"));
+    if (isLeft(eitherRequestCreated)) {
+      return eitherRequestCreated;
     }
     return right(undefined);
   }
@@ -129,7 +115,7 @@ export default class RequestUsecases {
 
       //~ Check if request options
       const fileSizeInMb = file.size / 1024 ** 2;
-      const request = requestPayload.right
+      const request = requestPayload.right;
       if (fileSizeInMb > request?.maxFileSize!) {
         return left(
           Failure.invalidValue({
