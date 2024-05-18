@@ -19,6 +19,9 @@ export interface RequestRepositoryOptions {
   storage: IStorage;
 }
 
+/**
+ * @deprecated This class is deprecated and will be removed.
+ */
 export default class RequestRepository {
   private _db: RequestRepositoryOptions["db"];
   private _storage: RequestRepositoryOptions["storage"];
@@ -28,7 +31,11 @@ export default class RequestRepository {
     this._storage = options.storage;
   }
 
-  //* Remove this method
+  //! Remove this method
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   * Use the `uploadFileFromRequest` method instead.
+   */
   async uploadFileFromRequest({
     requestData,
     file,
@@ -107,8 +114,12 @@ export default class RequestRepository {
       );
     }
   }
-  //! Add To Backend Service
-  //? user related
+
+  //! Remove this method
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   * Use the `updateRequestInUserCollection` method instead.
+   */
   async updateRequestInUserCollection({
     requestData,
     fileSenderData,
@@ -134,8 +145,8 @@ export default class RequestRepository {
     });
     return;
   }
-  //! Add To Backend Service
-  //~ request related
+
+
   async createRequest({
     props,
   }: {
@@ -226,8 +237,7 @@ export default class RequestRepository {
 
     return parsedrequests;
   }
-  //! Add To Backend Service
-  //? user related
+  //? Add To Backend Service
   async getRequestsByUser({
     userId,
   }: {
@@ -256,8 +266,12 @@ export default class RequestRepository {
 
     return right(parsedrequests);
   }
-  //! Add To Backend Service
-  //? user related
+
+  //! Remove this method
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   * Use the `createRequest` method instead.
+   */
   async addRequestToUser({
     path,
     userId,
@@ -274,8 +288,11 @@ export default class RequestRepository {
       return left(new Error("Error adding request to user collection"));
     }
   }
-  //! Add To Backend Service
-  //~ request related
+  //! Remove this method
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   * Use the `updatePublicRequestUploads` method instead.
+   */
   async updatePublicRequest({
     request,
   }: {
@@ -284,8 +301,11 @@ export default class RequestRepository {
     const path = `requests`;
     await this._db.updateDocument(path, request.id, request);
   }
-  //! Add To Backend Service
-  //~ request related
+  //! Remove this method
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   * Use the `updatePublicRequestUploads` method instead.
+   */
   async updatePublicRequestUploads({
     upload,
     requestId,
@@ -302,8 +322,11 @@ export default class RequestRepository {
     });
   }
 
-  //! Add To Backend Service
-  //~ request related
+  //! Remove this method
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   * Use the `deletePublicRequest` method instead.
+   */
   async deletePublicRequest({
     requestId,
   }: {
@@ -321,8 +344,11 @@ export default class RequestRepository {
       );
     }
   }
-  //! Add To Backend Service
-  //? user related
+  //! Remove
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   *
+   */
   async deleteRequestFromUserCollection({
     userId,
     requestId,
@@ -343,7 +369,7 @@ export default class RequestRepository {
       );
     }
   }
-  //! Add To Backend Service
+  //? Add To Backend Service
   async deleteRequest({
     userId,
     requestId,

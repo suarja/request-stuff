@@ -89,7 +89,14 @@ export default class RequestUsecases {
     }
   }
 
-  //* Remove this method
+  //! Remove this method
+  /**
+   * @deprecated Use `uploadFileFromRequestServerCall` instead.
+   * @param requestId - The ID of the request.
+   * @param file - The file to upload.
+   * @param fileSenderData - Additional data about the file sender.
+   * @returns A promise that resolves to either a `Failure` or the file URL.
+   */
   async uploadFileFromRequest({
     requestId,
     file,
