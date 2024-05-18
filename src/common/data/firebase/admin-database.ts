@@ -164,6 +164,22 @@ export class FirebaseAdminDatabase extends IServerDatabase {
       );
     }
   }
+
+  // A method to delete a file from bucket storage
+  async deleteFile(path: string): Promise<Either<Failure<string>, void>> {
+    try {
+      await this._options.storage.bucket(process.env.BUCKET_NAME as string).file(path).delete();
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "Error deleting file",
+        })
+      );
+    }
+  }
+
 }
 
 const firestore = getFirestore();
