@@ -2,6 +2,7 @@ import { PATHS } from "@/common/constants";
 import IServerDatabase from "@/common/interfaces/Iserver-database";
 import { UserOptions } from "@/features/auth/domain/entities/user-entity";
 import {
+  PrivateRequest,
   PublicRequest,
   Upload,
   UserUpload,
@@ -140,18 +141,30 @@ export default class ServerRepository {
   }: {
     request: PublicRequest;
   }): Promise<Either<Failure<string>, void>> {
+    console.log(
+      "Creating public request",
+      request,
+      PATHS.PUBLIC_REQUEST({ requestId: request.id })
+    );
     return this._options.database.saveDocument(
-      PATHS.PUBLIC_REQUESTS(),
+      PATHS.PUBLIC_REQUEST({
+        requestId: request.id,
+      }),
       request
     );
   }
   async addRequestToUser({
     request,
   }: {
-    request: PublicRequest;
+    request: PrivateRequest;
   }): Promise<Either<Failure<string>, void>> {
+    console.log(
+      "Adding request to user",
+      request,
+      PATHS.USER_REQUEST({ userId: request.userId, requestId: request.id })
+    );
     return this._options.database.saveDocument(
-      PATHS.USERS_REQUESTS({ userId: request.userId }),
+      PATHS.USER_REQUEST({ userId: request.userId, requestId: request.id }),
       request
     );
   }
