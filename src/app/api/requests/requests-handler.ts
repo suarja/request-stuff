@@ -10,7 +10,6 @@ export async function requestHandler(
   
   const cookie = cookies().get("session")?.value || "";
   const eitherUserAuthentication = await serverAdapter.userAuthentication({
-    headers: () => request.headers,
     cookie,
   });
   if (isLeft(eitherUserAuthentication)) {

@@ -6,6 +6,7 @@ import { Failure } from "fp-ddd";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { DocumentData } from "@/common/interfaces/idatabase";
 import { Auth } from "firebase-admin/lib/auth/auth";
+import { getIdToken } from "firebase/auth";
 
 export interface FirebaseAdminDatabaseOptions {
   firestore: FirebaseFirestore.Firestore;
@@ -24,46 +25,30 @@ export class FirebaseAdminDatabase extends IServerDatabase {
     super();
     this._options = firebaseDatabaseAdminOptions;
   }
-  async verifyIdToken(
-    idToken: string
-  ): Promise<Either<Failure<string>, string>> {
+
+  async verifySessionCookie({
+    sessionCookie,
+  }: {
+    sessionCookie: string;
+  }): Promise<Either<Failure<string>, string>> {
     try {
-      console.log("verifying token", idToken);
-      const decodedToken = await this._options.auth.verifyIdToken(idToken);
-      console.log("decodedToken", decodedToken);
-      return right(decodedToken.uid);
+      
+      const decodedClaims = await this._options.auth.verifySessionCookie(
+        sessionCookie,
+        true
+      );
+      return right(decodedClaims.uid);
     } catch (error) {
-      console.log("error while decoding token", error);
       return left(
         Failure.invalidValue({
           invalidValue: error,
-          message: "Error verifying token",
+          message: "Error verifying session cookie",
         })
       );
     }
   }
 
-  async createSessionCookie(
-    userId: string,
-    expiresIn: number = 60 * 60 * 24 * 5 // 5 days
-  ): Promise<Either<Failure<string>, string>> {
-    try {
-      const sessionCookie = await this._options.auth.createSessionCookie(
-        userId,
-        {
-          expiresIn,
-        }
-      );
-      return right(sessionCookie);
-    } catch (error) {
-      return left(
-        Failure.invalidValue({
-          invalidValue: error,
-          message: "Error creating session cookie",
-        })
-      );
-    }
-  }
+
 
   async uploadFile(
     file: File,
