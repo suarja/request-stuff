@@ -4,7 +4,10 @@ import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
 import UserEntity from "@/features/auth/domain/entities/user-entity";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
-import { Upload } from "@/features/request/domain/entities/request-types";
+import {
+  PublicRequest,
+  Upload,
+} from "@/features/request/domain/entities/request-types";
 import { FileSenderData } from "@/common/interfaces/istorage";
 import { NextResponse } from "next/server";
 
@@ -215,6 +218,17 @@ export default class ServerUsecases {
       };
     }
 
+    return {
+      error: false,
+      message: "",
+    };
+  }
+
+  async addPublicRequest({ request }: { request: PublicRequest }): Promise<{
+    error: boolean;
+    message: string;
+  }> {
+   
     return {
       error: false,
       message: "",
