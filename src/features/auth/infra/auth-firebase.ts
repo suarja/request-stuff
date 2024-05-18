@@ -1,8 +1,10 @@
 import {
   Auth,
+  User,
   UserCredential,
   createUserWithEmailAndPassword,
   getAuth,
+  getIdToken,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -134,7 +136,37 @@ class AuthFirebase extends IAuth {
       console.log("Could not sign out the user");
     }
   }
+
+  async getAuthUserToken({
+    user,
+  }: {
+    user: User;
+  }): Promise<Either<Failure<string>, string>> {
+    const idToken = await getIdToken(user);
+    if (!idToken) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: idToken,
+          message: "Could not retrieve the id token",
+        })
+      );
+    }
+    return right(idToken);
+  }
+
+  async getAuthUser(): Promise<Either<Failure<string>, User>> {
+    const user = this._authProvider.currentUser;
+    if (!user) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: user,
+          message: "Could not retrieve the current user",
+        })
+      );
+    }
+    return right(user);
+  }
 }
 
-const auth = getAuth(firebase_app);
-export const FirebaseAuth = new AuthFirebase({ authProvider: auth });
+export const authInstance = getAuth(firebase_app);
+export const FirebaseAuth = new AuthFirebase({ authProvider: authInstance });

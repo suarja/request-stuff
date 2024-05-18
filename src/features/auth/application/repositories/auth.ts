@@ -1,4 +1,4 @@
-import { Either, left, right } from "fp-ts/lib/Either";
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import { Failure } from "fp-ddd";
 import { FirebaseAuth } from "../../infra/auth-firebase";
 import { IAuth, IAuthOptions } from "./types";
@@ -25,6 +25,19 @@ export class AuthRepository {
     password: string;
   }): Promise<Either<Failure<string>, UserInfra>> {
     return this._auth.createUserWithEmailAndPassword({ email, password });
+  }
+
+  async getUserIdToken(): Promise<Either<Failure<string>, string>> {
+    const user = await this._auth.getAuthUser();
+
+    if (isLeft(user)) {
+      return user;
+    }
+    const idToken = await this._auth.getAuthUserToken({ user: user.right });
+    if (isLeft(idToken)) {
+      return idToken;
+    }
+    return idToken;
   }
 
   async saveUser({ user }: { user: UserOptions }) {

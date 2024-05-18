@@ -14,6 +14,10 @@ export default class AuthUsecases {
     this._authRepository = options.authRepository;
   }
 
+  async getUserToken() {
+    return this._authRepository.getUserIdToken();
+  }
+
   async createUserWithEmailAndPassword({
     email,
     password,
@@ -37,7 +41,7 @@ export default class AuthUsecases {
         subscription: "basic",
       },
     });
-    return right(result);
+    return result;
   }
 
   async signInWithMailAndPassword({
@@ -47,10 +51,36 @@ export default class AuthUsecases {
     email: string;
     password: string;
   }): Promise<Either<Failure<string>, string>> {
-    return this._authRepository.signInWithMailAndPassword({
+    const eitherId = await this._authRepository.signInWithMailAndPassword({
       email,
       password,
     });
+    if (isLeft(eitherId)) {
+      return left(eitherId.left);
+    }
+
+    const sessionCookie = await fetch(`${BASE_URL}/api/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${eitherId.right}`,
+      },
+      body: JSON.stringify({
+        idToken: eitherId.right,
+      }),
+    }).then((res) => res.json());
+    console.log("id", eitherId.right);
+    if (!sessionCookie || sessionCookie.error) {
+      console.log("Error creating session cookie", sessionCookie);
+      return left(
+        Failure.invalidValue({
+          invalidValue: sessionCookie,
+          message: "Error creating session cookie",
+        })
+      );
+    }
+
+    return right(eitherId.right);
   }
   async signOut() {
     await this._authRepository.signOut();
