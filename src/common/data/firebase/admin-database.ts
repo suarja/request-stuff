@@ -31,7 +31,6 @@ export class FirebaseAdminDatabase extends IServerDatabase {
     sessionCookie: string;
   }): Promise<Either<Failure<string>, string>> {
     try {
-      
       const decodedClaims = await this._options.auth.verifySessionCookie(
         sessionCookie,
         true
@@ -46,8 +45,6 @@ export class FirebaseAdminDatabase extends IServerDatabase {
       );
     }
   }
-
-
 
   async uploadFile(
     file: File,
@@ -86,10 +83,11 @@ export class FirebaseAdminDatabase extends IServerDatabase {
     data: any
   ): Promise<Either<Failure<string>, void>> {
     try {
-      const docRef = this._options.firestore.collection(collection).doc();
+      const docRef = this._options.firestore.doc(collection);
       await docRef.set(data);
       return right(undefined);
     } catch (error) {
+      console.log({ error });
       return left(
         Failure.invalidValue({
           invalidValue: error,
