@@ -232,6 +232,7 @@ export default class ServerUsecases {
       this._serverRepository.createPublicRequest({
         request,
       }),
+      //! Check that the user is allowed to modify this ressource
       this._serverRepository.addRequestToUser({
         request: {
           ...request,

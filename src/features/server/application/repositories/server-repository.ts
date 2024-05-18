@@ -9,8 +9,7 @@ import {
 } from "@/features/request/domain/entities/request-types";
 import { DocumentData } from "firebase/firestore";
 import { Failure } from "fp-ddd";
-import { Either, isLeft } from "fp-ts/lib/Either";
-import { collect } from "fp-ts/lib/ReadonlyRecord";
+import { Either } from "fp-ts/lib/Either";
 import { inject, injectable } from "tsyringe";
 
 export interface ServerRepositoryOptions {
@@ -141,11 +140,7 @@ export default class ServerRepository {
   }: {
     request: PublicRequest;
   }): Promise<Either<Failure<string>, void>> {
-    console.log(
-      "Creating public request",
-      request,
-      PATHS.PUBLIC_REQUEST({ requestId: request.id })
-    );
+   
     return this._options.database.saveDocument(
       PATHS.PUBLIC_REQUEST({
         requestId: request.id,
@@ -158,11 +153,7 @@ export default class ServerRepository {
   }: {
     request: PrivateRequest;
   }): Promise<Either<Failure<string>, void>> {
-    console.log(
-      "Adding request to user",
-      request,
-      PATHS.USER_REQUEST({ userId: request.userId, requestId: request.id })
-    );
+  
     return this._options.database.saveDocument(
       PATHS.USER_REQUEST({ userId: request.userId, requestId: request.id }),
       request
