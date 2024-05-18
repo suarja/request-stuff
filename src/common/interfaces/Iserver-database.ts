@@ -35,4 +35,6 @@ export default abstract class IServerDatabase {
     updateRest?: boolean | undefined;
     rest?: any;
   }): Promise<Either<Failure<string>, void>>;
+
+  abstract deleteFile(path: string): Promise<Either<Failure<string>, void>>;
 }
