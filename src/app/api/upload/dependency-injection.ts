@@ -10,6 +10,7 @@ import { getStorage } from "firebase-admin/storage";
 import { getFirestore } from "firebase-admin/firestore";
 import { auth } from "firebase-admin";
 import { customInitApp } from "@/common/data/firebase/admin-config";
+import RequestRouter from "../requests/request-router";
 customInitApp();
 const options: FirebaseAdminDatabaseOptions = {
   storage: getStorage(),
@@ -23,5 +24,7 @@ container.register("serverRepository", { useClass: ServerRepository });
 container.register("serverRepositoryOptions", {
   useValue: { database: serverDatabase },
 });
+container.register("serverAdapter", { useClass: ServerAdapter });
 container.register("serverUsecases", { useClass: ServerUsecases });
 export const serverAdapter = container.resolve(ServerAdapter);
+export const requestRouter = container.resolve(RequestRouter);
