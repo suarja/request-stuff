@@ -6,7 +6,6 @@ import UserEntity from "@/features/auth/domain/entities/user-entity";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import { Upload } from "@/features/request/domain/entities/request-types";
 import { FileSenderData } from "@/common/interfaces/istorage";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export interface ServerUsecasesOptions {
@@ -22,62 +21,24 @@ export default class ServerUsecases {
   }
 
   async userAuthentication({
-    headers,
+    cookie,
   }: {
-    headers: () => Headers;
+    cookie: string;
   }): Promise<Either<NextResponse, void>> {
     // Check if the user is authenticated
 
     try {
-      const authorization = headers().get("Authorization");
-      if (authorization?.startsWith("Bearer ")) {
-        const idToken = authorization.split("Bearer ")[1];
-        console.log({ idToken });
-        const eitherDecodedToken = await this._serverRepository.verifyIdToken({
-          idToken,
-        });
-        if (isLeft(eitherDecodedToken)) {
-          return left(
-            NextResponse.json(
-              { error: eitherDecodedToken.left.message },
-              { status: 401 }
-            )
-          );
-        }
+      const eitherUserId = await this._serverRepository.verifySessionCookie({
+        sessionCookie: cookie,
+      });
 
-        //Generate session cookie
-        const expiresIn = 60 * 60 * 24 * 5 * 1000;
-        const eitherSessionCookie =
-          await this._serverRepository.createSessionCookie({
-            userId: idToken,
-            expiresIn,
-          });
-
-        if (isLeft(eitherSessionCookie)) {
-          return left(
-            NextResponse.json(
-              { error: eitherSessionCookie.left.message },
-              { status: 401 }
-            )
-          );
-        }
-
-        const options = {
-          name: "session",
-          value: eitherSessionCookie.right,
-          maxAge: expiresIn,
-          httpOnly: true,
-          secure: true,
-        };
-
-        //Add the cookie to the browser
-        cookies().set(options);
-
-        return right(undefined);
+      if (isLeft(eitherUserId)) {
+        return left(
+          NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        );
       }
-      return left(
-        NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-      );
+
+      return right(undefined);
     } catch (error) {
       return left(NextResponse.json({ error: error }, { status: 401 }));
     }

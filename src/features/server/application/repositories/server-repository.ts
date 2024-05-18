@@ -8,7 +8,7 @@ import {
 } from "@/features/request/domain/entities/request-types";
 import { DocumentData } from "firebase/firestore";
 import { Failure } from "fp-ddd";
-import { Either } from "fp-ts/lib/Either";
+import { Either, isLeft } from "fp-ts/lib/Either";
 import { inject, injectable } from "tsyringe";
 
 export interface ServerRepositoryOptions {
@@ -24,23 +24,17 @@ export default class ServerRepository {
     this._options = serverRepositoryOptions;
   }
 
-  async verifyIdToken({
-    idToken,
+  async verifySessionCookie({
+    sessionCookie,
   }: {
-    idToken: string;
+    sessionCookie: string;
   }): Promise<Either<Failure<string>, string>> {
-    return this._options.database.verifyIdToken(idToken);
+    return this._options.database.verifySessionCookie({
+      sessionCookie,
+    });
   }
 
-  async createSessionCookie({
-    userId,
-    expiresIn,
-  }: {
-    userId: string;
-    expiresIn?: number;
-  }): Promise<Either<Failure<string>, string>> {
-    return this._options.database.createSessionCookie(userId, expiresIn);
-  }
+ 
 
   async getUser({
     userId,

@@ -13,9 +13,13 @@ export default class ServerAdapter {
     this._usecases = serverUsecases;
   }
 
-  async userAuthentication({ headers }: { headers: () => Headers }) {
+  async userAuthentication({
+    cookie,
+  }: {
+    cookie: string;
+  }) {
     return await this._usecases.userAuthentication({
-      headers,
+      cookie,
     });
   }
 
