@@ -1,5 +1,5 @@
 "use client";
-import { BASE_URL } from "@/common/constants";
+import { BASE_URL, SERVER_ENDPOINTS } from "@/common/constants";
 
 import { useEffect, useState } from "react";
 
@@ -10,7 +10,7 @@ export default function Page() {
 
   useEffect(() => {
     async function check() {
-      const authPayload = await fetch(`${BASE_URL}/api/requests`, {
+      const authPayload = await fetch(SERVER_ENDPOINTS.ADD_PUBLIC_REQUEST, {
         method: "POST",
         headers: {},
         body: JSON.stringify({
