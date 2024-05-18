@@ -6,7 +6,6 @@ import { Failure } from "fp-ddd";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { DocumentData } from "@/common/interfaces/idatabase";
 import { Auth } from "firebase-admin/lib/auth/auth";
-import { getIdToken } from "firebase/auth";
 
 export interface FirebaseAdminDatabaseOptions {
   firestore: FirebaseFirestore.Firestore;
