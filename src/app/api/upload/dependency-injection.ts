@@ -1,14 +1,19 @@
-import { FirebaseAdminDatabase } from "@/common/data/firebase/admin-database";
+import {
+  FirebaseAdminDatabase,
+  FirebaseAdminDatabaseOptions,
+} from "@/common/data/firebase/admin-database";
 import ServerAdapter from "@/features/server/application/adapters/server-adapter";
 import ServerUsecases from "@/features/server/application/usecases/server-usecases";
 import ServerRepository from "@/features/server/application/repositories/server-repository";
 import { container } from "tsyringe";
 import { getStorage } from "firebase-admin/storage";
 import { getFirestore } from "firebase-admin/firestore";
+import { auth } from "firebase-admin";
 
-const options = {
+const options: FirebaseAdminDatabaseOptions = {
   storage: getStorage(),
   firestore: getFirestore(),
+  auth: auth(),
 };
 // Register the database options and other dependecy for injection
 container.register("firebaseDatabaseAdminOptions", { useValue: options });

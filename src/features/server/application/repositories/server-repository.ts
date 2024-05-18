@@ -24,6 +24,24 @@ export default class ServerRepository {
     this._options = serverRepositoryOptions;
   }
 
+  async verifyIdToken({
+    idToken,
+  }: {
+    idToken: string;
+  }): Promise<Either<Failure<string>, string>> {
+    return this._options.database.verifyIdToken(idToken);
+  }
+
+  async createSessionCookie({
+    userId,
+    expiresIn,
+  }: {
+    userId: string;
+    expiresIn?: number;
+  }): Promise<Either<Failure<string>, string>> {
+    return this._options.database.createSessionCookie(userId, expiresIn);
+  }
+
   async getUser({
     userId,
   }: {

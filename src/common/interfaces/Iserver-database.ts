@@ -3,6 +3,15 @@ import { DocumentData } from "./idatabase";
 import { Either } from "fp-ts/lib/Either";
 
 export default abstract class IServerDatabase {
+  abstract verifyIdToken(
+    idToken: string
+  ): Promise<Either<Failure<string>, string>>;
+
+  abstract createSessionCookie(
+    userId: string,
+    expiresIn?: number
+  ): Promise<Either<Failure<string>, string>>;
+
   abstract uploadFile(
     file: File,
     path: string

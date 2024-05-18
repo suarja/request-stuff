@@ -1,11 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import ServerRepository from "../repositories/server-repository";
-import { isLeft } from "fp-ts/lib/Either";
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
 import UserEntity from "@/features/auth/domain/entities/user-entity";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import { Upload } from "@/features/request/domain/entities/request-types";
 import { FileSenderData } from "@/common/interfaces/istorage";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export interface ServerUsecasesOptions {
   serverRepository: ServerRepository;
@@ -17,6 +19,68 @@ export default class ServerUsecases {
 
   constructor(@inject("serverRepository") serverRepository: ServerRepository) {
     this._serverRepository = serverRepository;
+  }
+
+  async userAuthentication({
+    headers,
+  }: {
+    headers: () => Headers;
+  }): Promise<Either<NextResponse, void>> {
+    // Check if the user is authenticated
+
+    try {
+      const authorization = headers().get("Authorization");
+      if (authorization?.startsWith("Bearer ")) {
+        const idToken = authorization.split("Bearer ")[1];
+        console.log({ idToken });
+        const eitherDecodedToken = await this._serverRepository.verifyIdToken({
+          idToken,
+        });
+        if (isLeft(eitherDecodedToken)) {
+          return left(
+            NextResponse.json(
+              { error: eitherDecodedToken.left.message },
+              { status: 401 }
+            )
+          );
+        }
+
+        //Generate session cookie
+        const expiresIn = 60 * 60 * 24 * 5 * 1000;
+        const eitherSessionCookie =
+          await this._serverRepository.createSessionCookie({
+            userId: idToken,
+            expiresIn,
+          });
+
+        if (isLeft(eitherSessionCookie)) {
+          return left(
+            NextResponse.json(
+              { error: eitherSessionCookie.left.message },
+              { status: 401 }
+            )
+          );
+        }
+
+        const options = {
+          name: "session",
+          value: eitherSessionCookie.right,
+          maxAge: expiresIn,
+          httpOnly: true,
+          secure: true,
+        };
+
+        //Add the cookie to the browser
+        cookies().set(options);
+
+        return right(undefined);
+      }
+      return left(
+        NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+      );
+    } catch (error) {
+      return left(NextResponse.json({ error: error }, { status: 401 }));
+    }
   }
 
   async getUser({ userId }: { userId: string }): Promise<{

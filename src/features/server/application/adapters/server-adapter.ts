@@ -13,6 +13,12 @@ export default class ServerAdapter {
     this._usecases = serverUsecases;
   }
 
+  async userAuthentication({ headers }: { headers: () => Headers }) {
+    return await this._usecases.userAuthentication({
+      headers,
+    });
+  }
+
   async getUser({ userId }: { userId: string }): Promise<{
     returnOptions: { error: boolean; message: string; status: number };
     user: UserEntity | null;

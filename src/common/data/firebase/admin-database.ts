@@ -1,15 +1,16 @@
-import { getFirestore } from "firebase-admin/firestore";
-import { getStorage, getDownloadURL, Storage } from "firebase-admin/storage";
+import { getDownloadURL, Storage } from "firebase-admin/storage";
 import { FieldValue } from "firebase-admin/firestore";
 import { inject, injectable } from "tsyringe";
 import IServerDatabase from "@/common/interfaces/Iserver-database";
 import { Failure } from "fp-ddd";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { DocumentData } from "@/common/interfaces/idatabase";
+import { Auth } from "firebase-admin/lib/auth/auth";
 
 export interface FirebaseAdminDatabaseOptions {
   firestore: FirebaseFirestore.Firestore;
   storage: Storage;
+  auth: Auth;
 }
 
 @injectable()
@@ -22,6 +23,46 @@ export class FirebaseAdminDatabase extends IServerDatabase {
   ) {
     super();
     this._options = firebaseDatabaseAdminOptions;
+  }
+  async verifyIdToken(
+    idToken: string
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      console.log("verifying token", idToken);
+      const decodedToken = await this._options.auth.verifyIdToken(idToken);
+      console.log("decodedToken", decodedToken);
+      return right(decodedToken.uid);
+    } catch (error) {
+      console.log("error while decoding token", error);
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "Error verifying token",
+        })
+      );
+    }
+  }
+
+  async createSessionCookie(
+    userId: string,
+    expiresIn: number = 60 * 60 * 24 * 5 // 5 days
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const sessionCookie = await this._options.auth.createSessionCookie(
+        userId,
+        {
+          expiresIn,
+        }
+      );
+      return right(sessionCookie);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "Error creating session cookie",
+        })
+      );
+    }
   }
 
   async uploadFile(
@@ -168,7 +209,10 @@ export class FirebaseAdminDatabase extends IServerDatabase {
   // A method to delete a file from bucket storage
   async deleteFile(path: string): Promise<Either<Failure<string>, void>> {
     try {
-      await this._options.storage.bucket(process.env.BUCKET_NAME as string).file(path).delete();
+      await this._options.storage
+        .bucket(process.env.BUCKET_NAME as string)
+        .file(path)
+        .delete();
       return right(undefined);
     } catch (error) {
       return left(
@@ -179,13 +223,4 @@ export class FirebaseAdminDatabase extends IServerDatabase {
       );
     }
   }
-
 }
-
-const firestore = getFirestore();
-const storage = getStorage();
-
-export const firebaseAdmin = new FirebaseAdminDatabase({
-  firestore,
-  storage,
-});
