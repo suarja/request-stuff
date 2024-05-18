@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { requestUsecases } from "../request-usecases";
 import { PublicRequest } from "@/features/request/domain/entities/request-types";
+import { isLeft } from "fp-ts/lib/Either";
 
 export default function useGetRequest() {
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ export default function useGetRequest() {
       requestUsecases
         .getRequest({ requestId })
         .then((data) => {
-          if (!data) {
+          if (isLeft(data)) {
             setError("Request not found");
             setLoading(false);
             return;
@@ -24,7 +25,7 @@ export default function useGetRequest() {
             ...data,
             id: requestId,
           };
-          setRequest(request);
+          setRequest(request.right);
           setLoading(false);
         })
         .catch((error) => {
