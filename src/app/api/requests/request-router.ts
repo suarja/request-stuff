@@ -25,10 +25,10 @@ export default class RequestRouter {
           const payload =
             serverRequestBodySchemaAddPublicRequest.safeParse(reqJson);
           if (payload.success) {
-            return NextResponse.json(
-              { message: "add public request" },
-              { status: 200 }
-            );
+            //! Type next response type generic
+            return this._serverUsecases.addPublicRequest({
+              request: payload.data.payload.request,
+            });
           } else {
             return NextResponse.json(
               { error: "Invalid request body", errorInfo: payload.error },
