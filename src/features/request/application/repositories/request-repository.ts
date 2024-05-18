@@ -107,6 +107,7 @@ export default class RequestRepository {
     }
   }
   //! Add To Backend Service
+  //? user related
   async updateRequestInUserCollection({
     requestData,
     fileSenderData,
@@ -133,6 +134,7 @@ export default class RequestRepository {
     return;
   }
   //! Add To Backend Service
+  //~ request related
   async addPublicRequest({
     props,
   }: {
@@ -199,6 +201,7 @@ export default class RequestRepository {
     return parsedrequests;
   }
   //! Add To Backend Service
+  //? user related
   async getRequestsByUser({
     userId,
   }: {
@@ -228,6 +231,7 @@ export default class RequestRepository {
     return right(parsedrequests);
   }
   //! Add To Backend Service
+  //? user related
   async addRequestToUser({
     path,
     userId,
@@ -245,6 +249,7 @@ export default class RequestRepository {
     }
   }
   //! Add To Backend Service
+  //~ request related
   async updatePublicRequest({
     request,
   }: {
@@ -254,6 +259,7 @@ export default class RequestRepository {
     await this._db.updateDocument(path, request.id, request);
   }
   //! Add To Backend Service
+  //~ request related
   async updatePublicRequestUploads({
     upload,
     requestId,
@@ -271,6 +277,7 @@ export default class RequestRepository {
   }
 
   //! Add To Backend Service
+  //~ request related
   async deletePublicRequest({
     requestId,
   }: {
@@ -289,6 +296,7 @@ export default class RequestRepository {
     }
   }
   //! Add To Backend Service
+  //? user related
   async deleteRequestFromUserCollection({
     userId,
     requestId,

@@ -33,6 +33,8 @@ export default class FileUsecases {
   async getPathContent({ path, root }: { path: string; root: string }) {
     return await this._storage.getPathContent({ path, root });
   }
+  //! Add To Backend Service
+  //* file related
   async removeFile({ path }: { path: string }) {
     return await this._storage.removeFile({ path });
   }
