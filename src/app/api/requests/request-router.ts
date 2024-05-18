@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { inject, injectable } from "tsyringe";
 import {
   ServerRequestBodySchema,
+  baseServerRequestBodySchema,
   serverRequestBodySchema,
+  serverRequestBodySchemaAddPublicRequest,
 } from "./server-request-schema";
-import { Either } from "fp-ts/lib/Either";
 import ServerAdapter from "@/features/server/application/adapters/server-adapter";
 
 @injectable()
@@ -16,14 +17,24 @@ export default class RequestRouter {
   }
 
   async handler(req: NextRequest): Promise<NextResponse> {
-    const body = serverRequestBodySchema.safeParse(await req.json());
+    const reqJson = await req.json();
+    const body = baseServerRequestBodySchema.safeParse(reqJson);
     if (body.success) {
       switch (body.data.target) {
         case "addPublicRequest":
-          const payload = body.data.payload;
-          return this._serverUsecases.addPublicRequest({
-            request: payload.request,
-          });
+          const payload =
+            serverRequestBodySchemaAddPublicRequest.safeParse(reqJson);
+          if (payload.success) {
+            return NextResponse.json(
+              { message: "add public request" },
+              { status: 200 }
+            );
+          } else {
+            return NextResponse.json(
+              { error: "Invalid request body", errorInfo: payload.error },
+              { status: 400 }
+            );
+          }
         case "updatePublicRequest":
           return NextResponse.json(
             { message: "update public request" },
@@ -48,7 +59,7 @@ export default class RequestRouter {
       }
     } else {
       return NextResponse.json(
-        { error: "Invalid request body" },
+        { error: "Invalid request body", errorInfo: body.error },
         { status: 400 }
       );
     }
