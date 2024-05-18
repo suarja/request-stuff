@@ -31,6 +31,7 @@ export default function useSignInWithEmailAndPassword({
         })
         .then((eitherId) => {
           if (isLeft(eitherId)) {
+            setLoading(false);
             return setError(true);
           }
           setLoading(false);
