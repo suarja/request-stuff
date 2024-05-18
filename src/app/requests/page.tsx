@@ -13,6 +13,13 @@ export default function Page() {
       const authPayload = await fetch(`${BASE_URL}/api/requests`, {
         method: "POST",
         headers: {},
+        body: JSON.stringify({
+          target: "addPublicRequest",
+          payload: {
+            user: "user",
+            file: "file",
+          },
+        }),
       });
       const authData = await authPayload.json();
       console.log(authData);
