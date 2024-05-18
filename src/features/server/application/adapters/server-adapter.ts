@@ -2,8 +2,13 @@ import { inject, injectable } from "tsyringe";
 import ServerUsecases from "../usecases/server-usecases";
 import UserEntity from "@/features/auth/domain/entities/user-entity";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
-import { Upload } from "@/features/request/domain/entities/request-types";
+import {
+  PublicRequest,
+  Upload,
+} from "@/features/request/domain/entities/request-types";
 import { FileSenderData } from "@/common/interfaces/istorage";
+import { NextResponse } from "next/server";
+import { Either, left } from "fp-ts/lib/Either";
 
 @injectable()
 export default class ServerAdapter {
@@ -13,11 +18,7 @@ export default class ServerAdapter {
     this._usecases = serverUsecases;
   }
 
-  async userAuthentication({
-    cookie,
-  }: {
-    cookie: string;
-  }) {
+  async userAuthentication({ cookie }: { cookie: string }) {
     return await this._usecases.userAuthentication({
       cookie,
     });
@@ -169,5 +170,18 @@ export default class ServerAdapter {
     return {
       returnOptions: { error: false, message: "", status: 200 },
     };
+  }
+  async addPublicRequest({
+    request,
+  }: {
+    request: PublicRequest;
+  }): Promise<NextResponse> {
+    const result = await this._usecases.addPublicRequest({
+      request,
+    });
+    if (result.error) {
+      return NextResponse.json({ message: result.message }, { status: 200 });
+    }
+    return NextResponse.json({ message: "Hello World" }, { status: 200 });
   }
 }
