@@ -4,6 +4,7 @@ export const BASE_URL =
     : "https://request-stuff.vercel.app";
 
 export const PATHS = {
+  PUBLIC_REQUESTS: () => `requests`,
   USER: ({ userId }: { userId: string }) => `users/${userId}`,
   USERS: () => `users`,
   USER_REQUEST: ({
@@ -36,4 +37,8 @@ export const PATHS = {
     requestId: string;
     fileName: string;
   }) => `users/${userId}/requests/${requestId}/files/${fileName}`,
+};
+
+export const SERVER_ENDPOINTS = {
+  ADD_PUBLIC_REQUEST: `${BASE_URL}/api/requests`,
 };
