@@ -26,4 +26,14 @@ export const PATHS = {
     requestId: string;
     fileName: string;
   }) => `users/${userId}/requests/${requestId}/${fileName}`,
+
+  USER_DELETE_FILE: ({
+    userId,
+    requestId,
+    fileName,
+  }: {
+    userId: string;
+    requestId: string;
+    fileName: string;
+  }) => `users/${userId}/requests/${requestId}/files/${fileName}`,
 };
