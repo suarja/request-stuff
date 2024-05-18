@@ -30,10 +30,21 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
         //Add the cookie to the browser
         cookies().set(options);
+
+        return NextResponse.json(
+          { session: options, error: false },
+          { status: 200 }
+        );
       }
     }
 
-    return NextResponse.json({}, { status: 200 });
+    return NextResponse.json(
+      {
+        error: true,
+        message: "Error creating session cookie",
+      },
+      { status: 401 }
+    );
   } catch (error) {
     return NextResponse.json({ error }, { status: 401 });
   }
@@ -42,7 +53,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
 export async function GET(request: NextRequest) {
   try {
     const session = cookies().get("session")?.value || "";
-
     //Validate if the cookie exist in the request
     if (!session) {
       return NextResponse.json({ isLogged: false }, { status: 401 });
