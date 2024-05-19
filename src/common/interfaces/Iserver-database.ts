@@ -54,15 +54,11 @@ export default abstract class IServerDatabase {
     path: string;
   }): Promise<Either<Failure<string>, void>>;
 
-  abstract deletePublicRequest({
+  abstract deleteDoc({
     path,
   }: {
     path: string;
   }): Promise<Either<Failure<string>, void>>;
 
-  abstract deleteRequestFromUser({
-    path,
-  }: {
-    path: string;
-  }): Promise<Either<Failure<string>, void>>;
+  
 }
