@@ -178,4 +178,16 @@ export default class ServerRepository {
       path: PATHS.PUBLIC_REQUEST({ requestId }),
     });
   }
+
+  async deleteRequestFromUser({
+    requestId,
+    userId,
+  }: {
+    requestId: string;
+    userId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    return this._options.database.deleteDoc({
+      path: PATHS.USER_REQUEST({ userId, requestId }),
+    });
+  }
 }
