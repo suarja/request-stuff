@@ -168,15 +168,14 @@ export default class ServerRepository {
     );
   }
 
-  async deleteRequest({
+  async deletePublicRequest({
     requestId,
-    userId,
   }: {
     requestId: string;
     userId: string;
   }): Promise<Either<Failure<string>, void>> {
-    return this._options.database.deleteRequest({
-      path: PATHS.USER_REQUEST({ userId, requestId }),
+    return this._options.database.deleteDoc({
+      path: PATHS.PUBLIC_REQUEST({ requestId }),
     });
   }
 }
