@@ -8,7 +8,8 @@ import { useEffect, useState } from "react";
 import LoadingIcon from "@/common/icons/LoadingIcon";
 import ChromeIcon from "@/common/icons/ChromeIcon";
 import { authAdapter } from "../../application/adapters/auth-adapter";
-import { BASE_URL } from "@/common/constants";
+import { BASE_URL, PATHS } from "@/common/constants";
+import { useAuthContext } from "../../application/services/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,10 +17,10 @@ export default function Login() {
   const router = useRouter();
   const { loading, error, success, setOptions } =
     authAdapter.useSignInWithEmailAndPassword();
-
+  const user = useAuthContext();
   useEffect(() => {
-    if (success == true) {
-      router.push(`${BASE_URL}/dashboard/requests?`);
+    if (success == true || user) {
+      router.refresh();
     }
   }, [success]);
 
