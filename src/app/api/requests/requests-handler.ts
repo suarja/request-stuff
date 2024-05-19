@@ -5,7 +5,6 @@ export async function requestHandler(
   request: NextRequest
 ): Promise<NextResponse> {
   // Rate limiting
-  console.log("Request Handler");
 
   // const cookie = cookies().get("session")?.value || "";
   // const eitherUserAuthentication = await serverAdapter.userAuthentication({
