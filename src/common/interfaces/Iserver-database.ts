@@ -9,7 +9,6 @@ export default abstract class IServerDatabase {
     sessionCookie: string;
   }): Promise<Either<Failure<string>, string>>;
 
- 
   abstract uploadFile(
     file: File,
     path: string
@@ -44,4 +43,8 @@ export default abstract class IServerDatabase {
   }): Promise<Either<Failure<string>, void>>;
 
   abstract deleteFile(path: string): Promise<Either<Failure<string>, void>>;
+
+  abstract getCollection(
+    collection: string
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
 }

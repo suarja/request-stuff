@@ -205,4 +205,23 @@ export class FirebaseAdminDatabase extends IServerDatabase {
       );
     }
   }
+
+  // A method to get a collection from firestore database
+  async getCollection(
+    collection: string
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const collectionRef = this._options.firestore.collection(collection);
+      const snapshot = await collectionRef.get();
+      const docs = snapshot.docs.map((doc) => doc.data());
+      return right(docs);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "Error getting collection",
+        })
+      );
+    }
+  }
 }
