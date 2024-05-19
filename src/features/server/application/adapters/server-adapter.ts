@@ -206,4 +206,18 @@ export default class ServerAdapter {
     }
     return NextResponse.json(result, { status: 200 });
   }
+
+  async deleteRequest({
+    requestId,
+    userId,
+  }: {
+    requestId: string;
+    userId: string;
+  }): Promise<NextResponse<Awaited<ReturnType<ServerUsecases["deleteRequest"]>>>> {
+    const result = await this._usecases.deleteRequest({ requestId, userId });
+    if (result.error) {
+      return NextResponse.json(result, { status: 200 });
+    }
+    return NextResponse.json(result, { status: 200 });
+  }
 }
