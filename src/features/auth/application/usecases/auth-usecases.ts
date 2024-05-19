@@ -1,7 +1,7 @@
 import { Failure } from "fp-ddd";
 import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import { type AuthRepository, authRepository } from "../repositories/auth";
-import { BASE_URL } from "@/common/constants";
+import { BASE_URL, PATHS } from "@/common/constants";
 import UserEntity, { UserOptions } from "../../domain/entities/user-entity";
 
 export interface AuthUsecasesOptions {
@@ -59,7 +59,7 @@ export default class AuthUsecases {
       return left(eitherId.left);
     }
 
-    const sessionCookie = await fetch(`${BASE_URL}/api/login`, {
+    const sessionCookie = await fetch(PATHS.LOGIN(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,9 +69,8 @@ export default class AuthUsecases {
         idToken: eitherId.right,
       }),
     }).then((res) => res.json());
-    console.log("id", eitherId.right);
+    console.log("sessionCookie", sessionCookie);
     if (!sessionCookie || sessionCookie.error) {
-      console.log("Error creating session cookie", sessionCookie);
       return left(
         Failure.invalidValue({
           invalidValue: sessionCookie,

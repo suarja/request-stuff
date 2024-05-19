@@ -4,6 +4,7 @@ export const BASE_URL =
     : "https://request-stuff.vercel.app";
 
 export const PATHS = {
+  LOGIN: () => `${BASE_URL}/api/login`,
   PUBLIC_REQUESTS: () => `requests`,
   USER: ({ userId }: { userId: string }) => `users/${userId}`,
   USERS: () => `users`,
