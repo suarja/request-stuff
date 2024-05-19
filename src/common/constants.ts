@@ -4,6 +4,7 @@ export const BASE_URL =
     : "https://request-stuff.vercel.app";
 
 export const PATHS = {
+  ROOT_PAGE: () => "/",
   DASHBOARD: () => `${BASE_URL}/dashboard/requests?`,
   LOGIN_API: () => `${BASE_URL}/api/login`,
   LOGIN: () => `${BASE_URL}/login`,
