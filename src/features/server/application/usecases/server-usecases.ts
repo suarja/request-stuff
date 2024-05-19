@@ -229,6 +229,7 @@ export default class ServerUsecases {
   async registerRequest({ request }: { request: PublicRequest }): Promise<{
     error: boolean;
     message: string;
+    payload: {};
   }> {
     const batch = await Promise.allSettled([
       this._serverRepository.createPublicRequest({
@@ -261,18 +262,22 @@ export default class ServerUsecases {
       return {
         error: true,
         message: errorMessages,
+        payload: {},
       };
     }
     return {
       error: false,
       message: "Request registered",
+      payload: {},
     };
   }
 
   async getUserRequests({ userId }: { userId: string }): Promise<{
     error: boolean;
     message: string;
-    requests: PublicRequestEntity[] | null;
+    payload: {
+      requests: PublicRequestEntity[] | null;
+    };
   }> {
     const eitherRequests = await this._serverRepository.getUserRequests({
       userId,
@@ -282,7 +287,7 @@ export default class ServerUsecases {
       return {
         error: true,
         message: eitherRequests.left.message,
-        requests: null,
+        payload: { requests: null },
       };
     }
     const requestDto = new RequestDto();
@@ -301,7 +306,7 @@ export default class ServerUsecases {
     return {
       error: false,
       message: "",
-      requests,
+      payload: { requests },
     };
   }
 }
