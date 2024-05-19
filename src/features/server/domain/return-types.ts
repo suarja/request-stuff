@@ -1,5 +1,4 @@
 import { privateRequestSchema } from "@/features/request/domain/entities/request-schema";
-import ServerUsecases from "../application/usecases/server-usecases";
 import { z } from "zod";
 
 // export type ServerReturnTypes =
@@ -18,9 +17,7 @@ export const serverGetUserRequestsReturnTypeSchema = z.object({
 export const serverRegisterRequestReturnTypeSchema = baseServerReturnTypeSchema;
 
 export const serverReturnTypesSchema = baseServerReturnTypeSchema.extend({
-  payload: 
-    serverGetUserRequestsReturnTypeSchema,
- 
+  payload: serverGetUserRequestsReturnTypeSchema,
 });
 
 export type ServerReturnTypes = z.infer<typeof serverReturnTypesSchema>;
