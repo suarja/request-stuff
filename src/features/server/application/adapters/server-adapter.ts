@@ -172,25 +172,40 @@ export default class ServerAdapter {
       returnOptions: { error: false, message: "", status: 200 },
     };
   }
-  async addPublicRequest({
-    request,
-  }: {
-    request: PublicRequest;
-  }): Promise<NextResponse> {
+  async addPublicRequest({ request }: { request: PublicRequest }): Promise<
+    NextResponse<{
+      error: boolean;
+      message: string;
+      payload: {};
+    }>
+  > {
     const result = await this._usecases.registerRequest({
       request,
     });
     if (result.error) {
-      return NextResponse.json(result, { status: 200 });
+      return NextResponse.json({
+        error: true,
+        message: result.message,
+        payload: {},
+      }, { status: 200 });
     }
-    return NextResponse.json(result, { status: 200 });
+    return NextResponse.json(
+      {
+        error: false,
+        message: "",
+        payload: {},
+      },
+      { status: 200 }
+    );
   }
 
   async getUserRequests({ userId }: { userId: string }): Promise<
     NextResponse<{
       error: boolean;
       message: string;
-      requests: PublicRequestEntity[] | null;
+      payload: {
+        requests: PublicRequestEntity[] | null;
+      };
     }>
   > {
     const result = await this._usecases.getUserRequests({ userId });
