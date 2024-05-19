@@ -172,7 +172,6 @@ export default class ServerRepository {
     requestId,
   }: {
     requestId: string;
-    userId: string;
   }): Promise<Either<Failure<string>, void>> {
     return this._options.database.deleteDoc({
       path: PATHS.PUBLIC_REQUEST({ requestId }),
