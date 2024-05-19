@@ -159,4 +159,12 @@ export default class ServerRepository {
       request
     );
   }
+
+  async getUserRequests({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    return this._options.database.getCollection(PATHS.USERS_REQUESTS({ userId }));
+  }
 }

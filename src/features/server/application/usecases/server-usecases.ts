@@ -1,15 +1,17 @@
 import { inject, injectable } from "tsyringe";
 import ServerRepository from "../repositories/server-repository";
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import UserDto from "@/features/auth/infra/dto's/user-dto";
 import UserEntity from "@/features/auth/domain/entities/user-entity";
 import PublicRequestEntity from "@/features/request/domain/entities/request-entity";
 import {
+  PrivateRequest,
   PublicRequest,
   Upload,
 } from "@/features/request/domain/entities/request-types";
 import { FileSenderData } from "@/common/interfaces/istorage";
 import { NextResponse } from "next/server";
+import RequestDto from "@/features/request/infra/dto's/request-dto";
 
 export interface ServerUsecasesOptions {
   serverRepository: ServerRepository;
@@ -264,6 +266,42 @@ export default class ServerUsecases {
     return {
       error: false,
       message: "Request registered",
+    };
+  }
+
+  async getUserRequests({ userId }: { userId: string }): Promise<{
+    error: boolean;
+    message: string;
+    requests: PublicRequestEntity[] | null;
+  }> {
+    const eitherRequests = await this._serverRepository.getUserRequests({
+      userId,
+    });
+
+    if (isLeft(eitherRequests)) {
+      return {
+        error: true,
+        message: eitherRequests.left.message,
+        requests: null,
+      };
+    }
+    const requestDto = new RequestDto();
+    const parsedrequests: PrivateRequest[] = [];
+
+    for (const request of eitherRequests.right) {
+      const eitherRequest = requestDto.toDomain({ data: request });
+      if (isRight(eitherRequest)) {
+        parsedrequests.push(eitherRequest.right);
+      }
+    }
+    const requests = parsedrequests.map((request) =>
+      PublicRequestEntity.create(request)
+    );
+
+    return {
+      error: false,
+      message: "",
+      requests,
     };
   }
 }

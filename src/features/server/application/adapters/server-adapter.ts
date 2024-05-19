@@ -185,4 +185,18 @@ export default class ServerAdapter {
     }
     return NextResponse.json(result, { status: 200 });
   }
+
+  async getUserRequests({ userId }: { userId: string }): Promise<
+    NextResponse<{
+      error: boolean;
+      message: string;
+      requests: PublicRequestEntity[] | null;
+    }>
+  > {
+    const result = await this._usecases.getUserRequests({ userId });
+    if (result.error) {
+      return NextResponse.json(result, { status: 200 });
+    }
+    return NextResponse.json(result, { status: 200 });
+  }
 }
