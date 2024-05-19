@@ -199,7 +199,9 @@ export default class ServerAdapter {
     userId,
   }: {
     userId: string;
-  }): Promise<NextResponse<Awaited<ReturnType<ServerUsecases["getUserRequests"]>>>> {
+  }): Promise<
+    NextResponse<Awaited<ReturnType<ServerUsecases["getUserRequests"]>>>
+  > {
     const result = await this._usecases.getUserRequests({ userId });
     if (result.error) {
       return NextResponse.json(result, { status: 200 });
@@ -213,11 +215,12 @@ export default class ServerAdapter {
   }: {
     requestId: string;
     userId: string;
-  }): Promise<NextResponse<Awaited<ReturnType<ServerUsecases["deleteRequest"]>>>> {
-    const result = await this._usecases.deleteRequest({ requestId, userId });
-    if (result.error) {
-      return NextResponse.json(result, { status: 200 });
-    }
-    return NextResponse.json(result, { status: 200 });
+  }): Promise<
+    NextResponse<Awaited<ReturnType<ServerUsecases["deleteRequest"]>>>
+  > {
+    return NextResponse.json(
+      await this._usecases.deleteRequest({ requestId, userId }),
+      { status: 200 }
+    );
   }
 }
