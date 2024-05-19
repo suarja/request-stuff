@@ -224,4 +224,53 @@ export class FirebaseAdminDatabase extends IServerDatabase {
       );
     }
   }
+
+  /**
+   * Deletes a folder and its contents recursively.
+   *
+   * @param path - The path of the folder to delete. The path should follow the format `folderName/`.
+   * @returns A promise that resolves to `void` if the folder is successfully deleted, or an `Either` object containing a `Failure` if an error occurs.
+   *
+   * @example
+   * ```typescript
+   * const result = await FirebaseStorageServiceInstance.deleteFolder({ path: "folderName/" });
+   * if (isLeft(result)) {
+   *  console.error(result.value);
+   * }
+   * ```
+   *
+   * @remarks
+   * This method uses Firebase Storage to delete a folder and its contents recursively. It first lists all the items and subfolders in the given path, and then deletes each item and recursively calls itself to delete subfolders.
+   *
+   * For more information, see the following Stack Overflow answer: [How to delete a folder and its contents using Firebase Storage in JavaScript?](https://stackoverflow.com/a/56844189)
+   */
+  async deleteFolder({
+    path,
+  }: {
+    path: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const bucket = this._options.storage.bucket(
+        process.env.BUCKET_NAME as string
+      );
+      const folder = await bucket.getFiles({ prefix: path });
+      const files = folder.entries;
+      for (const file of files) {
+        await file.delete();
+      }
+      const [subfolders] = await folder.getFiles();
+      for (const subfolder of subfolders) {
+        await this.deleteFolder({ path: subfolder.name });
+      }
+      await folder.delete();
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "Error deleting folder",
+        })
+      );
+    }
+  }
 }

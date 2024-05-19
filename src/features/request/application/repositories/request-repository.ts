@@ -237,7 +237,6 @@ export default class RequestRepository {
 
     return parsedrequests;
   }
-  //? Add To Backend Service
   async getRequestsByUser({
     userId,
   }: {
@@ -271,7 +270,7 @@ export default class RequestRepository {
           );
         }
       }
-      
+
       return right(privateRequests);
     } catch (error) {
       return left(
@@ -417,28 +416,29 @@ export default class RequestRepository {
   }): Promise<Either<Failure<string>, void>> {
     //! Recursively delete all files in the request storage
 
-    const eitherDeleted = await this._storage.deleteFolder({
-      path: `users/${userId}/requests/${requestId}`,
-    });
-    if (isLeft(eitherDeleted)) {
-      return left(eitherDeleted.left);
-    }
+    // const eitherDeleted = await this._storage.deleteFolder({
+    //   path: `users/${userId}/requests/${requestId}`,
+    // });
+    // if (isLeft(eitherDeleted)) {
+    //   return left(eitherDeleted.left);
+    // }
 
-    //! Delete the request from the public collection
-    const eitherDeletedPublic = await this.deletePublicRequest({ requestId });
-    if (isLeft(eitherDeletedPublic)) {
-      return left(eitherDeletedPublic.left);
-    }
+    // //! Delete the request from the public collection
+    // const eitherDeletedPublic = await this.deletePublicRequest({ requestId });
+    // if (isLeft(eitherDeletedPublic)) {
+    //   return left(eitherDeletedPublic.left);
+    // }
 
-    //! Delete the request from the user collection
-    const eitherDeletedUser = await this.deleteRequestFromUserCollection({
-      userId,
-      requestId,
-    });
-    if (isLeft(eitherDeletedUser)) {
-      return left(eitherDeletedUser.left);
-    }
+    // //! Delete the request from the user collection
+    // const eitherDeletedUser = await this.deleteRequestFromUserCollection({
+    //   userId,
+    //   requestId,
+    // });
+    // if (isLeft(eitherDeletedUser)) {
+    //   return left(eitherDeletedUser.left);
+    // }
 
+    // return right(undefined);
     return right(undefined);
   }
 }

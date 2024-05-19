@@ -7,8 +7,16 @@ export const serverRequestSchemaTargetOptions = z.union([
   z.literal("deletePublicRequest"),
   z.literal("updatePublicRequestUploads"),
   z.literal("getRequestsByUser"),
+  z.literal("deleteRequest"),
 ]);
 
+export const serverRequestBodySchemaDeleteRequest = z.object({
+  target: z.literal("deleteRequest"),
+  payload: z.object({
+    requestId: z.string(),
+    userId: z.string(),
+  }),
+});
 export const baseServerRequestBodySchema = z.object({
   target: serverRequestSchemaTargetOptions,
 });
@@ -108,12 +116,17 @@ export type ServerRequestBodySchemaGetUserRequests = z.infer<
   typeof serverRequestBodySchemaGetUserRequests
 >;
 
+export type ServerRequestBodySchemaDeleteRequest = z.infer<
+  typeof serverRequestBodySchemaDeleteRequest
+>;
+
 export const serverRequestBodySchema = z.union([
   serverRequestBodySchemaAddPublicRequest,
   serverRequestBodySchemaUpdatePublicRequest,
   serverRequestBodySchemaDeletePublicRequest,
   serverRequestBodySchemaUpdatePublicRequestUploads,
   serverRequestBodySchemaGetUserRequests,
+  serverRequestBodySchemaDeleteRequest,
 ]);
 
 export type ServerRequestBodySchema = z.infer<typeof serverRequestBodySchema>;

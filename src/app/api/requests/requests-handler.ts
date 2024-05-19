@@ -6,6 +6,7 @@ export async function requestHandler(
 ): Promise<NextResponse> {
   // Rate limiting
 
+
   // const cookie = cookies().get("session")?.value || "";
   // const eitherUserAuthentication = await serverAdapter.userAuthentication({
   //   cookie,
@@ -15,7 +16,6 @@ export async function requestHandler(
   // }
 
   return await requestRouter.handler(request);
-  //! Invoke the usecase
 
   //~ check if the user is authorized to make the request
 
