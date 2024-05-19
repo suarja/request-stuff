@@ -183,17 +183,13 @@ export default class ServerAdapter {
       request,
     });
     if (result.error) {
-      return NextResponse.json({
-        error: true,
-        message: result.message,
-        payload: {},
-      }, { status: 200 });
+      return NextResponse.json(result, { status: 200 });
     }
     return NextResponse.json(
       {
         error: false,
         message: "",
-        payload: {},
+        payload : {}
       },
       { status: 200 }
     );
