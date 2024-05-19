@@ -44,6 +44,10 @@ export default function useSignInWithEmailAndPassword({
     }
   }, [options]);
 
+  useEffect(() => {
+    setOptions(null);
+  }, [error, success]);
+
   return {
     loading,
     error,
