@@ -8,8 +8,6 @@ import {
 } from "@/features/request/domain/entities/request-types";
 import { FileSenderData } from "@/common/interfaces/istorage";
 import { NextResponse } from "next/server";
-import { Either, left } from "fp-ts/lib/Either";
-import { error } from "node:console";
 
 @injectable()
 export default class ServerAdapter {

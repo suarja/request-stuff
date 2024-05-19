@@ -132,7 +132,6 @@ export default class RequestRepository {
     requestId: string;
   }): Promise<Either<Failure<string>, PublicRequest>> {
     const requestInfra = await this._db.getDocument("requests", requestId);
-    console.log({ requestInfra, test: "test" });
     if (isLeft(requestInfra)) {
       return left(
         Failure.invalidValue({
@@ -369,7 +368,6 @@ export default class RequestRepository {
         ...fileSenderData,
       },
     };
-    console.log({ path, requestId: requestData.id, requestData });
     await this._db.updateArrayInDocument({
       collection: path,
       field: "uploads",
@@ -395,7 +393,6 @@ export default class RequestRepository {
     fileSenderData: FileSenderData;
   }): Promise<string> {
     const path = `users/${requestData.userId}/requests/${requestData.id}/files/${file.name}`;
-    console.log({ path, fileSenderData });
     const fileUrl = await this._storage.uploadFile({
       path,
       value: file,
