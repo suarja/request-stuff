@@ -17,7 +17,6 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   }
   const eitherRequests = await requestUsecases.getRequestsByUser({ userId });
   if (isLeft(eitherRequests)) {
-    console.log(eitherRequests.left);
     return <div>Error getting requests</div>;
   }
   const requests = eitherRequests.right;
