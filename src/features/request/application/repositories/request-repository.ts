@@ -11,8 +11,9 @@ import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import IDatabase from "@/common/interfaces/idatabase";
 import IStorage, { FileSenderData } from "@/common/interfaces/istorage";
 import { Failure } from "fp-ddd";
-import test from "node:test";
 import { SERVER_ENDPOINTS } from "@/common/constants";
+import { fetchServer } from "../usecases/services/fetch";
+import { privateRequestSchema } from "../../domain/entities/request-schema";
 
 export interface RequestRepositoryOptions {
   db: IDatabase;
@@ -146,14 +147,13 @@ export default class RequestRepository {
     return;
   }
 
-
   async createRequest({
     props,
   }: {
     props: PublicRequest;
   }): Promise<Either<Failure<string>, void>> {
     try {
-      const response = await fetch(SERVER_ENDPOINTS.ADD_PUBLIC_REQUEST, {
+      const response = await fetch(SERVER_ENDPOINTS.REQUESTS, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -243,28 +243,66 @@ export default class RequestRepository {
   }: {
     userId: string;
   }): Promise<Either<Failure<string>, PrivateRequest[]>> {
-    const path = `users/${userId}/requests`;
-    const rawRequests = await this._db.getCollection(path);
-    if (isLeft(rawRequests)) {
-      console.log({ requestInRepo: rawRequests.left, path });
+    try {
+      const response = await fetchServer({
+        bodyOptions: {
+          target: "getRequestsByUser",
+          payload: {
+            userId,
+          },
+        },
+      });
+
+      if (isLeft(response)) {
+        return left(response.left);
+      }
+
+      const privateRequests: PrivateRequest[] = [];
+      for (const req of response.right.payload.requests) {
+        const parsedRequest = privateRequestSchema.safeParse(req);
+        if (parsedRequest.success) {
+          privateRequests.push(parsedRequest.data);
+        } else {
+          return left(
+            Failure.invalidValue({
+              message: "Invalid response from server: getRequestsByUser",
+              invalidValue: parsedRequest.error.errors.join(", "),
+            })
+          );
+        }
+      }
+      
+      return right(privateRequests);
+    } catch (error) {
       return left(
         Failure.invalidValue({
-          message: rawRequests.left.message,
-          invalidValue: userId,
+          message: "Error fetching requests by user",
+          invalidValue: error,
         })
       );
     }
-    const requests = rawRequests.right;
-    const requestDto = new RequestDto();
-    const parsedrequests: PrivateRequest[] = [];
-    for (const req of requests) {
-      const eihterRequest = requestDto.toDomain({ data: req });
-      if (isRight(eihterRequest)) {
-        parsedrequests.push(eihterRequest.right);
-      }
-    }
 
-    return right(parsedrequests);
+    // const rawRequests = await this._db.getCollection(path);
+    // if (isLeft(rawRequests)) {
+    //   console.log({ requestInRepo: rawRequests.left, path });
+    //   return left(
+    //     Failure.invalidValue({
+    //       message: rawRequests.left.message,
+    //       invalidValue: userId,
+    //     })
+    //   );
+    // }
+    // const requests = rawRequests.right;
+    // const requestDto = new RequestDto();
+    // const parsedrequests: PrivateRequest[] = [];
+    // for (const req of requests) {
+    //   const eihterRequest = requestDto.toDomain({ data: req });
+    //   if (isRight(eihterRequest)) {
+    //     parsedrequests.push(eihterRequest.right);
+    //   }
+    // }
+
+    // return right(parsedrequests);
   }
 
   //! Remove this method
