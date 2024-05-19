@@ -140,7 +140,6 @@ export default class ServerRepository {
   }: {
     request: PublicRequest;
   }): Promise<Either<Failure<string>, void>> {
-   
     return this._options.database.saveDocument(
       PATHS.PUBLIC_REQUEST({
         requestId: request.id,
@@ -153,7 +152,6 @@ export default class ServerRepository {
   }: {
     request: PrivateRequest;
   }): Promise<Either<Failure<string>, void>> {
-  
     return this._options.database.saveDocument(
       PATHS.USER_REQUEST({ userId: request.userId, requestId: request.id }),
       request
@@ -165,6 +163,20 @@ export default class ServerRepository {
   }: {
     userId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>> {
-    return this._options.database.getCollection(PATHS.USERS_REQUESTS({ userId }));
+    return this._options.database.getCollection(
+      PATHS.USERS_REQUESTS({ userId })
+    );
+  }
+
+  async deleteRequest({
+    requestId,
+    userId,
+  }: {
+    requestId: string;
+    userId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    return this._options.database.deleteRequest({
+      path: PATHS.USER_REQUEST({ userId, requestId }),
+    });
   }
 }
