@@ -26,7 +26,7 @@ export const PATHS = {
     userId: string;
     requestId: string;
     fileName: string;
-  }) => `users/${userId}/requests/${requestId}/${fileName}`,
+  }) => `users/${userId}/requests/${requestId}/files/${fileName}`,
 
   USER_DELETE_FILE: ({
     userId,
@@ -43,16 +43,14 @@ export const SERVER_ENDPOINTS = {
   REQUESTS: `${BASE_URL}/api/requests`,
 };
 
-
 export type ServerEndpointsKeys = "requests" | "users";
 
 export function getServerEndpoint(
   path: "requests" | "users"
 ):
   | "http://localhost:3000/api/requests"
- | "http://localhost:3000/api/users"
+  | "http://localhost:3000/api/users"
   | "https://request-stuff.vercel.app/api/requests"
-  | "https://request-stuff.vercel.app/api/users" 
-  {
+  | "https://request-stuff.vercel.app/api/users" {
   return `${BASE_URL}/api/${path}`;
 }
