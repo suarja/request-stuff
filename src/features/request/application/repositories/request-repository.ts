@@ -20,9 +20,6 @@ export interface RequestRepositoryOptions {
   storage: IStorage;
 }
 
-/**
- * @deprecated This class is deprecated and will be removed.
- */
 export default class RequestRepository {
   private _db: RequestRepositoryOptions["db"];
   private _storage: RequestRepositoryOptions["storage"];
@@ -30,50 +27,6 @@ export default class RequestRepository {
   constructor(options: RequestRepositoryOptions) {
     this._db = options.db;
     this._storage = options.storage;
-  }
-
-  //! Remove this method
-  /**
-   * @deprecated This method is deprecated and should not be used.
-   * Use the `uploadFileFromRequest` method instead.
-   */
-  async uploadFileFromRequest({
-    requestData,
-    file,
-    fileSenderData,
-  }: {
-    requestData: PublicRequest;
-    file: File;
-    fileSenderData: FileSenderData;
-  }): Promise<string> {
-    const path = `users/${requestData.userId}/requests/${requestData.id}/files/${file.name}`;
-    console.log({ path, fileSenderData });
-    const fileUrl = await this._storage.uploadFile({
-      path,
-      value: file,
-      customMetadata: fileSenderData,
-    });
-
-    //* Update request entry
-    await this.updatePublicRequestUploads({
-      upload: {
-        fileName: file.name,
-        //! This is not the best way to handle this, but it's a quick fix for now
-        senderHash: fileSenderData.senderName,
-        date: new Date().toISOString(),
-      },
-      requestId: requestData.id,
-    });
-
-    //* Update user request entry
-    await this.updateRequestInUserCollection({
-      requestData,
-      fileSenderData: {
-        ...fileSenderData,
-        fileUrl,
-      },
-    });
-    return fileUrl;
   }
 
   async uploadFileFromRequestServerCall({
@@ -116,35 +69,24 @@ export default class RequestRepository {
     }
   }
 
-  //! Remove this method
-  /**
-   * @deprecated This method is deprecated and should not be used.
-   * Use the `updateRequestInUserCollection` method instead.
-   */
-  async updateRequestInUserCollection({
-    requestData,
-    fileSenderData,
+  async deleteRequest({
+    userId,
+    requestId,
   }: {
-    requestData: PublicRequest;
-    fileSenderData: FileSenderData;
-  }): Promise<void> {
-    const path = `users/${requestData.userId}/requests`;
-    const data: UserUpload = {
-      fileName: fileSenderData.fileName,
-      fileUrl: fileSenderData.fileUrl,
-      fileSenderData: {
-        ...fileSenderData,
+    userId: string;
+    requestId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    const response = await fetchServer({
+      bodyOptions: {
+        target: "deleteRequest",
+        payload: {
+          userId,
+          requestId,
+        },
       },
-    };
-    console.log({ path, requestId: requestData.id, requestData });
-    await this._db.updateArrayInDocument({
-      collection: path,
-      field: "uploads",
-      data,
-      id: requestData.id,
-      incrementNumber: "numberOfUploads",
     });
-    return;
+
+    return right(undefined);
   }
 
   async createRequest({
@@ -406,40 +348,80 @@ export default class RequestRepository {
       );
     }
   }
-  //? Add To Backend Service
-  async deleteRequest({
-    userId,
-    requestId,
+
+  //! Remove this method
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   * Use the `updateRequestInUserCollection` method instead.
+   */
+  async updateRequestInUserCollection({
+    requestData,
+    fileSenderData,
   }: {
-    userId: string;
-    requestId: string;
-  }): Promise<Either<Failure<string>, void>> {
-    //! Recursively delete all files in the request storage
+    requestData: PublicRequest;
+    fileSenderData: FileSenderData;
+  }): Promise<void> {
+    const path = `users/${requestData.userId}/requests`;
+    const data: UserUpload = {
+      fileName: fileSenderData.fileName,
+      fileUrl: fileSenderData.fileUrl,
+      fileSenderData: {
+        ...fileSenderData,
+      },
+    };
+    console.log({ path, requestId: requestData.id, requestData });
+    await this._db.updateArrayInDocument({
+      collection: path,
+      field: "uploads",
+      data,
+      id: requestData.id,
+      incrementNumber: "numberOfUploads",
+    });
+    return;
+  }
 
-    // const eitherDeleted = await this._storage.deleteFolder({
-    //   path: `users/${userId}/requests/${requestId}`,
-    // });
-    // if (isLeft(eitherDeleted)) {
-    //   return left(eitherDeleted.left);
-    // }
+  //! Remove this method
+  /**
+   * @deprecated This method is deprecated and should not be used.
+   * Use the `uploadFileFromRequest` method instead.
+   */
+  async uploadFileFromRequest({
+    requestData,
+    file,
+    fileSenderData,
+  }: {
+    requestData: PublicRequest;
+    file: File;
+    fileSenderData: FileSenderData;
+  }): Promise<string> {
+    const path = `users/${requestData.userId}/requests/${requestData.id}/files/${file.name}`;
+    console.log({ path, fileSenderData });
+    const fileUrl = await this._storage.uploadFile({
+      path,
+      value: file,
+      customMetadata: fileSenderData,
+    });
 
-    // //! Delete the request from the public collection
-    // const eitherDeletedPublic = await this.deletePublicRequest({ requestId });
-    // if (isLeft(eitherDeletedPublic)) {
-    //   return left(eitherDeletedPublic.left);
-    // }
+    //* Update request entry
+    await this.updatePublicRequestUploads({
+      upload: {
+        fileName: file.name,
+        //! This is not the best way to handle this, but it's a quick fix for now
+        senderHash: fileSenderData.senderName,
+        date: new Date().toISOString(),
+      },
+      requestId: requestData.id,
+    });
 
-    // //! Delete the request from the user collection
-    // const eitherDeletedUser = await this.deleteRequestFromUserCollection({
-    //   userId,
-    //   requestId,
-    // });
-    // if (isLeft(eitherDeletedUser)) {
-    //   return left(eitherDeletedUser.left);
-    // }
-
-    // return right(undefined);
-    return right(undefined);
+    //* Update user request entry
+    await this.updateRequestInUserCollection({
+      requestData,
+      fileSenderData: {
+        ...fileSenderData,
+        fileUrl,
+      },
+    });
+    return fileUrl;
   }
 }
 
