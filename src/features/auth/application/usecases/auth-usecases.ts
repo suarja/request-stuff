@@ -59,7 +59,7 @@ export default class AuthUsecases {
       return left(eitherId.left);
     }
 
-    const sessionCookie = await fetch(PATHS.LOGIN(), {
+    const sessionCookie = await fetch(PATHS.LOGIN_API(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
