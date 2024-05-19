@@ -3,8 +3,6 @@ import z from "zod";
 
 export const serverRequestSchemaTargetOptions = z.union([
   z.literal("addPublicRequest"),
-  z.literal("updatePublicRequest"),
-  z.literal("deletePublicRequest"),
   z.literal("updatePublicRequestUploads"),
   z.literal("getRequestsByUser"),
   z.literal("deleteRequest"),
