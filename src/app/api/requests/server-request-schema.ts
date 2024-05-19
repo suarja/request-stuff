@@ -113,6 +113,7 @@ export const serverRequestBodySchema = z.union([
   serverRequestBodySchemaUpdatePublicRequest,
   serverRequestBodySchemaDeletePublicRequest,
   serverRequestBodySchemaUpdatePublicRequestUploads,
+  serverRequestBodySchemaGetUserRequests,
 ]);
 
 export type ServerRequestBodySchema = z.infer<typeof serverRequestBodySchema>;
