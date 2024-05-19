@@ -10,7 +10,7 @@ export default function Page() {
 
   useEffect(() => {
     async function check() {
-      const authPayload = await fetch(SERVER_ENDPOINTS.ADD_PUBLIC_REQUEST, {
+      const authPayload = await fetch(SERVER_ENDPOINTS.REQUESTS, {
         method: "POST",
         headers: {},
         body: JSON.stringify({
