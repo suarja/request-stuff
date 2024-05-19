@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import {
   baseServerRequestBodySchema,
   serverRequestBodySchemaAddPublicRequest,
+  serverRequestBodySchemaDeleteRequest,
   serverRequestBodySchemaGetUserRequests,
 } from "./server-request-schema";
 import ServerAdapter from "@/features/server/application/adapters/server-adapter";
@@ -51,22 +52,24 @@ export default class RequestRouter {
               );
             }
 
-          case "updatePublicRequest":
-            return NextResponse.json(
-              { message: "update public request" },
-              { status: 200 }
+          case "deleteRequest":
+            const deleteRequestPayload = serverRequestBodySchemaDeleteRequest.safeParse(
+              reqJson
             );
-          case "updatePublicRequestUploads":
-            return NextResponse.json(
-              { message: "update public request uploads" },
-              { status: 200 }
-            );
-
-          case "deletePublicRequest":
-            return NextResponse.json(
-              { message: "delete public request" },
-              { status: 200 }
-            );
+            if (deleteRequestPayload.success) {
+              return this._serverUsecases.deleteRequest({
+                requestId: deleteRequestPayload.data.payload.requestId,
+                userId: deleteRequestPayload.data.payload.userId,
+              });
+            } else {
+              return NextResponse.json(
+                {
+                  error: "Invalid request body",
+                  errorInfo: deleteRequestPayload.error,
+                },
+                { status: 400 }
+              );
+            }
           default:
             return NextResponse.json(
               { error: "Invalid target" },
