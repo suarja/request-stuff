@@ -189,21 +189,17 @@ export default class ServerAdapter {
       {
         error: false,
         message: "",
-        payload : {}
+        payload: {},
       },
       { status: 200 }
     );
   }
 
-  async getUserRequests({ userId }: { userId: string }): Promise<
-    NextResponse<{
-      error: boolean;
-      message: string;
-      payload: {
-        requests: PublicRequestEntity[] | null;
-      };
-    }>
-  > {
+  async getUserRequests({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<NextResponse<Awaited<ReturnType<ServerUsecases["getUserRequests"]>>>> {
     const result = await this._usecases.getUserRequests({ userId });
     if (result.error) {
       return NextResponse.json(result, { status: 200 });
