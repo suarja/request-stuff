@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { PATHS } from "../constants";
 const NavbarLogo = () => {
   return (
-    <Link href={"/"} className="flex items-center bg-primary ">
+    <Link href={PATHS.ROOT_PAGE()} className="flex items-center bg-primary ">
       <Image
         src="/logo.webp"
         alt="RequestStuff Logo"
