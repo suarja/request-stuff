@@ -1,5 +1,6 @@
 "use client";
 
+import { PATHS } from "@/common/constants";
 /**
  * v0 by Vercel.
  * @see https://v0.dev/t/QWerxoLimky
@@ -18,7 +19,7 @@ export default function Component() {
         </p>
         <Link
           className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          href="/"
+          href={`${PATHS.ROOT_PAGE()}`}
         >
           Go back home
         </Link>

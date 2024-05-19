@@ -1,5 +1,5 @@
 import { Button } from "@/common/components/ui/button";
-import PaperclipIcon from "@/common/icons/PaperClipIcon";
+import { PATHS } from "@/common/constants";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,8 +19,12 @@ export default function LandingHero() {
             fulfill requests and share files through our intuitive platform.
           </p>
           <div className="flex gap-4">
-            <Button variant="default">Get Started</Button>
-            <Button variant="secondary">Learn More</Button>
+            <Link
+              href={PATHS.DASHBOARD()}
+              className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            >
+              Get Started
+            </Link>
           </div>
         </div>
         <div className="flex justify-center">
