@@ -276,7 +276,7 @@ export default class ServerUsecases {
     error: boolean;
     message: string;
     payload: {
-      requests: PrivateRequest[] ;
+      requests: PrivateRequest[];
     };
   }> {
     const eitherRequests = await this._serverRepository.getUserRequests({
@@ -304,6 +304,54 @@ export default class ServerUsecases {
       error: false,
       message: "",
       payload: { requests: parsedrequests },
+    };
+  }
+
+  async deleteRequest({
+    requestId,
+    userId,
+  }: {
+    requestId: string;
+    userId: string;
+  }): Promise<{
+    error: boolean;
+    message: string;
+  }> {
+    const batch = await Promise.allSettled([
+      this._serverRepository.deletePublicRequest({
+        requestId,
+      }),
+      this._serverRepository.deleteRequestFromUser({
+        requestId,
+        userId,
+      }),
+      this._serverRepository.deleteRequestFromStorage({
+        requestId,
+        userId,
+      }),
+    ]);
+
+    let errorMessages = "";
+    const errors = batch.some((promise, idx) => {
+      if (promise.status === "rejected") {
+        errorMessages += `Promise ${idx}: ${promise.reason.message}\n`;
+        return true;
+      }
+      if (isLeft(promise.value)) {
+        errorMessages += `Left ${idx}: ${promise.value.left.message}\n`;
+        return true;
+      }
+    });
+
+    if (errors) {
+      return {
+        error: true,
+        message: errorMessages,
+      };
+    }
+    return {
+      error: false,
+      message: "Request deleted",
     };
   }
 }
