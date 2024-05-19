@@ -1,11 +1,9 @@
-import ServerUsecases from "@/features/server/application/usecases/server-usecases";
 import { NextRequest, NextResponse } from "next/server";
 import { inject, injectable } from "tsyringe";
 import {
-  ServerRequestBodySchema,
   baseServerRequestBodySchema,
-  serverRequestBodySchema,
   serverRequestBodySchemaAddPublicRequest,
+  serverRequestBodySchemaGetUserRequests,
 } from "./server-request-schema";
 import ServerAdapter from "@/features/server/application/adapters/server-adapter";
 
@@ -35,6 +33,23 @@ export default class RequestRouter {
               { status: 400 }
             );
           }
+        case "getRequestsByUser":
+          const userRequestspayload =
+            serverRequestBodySchemaGetUserRequests.safeParse(reqJson);
+          if (userRequestspayload.success) {
+            return this._serverUsecases.getUserRequests({
+              userId: userRequestspayload.data.payload.userId,
+            });
+          } else {
+            return NextResponse.json(
+              {
+                error: "Invalid request body",
+                errorInfo: userRequestspayload.error,
+              },
+              { status: 400 }
+            );
+          }
+
         case "updatePublicRequest":
           return NextResponse.json(
             { message: "update public request" },
