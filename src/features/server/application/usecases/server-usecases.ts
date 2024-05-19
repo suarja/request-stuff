@@ -276,7 +276,7 @@ export default class ServerUsecases {
     error: boolean;
     message: string;
     payload: {
-      requests: PublicRequestEntity[] | null;
+      requests: PrivateRequest[] ;
     };
   }> {
     const eitherRequests = await this._serverRepository.getUserRequests({
@@ -287,7 +287,7 @@ export default class ServerUsecases {
       return {
         error: true,
         message: eitherRequests.left.message,
-        payload: { requests: null },
+        payload: { requests: [] },
       };
     }
     const requestDto = new RequestDto();
@@ -299,14 +299,11 @@ export default class ServerUsecases {
         parsedrequests.push(eitherRequest.right);
       }
     }
-    const requests = parsedrequests.map((request) =>
-      PublicRequestEntity.create(request)
-    );
 
     return {
       error: false,
       message: "",
-      payload: { requests },
+      payload: { requests: parsedrequests },
     };
   }
 }
