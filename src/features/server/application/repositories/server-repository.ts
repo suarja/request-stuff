@@ -190,4 +190,16 @@ export default class ServerRepository {
       path: PATHS.USER_REQUEST({ userId, requestId }),
     });
   }
+
+  async deleteRequestFromStorage({
+    userId,
+    requestId,
+  }: {
+    userId: string;
+    requestId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    return this._options.database.deleteDoc({
+      path: PATHS.USER_REQUEST({ userId, requestId }),
+    });
+  }
 }
