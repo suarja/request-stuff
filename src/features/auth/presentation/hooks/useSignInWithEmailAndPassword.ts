@@ -34,7 +34,6 @@ export default function useSignInWithEmailAndPassword({
             setLoading(false);
             return setError(true);
           }
-          console.log("user signed in");
           setLoading(false);
           setSuccess(true);
         })

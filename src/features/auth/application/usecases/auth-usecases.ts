@@ -69,7 +69,6 @@ export default class AuthUsecases {
         idToken: eitherId.right,
       }),
     }).then((res) => res.json());
-    console.log("sessionCookie", sessionCookie);
     if (!sessionCookie || sessionCookie.error) {
       return left(
         Failure.invalidValue({

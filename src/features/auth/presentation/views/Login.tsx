@@ -19,7 +19,6 @@ export default function Login() {
 
   useEffect(() => {
     if (success == true) {
-      console.log("Redirecting user to dashboard");
       router.push(`${BASE_URL}/dashboard/requests?`);
     }
   }, [success]);
