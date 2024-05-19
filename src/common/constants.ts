@@ -40,5 +40,19 @@ export const PATHS = {
 };
 
 export const SERVER_ENDPOINTS = {
-  ADD_PUBLIC_REQUEST: `${BASE_URL}/api/requests`,
+  REQUESTS: `${BASE_URL}/api/requests`,
 };
+
+
+export type ServerEndpointsKeys = "requests" | "users";
+
+export function getServerEndpoint(
+  path: "requests" | "users"
+):
+  | "http://localhost:3000/api/requests"
+ | "http://localhost:3000/api/users"
+  | "https://request-stuff.vercel.app/api/requests"
+  | "https://request-stuff.vercel.app/api/users" 
+  {
+  return `${BASE_URL}/api/${path}`;
+}
