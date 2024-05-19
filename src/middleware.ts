@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
       }
       return NextResponse.redirect(new URL("/login", request.url));
     }
-
+    console.log("Session exists");
     //Call the authentication endpoint
     const responseAPI = await fetch(`${BASE_URL}/api/login`, {
       headers: {
@@ -46,6 +46,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     if (responseAPI.status !== 200) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
+
 
     return NextResponse.next();
   } catch (error) {
