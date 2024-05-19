@@ -244,7 +244,7 @@ export class FirebaseAdminDatabase extends IServerDatabase {
    *
    * For more information, see the following Stack Overflow answer: [How to delete a folder and its contents using Firebase Storage in JavaScript?](https://stackoverflow.com/a/56844189)
    */
-  async deleteFolder({
+  async deleteRequestInStorage({
     path,
   }: {
     path: string;
@@ -253,22 +253,32 @@ export class FirebaseAdminDatabase extends IServerDatabase {
       const bucket = this._options.storage.bucket(
         process.env.BUCKET_NAME as string
       );
-      const folder = await bucket.getFiles({ prefix: path });
-      const files = folder.entries;
-      for (const file of files) {
-        await file.delete();
-      }
-      const [subfolders] = await folder.getFiles();
-      for (const subfolder of subfolders) {
-        await this.deleteFolder({ path: subfolder.name });
-      }
-      await folder.delete();
+      await bucket.deleteFiles({ prefix: path });
+
       return right(undefined);
     } catch (error) {
       return left(
         Failure.invalidValue({
           invalidValue: error,
           message: "Error deleting folder",
+        })
+      );
+    }
+  }
+
+  async deleteDoc({
+    path,
+  }: {
+    path: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await this._options.firestore.doc(path).delete();
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: `Error deleting document at path: ${path}`,
         })
       );
     }
