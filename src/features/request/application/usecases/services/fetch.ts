@@ -18,16 +18,20 @@ export async function fetchServer({
   path = "requests",
   method = "POST",
   bodyOptions,
-  headers,
+  headers = {},
 }: {
   path?: ServerEndpointsKeys;
   method?: "POST" | "GET" | "PUT" | "DELETE";
-  headers?: Headers;
+  headers?: HeadersInit;
   bodyOptions: ServerRequestBodySchema;
 }): Promise<Either<Failure<string>, ServerReturnTypes>> {
   const response = await fetch(getServerEndpoint(path), {
     method,
-    headers,
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+      Authorization: `Bearer ${process.env.API_UUID}`,
+    },
     body: fetchBody(bodyOptions),
     //! Create the zod schema for each serverusecase method return type so that we can validate the response instead of just assuming it's correct
     //! Also create a zod schema for the server request body so that we can validate the request before sending it
