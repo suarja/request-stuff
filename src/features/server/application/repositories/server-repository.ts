@@ -197,7 +197,7 @@ export default class ServerRepository {
     userId: string;
     requestId: string;
   }): Promise<Either<Failure<string>, void>> {
-    return this._options.database.deleteDoc({
+    return this._options.database.deleteRequestInStorage({
       path: PATHS.USER_REQUEST({ userId, requestId }),
     });
   }
