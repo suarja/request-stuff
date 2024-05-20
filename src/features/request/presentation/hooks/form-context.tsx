@@ -14,17 +14,12 @@ export default function FormContextFactory({
 }: {
   children: React.ReactNode;
 }) {
-  const [requestCreationForm, setRequestCreationFormContext] = useState({
-    requestCreation: false,
-  });
-  console.log("requestCreationForm", requestCreationForm);
+  const [requestCreationForm, setRequestCreationFormContext] = useState(false);
   return (
     <FormContext.Provider
       value={{
-        requestCreation: requestCreationForm.requestCreation,
-        setRequestCreationFormContext: (open: boolean) => {
-          setRequestCreationFormContext({ requestCreation: open });
-        },
+        requestCreation: requestCreationForm,
+        setRequestCreationFormContext,
       }}
     >
       {children}
