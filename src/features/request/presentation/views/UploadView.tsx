@@ -1,7 +1,7 @@
 "use client";
 import { Card, CardHeader, CardContent } from "@/common/components/ui/card";
 import { Label } from "@radix-ui/react-label";
-import {  useState } from "react";
+import { useState } from "react";
 import { PageProps } from "@/app/upload/[slug]/page";
 import CustomDialog from "@/common/components/CustomDialog";
 import SenderMetadataForm from "../components/RequestSenderMetadataForm";
@@ -23,14 +23,9 @@ const UploadView: React.FC<PageProps> = ({ searchParams }) => {
       <CardHeader className="bg-tertiaryalt p-4 pt-6 text-white">
         <div className="space-y-1.5">
           <div className="flex justify-between">
-            <h2 className="text-lg font-medium tracking-tight">
-              {searchParams?.requestName}
-            </h2>
             <NavbarLogo />
           </div>
-          {searchParams?.requestDescription && (
-            <p className="text-sm">{searchParams.requestDescription}</p>
-          )}
+         
         </div>
       </CardHeader>
       <CardContent className="p-4 space-y-4">
@@ -43,8 +38,8 @@ const UploadView: React.FC<PageProps> = ({ searchParams }) => {
             {searchParams?.requestDescription && (
               <>
                 <dt className="font-semibold">Description</dt>
-                <dd className="">
-                  <span className="font-medium">
+                <dd className="w-full">
+                  <span className="font-medium w-full">
                     {searchParams?.requestDescription}
                   </span>
                 </dd>
