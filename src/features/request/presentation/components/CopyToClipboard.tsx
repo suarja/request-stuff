@@ -11,9 +11,7 @@ export function CopyToClipBoard({
   url: string;
   props?: React.ComponentProps<"button">;
 }) {
-  const {
-    setUrl,
-  } = useGetRandomShortenUrl();
+  const { setUrl } = useGetRandomShortenUrl();
 
   return (
     <>
@@ -21,7 +19,7 @@ export function CopyToClipBoard({
         title="Get URL"
         icon={<CopyToClipBoardIcon />}
         buttonClassName="bg-transparent"
-        description="Click the button below to copy the URL to your clipboard."
+        description="Choose one of the following options to copy the URL to your clipboard:"
       >
         <div className="flex items-start flex-col gap-4 py-6">
           <div className="flex items-center">
@@ -46,10 +44,20 @@ export function CopyToClipBoard({
               {url.length > 50 ? `${url.slice(0, 50)}...` : url}
             </span>
           </div>
-          <div className="">
-            {/* Short URL  */}
-            <Button onClick={() => setUrl(url)}>Shorten URL</Button>
-            {/* Custom short URL */}
+          <div className="flex items-center gap-4">
+            {/* Option 1: Shorten URL */}
+            <Button onClick={() => setUrl(url)}>Tinyurl</Button>
+            {/* Option 2: Custom short URL */}
+            <Button
+              onClick={() => {
+                toast.info("Coming soon", {
+                  position: "top-center",
+                  description: "This feature is coming soon",
+                });
+              }}
+            >
+              Custom short URL
+            </Button>
           </div>
         </div>
       </CustomDialog>
