@@ -5,7 +5,7 @@ import {
 import CloseIcon from "@/common/icons/CloseIcon";
 import React from "react";
 import { CopyToClipBoard } from "../components/CopyToClipboard";
-import { UploadCard } from "../components/UploadCard";
+import { RequestUploadCard } from "../components/RequestUploadCard";
 
 export default function RequestPage({
   request,
@@ -59,7 +59,7 @@ export default function RequestPage({
 
         {request.uploads.length > 0 ? (
           request.uploads.map((upload, index) => (
-            <UploadCard key={index} upload={upload} />
+            <RequestUploadCard key={index} upload={upload} />
           ))
         ) : (
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center text-gray-500 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">

@@ -8,7 +8,7 @@ import SenderMetadataForm from "../components/RequestSenderMetadataForm";
 import NavbarLogo from "@/common/components/NavBarLogo";
 import { FormContext } from "../hooks/form-context";
 
-const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
+const UploadView: React.FC<PageProps> = ({ searchParams }) => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
   const {} = useContext(FormContext);
@@ -109,4 +109,4 @@ const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
   );
 };
 
-export default UploadCard;
+export default UploadView;

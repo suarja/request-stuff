@@ -3,8 +3,7 @@ import { DownloadIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { UserUpload } from "../../domain/entities/request-types";
 
-export function UploadCard({ upload }: { upload: UserUpload }) {
-  console.log({ upload });
+export function RequestUploadCard({ upload }: { upload: UserUpload }) {
   return (
     <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-950">
       <Avatar>
