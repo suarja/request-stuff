@@ -18,7 +18,7 @@ export function CopyToClipBoard({
       <CustomDialog
         title="Get URL"
         icon={<CopyToClipBoardIcon />}
-        buttonClassName="bg-transparent"
+        buttonClassName="bg-transparent hover:bg-secondary dark:hover:bg-secondary dark:bg-transparent dark:text-gray-50 text-blue-900"
         description="Choose one of the following options to copy the URL to your clipboard:"
       >
         <div className="flex items-start flex-col gap-4 py-6">
