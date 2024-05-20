@@ -28,7 +28,7 @@ const UploadView: React.FC<PageProps> = ({ searchParams }) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-4 space-y-4 w-full">
+      <CardContent className="p-4 pb-8 space-y-4 w-full">
         <dl className="pt-4 px-4 w-full grid grid-cols-2 gap-4 text-sm">
           <dt className="font-semibold">Name</dt>
           <dd className="">
@@ -58,37 +58,36 @@ const UploadView: React.FC<PageProps> = ({ searchParams }) => {
             </span>
           </dd>
         </dl>
-        <form className=" gap-2 pt-4 px-4 flex flex-col justify-between ">
-          <label className="text-sm" htmlFor="files">
-            Select the files to upload
-          </label>
-          <Input
-            onChange={handleFileChange}
-            type="file"
-            id="files"
-            name="files"
-            className="border border-gray-600"
-          />
-          <div className="flex justify-center">
-            {" "}
-            {fileSelected && (
-              <CustomDialog
-                open={open}
-                setOpen={(open) => setOpen(open)}
-                title="Tell us about you"
-                buttonText="Upload File"
-                buttonVariant="default"
-                testId="sender-metadata-dialog"
-              >
-                <SenderMetadataForm
-                  setOpen={setOpen}
-                  file={fileSelected}
-                  requestId={searchParams.requestId as string}
-                  requestName={searchParams.requestName as string}
-                />
-              </CustomDialog>
-            )}
-          </div>
+        <form className=" gap-4 pt-4 px-4 flex flex-col justify-between ">
+          <div>
+            <label className="text-sm" htmlFor="files">
+              Select the files to upload
+            </label>
+            <Input
+              onChange={handleFileChange}
+              type="file"
+              id="files"
+              name="files"
+              className="border border-gray-600"
+            />
+          </div>{" "}
+          {fileSelected && (
+            <CustomDialog
+              open={open}
+              setOpen={(open) => setOpen(open)}
+              title="Tell us about you"
+              buttonText="Upload File"
+              buttonVariant="default"
+              testId="sender-metadata-dialog"
+            >
+              <SenderMetadataForm
+                setOpen={setOpen}
+                file={fileSelected}
+                requestId={searchParams.requestId as string}
+                requestName={searchParams.requestName as string}
+              />
+            </CustomDialog>
+          )}
         </form>
       </CardContent>
     </Card>
