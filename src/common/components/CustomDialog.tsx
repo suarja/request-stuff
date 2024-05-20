@@ -46,6 +46,7 @@ export default function CustomDialog({
   buttonText,
   buttonVariant,
   buttonSize,
+  buttonClassName,
 }: {
   displayButton?: boolean;
   open?: boolean;
@@ -63,6 +64,7 @@ export default function CustomDialog({
     | "secondary"
     | "ghost";
   buttonSize?: "default" | "icon" | "sm" | "lg" | null | undefined;
+  buttonClassName?: string;
 }) {
   return (
     <>
@@ -71,11 +73,11 @@ export default function CustomDialog({
           {displayButton && (
             <button
               className={cn(
-                `text-gray-300 text-sm bg-green-900 p-2 rounded-xl  hover:text-gray-900 dark:text-gray-50 dark:hover:bg-green-600  focus:outline-none`
+                `text-gray-300 text-sm bg-green-900 p-2 rounded-xl  hover:text-gray-900 dark:text-gray-50 dark:hover:bg-green-600  focus:outline-none`, `${buttonClassName}`
               )}
               data-testid={testId}
             >
-              {buttonText ?? <PlusIcon className="w-5 h-5" />}
+              {buttonText ?? icon}
             </button>
           )}
         </DialogTrigger>
