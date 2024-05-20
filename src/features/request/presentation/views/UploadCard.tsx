@@ -1,15 +1,17 @@
 "use client";
 import { Card, CardHeader, CardContent } from "@/common/components/ui/card";
 import { Label } from "@radix-ui/react-label";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { PageProps } from "@/app/upload/[slug]/page";
 import CustomDialog from "@/common/components/CustomDialog";
 import SenderMetadataForm from "../components/RequestSenderMetadataForm";
 import NavbarLogo from "@/common/components/NavBarLogo";
+import { FormContext } from "../hooks/form-context";
 
 const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);
-
+  const [open, setOpen] = useState(false);
+  const {} = useContext(FormContext);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files[0]) {
@@ -85,12 +87,15 @@ const UploadCard: React.FC<PageProps> = ({ searchParams }) => {
             {" "}
             {fileSelected && (
               <CustomDialog
+                open={open}
+                setOpen={(open) => setOpen(open)}
                 title="Tell us about you"
                 buttonText="Upload File"
                 buttonVariant="default"
                 testId="sender-metadata-dialog"
               >
                 <SenderMetadataForm
+                  setOpen={setOpen}
                   file={fileSelected}
                   requestId={searchParams.requestId as string}
                   requestName={searchParams.requestName as string}
