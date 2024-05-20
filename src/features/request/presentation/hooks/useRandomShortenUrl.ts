@@ -13,7 +13,7 @@ export default function useGetRandomShortenUrl() {
 
         if (data === randomShortUrl) {
           navigator.clipboard.writeText(randomShortUrl);
-          toast.success("Short to clipboard", {
+          toast.success("Tinyurl copied to clipboard", {
             position: "top-center",
             description: `${randomShortUrl}`,
           });
@@ -39,7 +39,7 @@ export default function useGetRandomShortenUrl() {
   useEffect(() => {
     if (randomShortUrl) {
       navigator.clipboard.writeText(randomShortUrl);
-      toast.success("Short to clipboard", {
+      toast.success("Tinyurl copied to clipboard", {
         position: "top-center",
         description: `${randomShortUrl}`,
       });
