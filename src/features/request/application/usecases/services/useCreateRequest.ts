@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/application/services/AuthContext";
 import path from "path";
@@ -6,12 +6,14 @@ import { requestUsecases } from "../request-usecases";
 import { PrivateRequest } from "@/features/request/domain/entities/request-types";
 import { isRight } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
+import { FormContext } from "@/features/request/presentation/hooks/form-context";
 
 export default function useCreateRequest() {
   const [loading, setLoading] = useState(false);
   const [requestCreationProps, setRequestCreationProps] =
     useState<PrivateRequest | null>(null);
   const [requestId, setRequestId] = useState<string | null>(null);
+  const { setRequestCreationFormContext } = useContext(FormContext);
   const user = useAuthContext();
   const router = useRouter();
   useEffect(() => {
@@ -33,6 +35,8 @@ export default function useCreateRequest() {
             toast.success(
               `Request created successfully: ${requestCreationProps.name}`
             );
+            setRequestCreationFormContext(false);
+
             router.refresh();
           } else {
             toast.error("Failed to create request");
