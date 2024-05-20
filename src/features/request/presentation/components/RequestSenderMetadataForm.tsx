@@ -16,9 +16,8 @@ import { object, string, z } from "zod";
 import useUploadFileFromRequest, {
   UseUploadFileFromRequestProps,
 } from "../../application/usecases/services/useUploadFileFromRequest";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
-import { FormContext } from "../hooks/form-context";
 
 const senderSchema = object({
   name: string().min(1, "Name is required"),
@@ -32,14 +31,15 @@ export default function SenderMetadataForm({
   file,
   requestId,
   requestName,
+  setOpen,
 }: {
   file: File;
   requestId: string;
   requestName: string;
+  setOpen: (open: boolean) => void;
 }) {
   const { error, loading, succes, setUploadFileFromRequestProps } =
     useUploadFileFromRequest();
-
 
   useEffect(() => {
     if (error) {
@@ -51,6 +51,7 @@ export default function SenderMetadataForm({
     } else if (succes) {
       console.log("File uploaded successfully");
       toast.success("File uploaded successfully");
+      setOpen(false);
       setTimeout(() => {
         toast.dismiss();
       }, 5000);
