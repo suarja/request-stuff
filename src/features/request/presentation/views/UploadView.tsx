@@ -28,9 +28,8 @@ const UploadView: React.FC<PageProps> = ({ searchParams }) => {
          
         </div>
       </CardHeader>
-      <CardContent className="p-4 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <dl className="grid grid-cols-2 gap-4 text-sm">
+      <CardContent className="p-4 space-y-4 w-full">
+          <dl className="pt-4 px-4 w-full grid grid-cols-2 gap-4 text-sm">
             <dt className="font-semibold">Name</dt>
             <dd className="">
               <span className="font-medium">{searchParams?.requestName}</span>
@@ -61,12 +60,10 @@ const UploadView: React.FC<PageProps> = ({ searchParams }) => {
               </span>
             </dd>
           </dl>
-        </div>
-        <form className="space-y-6 pt-4 flex flex-col justify-between">
-          <div className="space-y-2 flex gap-4">
-            <Label className="text-sm" htmlFor="files">
+        <form className=" gap-4 pt-4 px-4 flex flex-col justify-between">
+            <label className="text-sm" htmlFor="files">
               Select the files to upload
-            </Label>
+            </label>
             <input
               onChange={handleFileChange}
               type="file"
@@ -75,7 +72,6 @@ const UploadView: React.FC<PageProps> = ({ searchParams }) => {
               multiple
               className="block cursor-pointer w-full text-sm file:border file:border-gray-800 file:px-4 file:py-1 file:rounded-lg file:text-sm file:font-semibold file:bg-primary file:hover:file:bg-blue-600"
             />
-          </div>
           <div className="flex justify-center">
             {" "}
             {fileSelected && (
