@@ -20,7 +20,7 @@ const UploadView: React.FC<PageProps> = ({ searchParams }) => {
     }
   };
   return (
-    <Card className="w-full max-w-xl shadow-lg shadow-slate-600 rounded-lg overflow-hidden bg-secondary">
+    <Card className="w-full min-w-lg max-w-2xl shadow-lg shadow-slate-600 rounded-lg overflow-hidden bg-secondary">
       <CardHeader className="bg-tertiaryalt p-4 pt-6 text-white">
         <div className="space-y-1.5">
           <div className="flex justify-between">
