@@ -48,7 +48,14 @@ export function Request({
           />
           <DeleteIcon
             onClick={() => {
-              setDeleteRequestOptions(request);
+              const confirm = window.confirm(
+                `
+                Are you sure you want to delete this request?
+                This action cannot be undone.`
+              );
+              if (confirm) {
+                setDeleteRequestOptions(request);
+              }
             }}
             className="h-6 text-red-700 cursor-pointer dark:text-red-500 hover:text-red-900 dark:hover:text-red-700 transition-colors duration-200 pr-2"
           />
