@@ -13,7 +13,7 @@ export default function Component() {
         <LandingHeader />
         <LandingHero />
         <LandingFeatures />
-        <LandingContact />
+     
       </main>
       <LandingFooter />
     </div>
