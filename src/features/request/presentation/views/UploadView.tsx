@@ -1,17 +1,15 @@
 "use client";
 import { Card, CardHeader, CardContent } from "@/common/components/ui/card";
 import { Label } from "@radix-ui/react-label";
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { PageProps } from "@/app/upload/[slug]/page";
 import CustomDialog from "@/common/components/CustomDialog";
 import SenderMetadataForm from "../components/RequestSenderMetadataForm";
 import NavbarLogo from "@/common/components/NavBarLogo";
-import { FormContext } from "../hooks/form-context";
 
 const UploadView: React.FC<PageProps> = ({ searchParams }) => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
-  const {} = useContext(FormContext);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files[0]) {
