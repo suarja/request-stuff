@@ -27,7 +27,10 @@ export function CopyToClipBoard({
               {...props}
               onClick={() => {
                 navigator.clipboard.writeText(url);
-                toast.success("Copied to clipboard");
+                toast.success("Copied to clipboard", {
+                  position: "top-center",
+                  description: `${url}`,
+                });
               }}
               className="flex items-center gap-2 text-blue-700 hover:text-blue-400 font-extrabold  rounded-md"
             >
