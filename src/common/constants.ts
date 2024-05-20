@@ -1,7 +1,7 @@
 export const BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://request-stuff.vercel.app";
+    : "https://request-stuff.jason-suarez.com";
 
 export const PATHS = {
   ROOT_PAGE: () => "/",
@@ -54,7 +54,7 @@ export function getServerEndpoint(
 ):
   | "http://localhost:3000/api/requests"
   | "http://localhost:3000/api/users"
-  | "https://request-stuff.vercel.app/api/requests"
-  | "https://request-stuff.vercel.app/api/users" {
+  | "https://request-stuff.jason-suarez.com/api/requests"
+  | "https://request-stuff.jason-suarez.com/api/users" {
   return `${BASE_URL}/api/${path}`;
 }
