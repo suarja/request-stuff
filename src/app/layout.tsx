@@ -1,8 +1,6 @@
-import { AuthContextProvider } from "@/features/auth/application/services/AuthContext";
 import "./globals.css";
 import { ThemeProvider } from "@/common/style/ThemeProvider";
 import { Toaster } from "@/common/components/ui/sonner";
-import { Nav } from "@/common/components/Nav";
 
 export const metadata = {
   title: "RequestStuff",

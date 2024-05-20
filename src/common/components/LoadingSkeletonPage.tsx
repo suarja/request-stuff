@@ -2,7 +2,7 @@ import { Skeleton } from "./ui/skeleton";
 
 export default function LoadingSkeletonPage() {
   return (
-    <div className="flex flex-col ml-8 justify-between mx-auto items-center py-4 h-screen">
+    <div className="flex flex-col  justify-between mx-auto items-center py-4 h-screen">
       <Skeleton className="h-10 w-[80%] mt-2 dark:bg-gray-800 bg-gray-300 " />
       <div>
         <Skeleton className="h-[45%] w-[80%] rounded-xl dark:bg-gray-800 bg-gray-300 " />
