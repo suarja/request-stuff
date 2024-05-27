@@ -21,7 +21,7 @@ import { toast } from "sonner";
 
 const senderSchema = object({
   name: string().min(1, "Name is required"),
-  email: string().email().optional(),
+  email: string().email().optional().or(z.literal("")),
   message: string().optional(),
 });
 
