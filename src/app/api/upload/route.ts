@@ -11,6 +11,12 @@ customInitApp();
 
 export async function POST(request: NextRequest) {
   try {
+    console.log(`
+    -------------------------------
+    POST /api/upload
+    
+    -------------------------------
+    `)
     const { error, file, requestData, fileSenderData, ip } =
       await getPropsUploadFileServer(request);
 

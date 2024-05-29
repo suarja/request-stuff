@@ -46,6 +46,10 @@ export default class RequestRepository {
       form.append("fileSenderData", JSON.stringify(fileSenderData));
       const response = await fetch("/api/upload", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.API_UUID}`,
+          "Content-Type": "multipart/form-data",
+        },
         body: form,
       });
       const data = await response.json();

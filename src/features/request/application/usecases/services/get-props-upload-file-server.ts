@@ -3,7 +3,7 @@ import { PublicRequest } from "@/features/request/domain/entities/request-types"
 import { NextRequest } from "next/server";
 
 export async function getPropsUploadFileServer(request: NextRequest) {
-  const ip = request.headers.get("x-forwarded-for");
+  const ip = request.ip;
   const form = await request.formData();
   const file = form.get("file");
   const fileSenderData: FileSenderData = JSON.parse(

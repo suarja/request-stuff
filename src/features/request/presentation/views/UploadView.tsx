@@ -1,6 +1,5 @@
 "use client";
 import { Card, CardHeader, CardContent } from "@/common/components/ui/card";
-import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { PageProps } from "@/app/upload/[slug]/page";
 import CustomDialog from "@/common/components/CustomDialog";
