@@ -28,7 +28,7 @@
     "firebase": "10.11.1",
     "firebase-admin": "12.1.0",
     "fp-ddd": "0.0.9",
-    "fp-ts": "2.16.5",
+    "fp-ts": "2.16.7",
     "next": "14.2.0",
     "next-themes": "0.3.0",
     "postcss": "8.4.38",
