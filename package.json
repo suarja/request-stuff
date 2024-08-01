@@ -26,7 +26,7 @@
     "eslint": "9.4.0",
     "eslint-config-next": "14.2.2",
     "firebase": "10.11.1",
-    "firebase-admin": "12.1.0",
+    "firebase-admin": "12.3.0",
     "fp-ddd": "0.0.9",
     "fp-ts": "2.16.5",
     "next": "14.2.0",
