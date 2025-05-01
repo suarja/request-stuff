@@ -23,7 +23,7 @@
     "autoprefixer": "10.4.20",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
-    "eslint": "9.21.0",
+    "eslint": "9.25.1",
     "eslint-config-next": "15.1.6",
     "firebase": "11.0.1",
     "firebase-admin": "12.3.0",
