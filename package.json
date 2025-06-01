@@ -29,7 +29,7 @@
     "firebase-admin": "12.3.0",
     "fp-ddd": "0.0.9",
     "fp-ts": "2.16.9",
-    "next": "14.2.0",
+    "next": "15.3.3",
     "next-themes": "0.3.0",
     "postcss": "8.5.3",
     "react": "18.3.1",
