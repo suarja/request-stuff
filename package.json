@@ -42,7 +42,7 @@
     "tailwindcss-animate": "1.0.7",
     "tsyringe": "4.8.0",
     "typescript": "5.7.3",
-    "zod": "3.24.3",
+    "zod": "4.0.14",
     "zustand": "4.5.2"
   }
 }
