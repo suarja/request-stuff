@@ -64,10 +64,10 @@ importers:
         version: 13.4.0
       fp-ddd:
         specifier: 0.0.9
-        version: 0.0.9(fp-ts@2.16.9)
+        version: 0.0.9(fp-ts@2.16.10)
       fp-ts:
-        specifier: 2.16.9
-        version: 2.16.9
+        specifier: 2.16.10
+        version: 2.16.10
       next:
         specifier: 15.3.4
         version: 15.3.4(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1887,8 +1887,8 @@ packages:
     peerDependencies:
       fp-ts: ^2.16.5
 
-  fp-ts@2.16.9:
-    resolution: {integrity: sha512-+I2+FnVB+tVaxcYyQkHUq7ZdKScaBlX53A41mxQtpIccsfyv8PzdzP7fzp2AY832T4aoK6UZ5WRX/ebGd8uZuQ==}
+  fp-ts@2.16.10:
+    resolution: {integrity: sha512-vuROzbNVfCmUkZSUbnWSltR1sbheyQbTzug7LB/46fEa1c0EucLeBaCEUE0gF3ZGUGBt9lVUiziGOhhj6K1ORA==}
 
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
@@ -5039,12 +5039,12 @@ snapshots:
       safe-buffer: 5.2.1
     optional: true
 
-  fp-ddd@0.0.9(fp-ts@2.16.9):
+  fp-ddd@0.0.9(fp-ts@2.16.10):
     dependencies:
-      fp-ts: 2.16.9
+      fp-ts: 2.16.10
       lodash.isequal: 4.5.0
 
-  fp-ts@2.16.9: {}
+  fp-ts@2.16.10: {}
 
   fraction.js@4.3.7: {}
 
