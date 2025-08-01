@@ -31,7 +31,7 @@
     "fp-ts": "2.16.9",
     "next": "15.3.4",
     "next-themes": "0.3.0",
-    "postcss": "8.5.3",
+    "postcss": "8.5.6",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "7.54.2",
