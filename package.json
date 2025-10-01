@@ -24,7 +24,7 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "eslint": "9.36.0",
-    "eslint-config-next": "15.1.6",
+    "eslint-config-next": "15.5.4",
     "firebase": "11.10.0",
     "firebase-admin": "13.5.0",
     "fp-ddd": "0.0.9",
